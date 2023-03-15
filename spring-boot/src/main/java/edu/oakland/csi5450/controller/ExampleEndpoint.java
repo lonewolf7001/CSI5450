@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.oakland.csi5450.bean.HomeOwnerRequest;
 import edu.oakland.csi5450.bean.HomeOwnerResponse;
 import edu.oakland.csi5450.service.ExampleService;
+import edu.oakland.csi5450.util.DaoFailedException;
 
 @RestController
 public class ExampleEndpoint
@@ -17,7 +18,7 @@ public class ExampleEndpoint
 	ExampleService service;
 	
 	@PostMapping("/endpoint")
-	public HomeOwnerResponse getExampleResponse(@RequestBody HomeOwnerRequest request) {
+	public HomeOwnerResponse getExampleResponse(@RequestBody HomeOwnerRequest request) throws DaoFailedException {
 		int ssn = request.getSsn();
 		return service.getExampleResponse(ssn);
 	}
