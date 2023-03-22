@@ -25,7 +25,7 @@ public class ExampleDao
 				{
 					return rs.getInt("DUMMY");
 				}
-			});
+		});
 		} catch(DataAccessException e) {
 			throw new DaoFailedException("example query failed");
 		}
