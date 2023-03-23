@@ -1,6 +1,6 @@
 package edu.oakland.csi5450.bean;
 
-public class HomeOwnerRequest
+public class ExampleRequest
 {
 	private int ssn;
 
