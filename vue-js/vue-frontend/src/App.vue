@@ -3,12 +3,12 @@
     <Header
       title="REAL ESTATE MANAGEMENT SYSTEM"
     />
-    <router-link to="/housesearch" v-slot="{ navigate }"><Button text="HOUSE SEARCH" color="lightgreen" @click="navigate" role="link"></Button></router-link>
-    <router-link to="/ownersearch" v-slot="{ navigate }"><Button text="OWNER SEARCH" color="lightgreen" @click="navigate" role="link"></Button></router-link>
-    <router-link to="/agentsearch" v-slot="{ navigate }"><Button text="AGENT SEARCH" color="lightgreen" @click="navigate" role="link"></Button></router-link>
-    <router-link to="/transactions" v-slot="{ navigate }"><Button text="TRANSACTIONS" color="lightgreen" @click="navigate" role="link"></Button></router-link>
+    <router-link to="/housesearch" v-slot="{ navigate }"><Button text="HOUSE SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
+    <router-link to="/ownersearch" v-slot="{ navigate }"><Button text="OWNER SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
+    <router-link to="/agentsearch" v-slot="{ navigate }"><Button text="AGENT SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
+    <router-link to="/transactions" v-slot="{ navigate }"><Button text="TRANSACTIONS" color="orange" @click="navigate" role="link"></Button></router-link>
         
-    <router-view :showAddTask="showAddTask"></router-view>
+    <router-view></router-view>
         <!-- The springboot msg is : {{ string }} -->
   </div>
 </template>
@@ -49,14 +49,35 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 .container {
-  max-width: 1000px;
+  max-width: 50px;
   margin: 30px auto;
-  overflow: auto;
-  min-height: 100px;
-  border: 1px solid rgb(255, 255, 255);
+  /* overflow: 10px; */
+  min-height: 50px;
+  border: 1px solid rgb(248, 248, 248);
   padding: 30px;
   border-radius: 5px;
 }
+
+.container1 {
+  max-width: 1000px;
+  margin: 30px auto;
+  /* overflow: 10px; */
+  max-height: 50px;
+  border: 1px solid rgb(255, 255, 255);
+  /* padding: 30px; */
+  border-radius: 5px;
+}
+
+.container2 {
+  max-width: 900px;
+  margin: 30px auto;
+  /* overflow: 10px; */
+  min-height: 100px;
+  border: 1px solid rgb(145, 47, 47);
+  padding: 30px;
+  border-radius: 5px;
+}
+
 .btn {
   display: inline-block;
   background: #000;
@@ -70,6 +91,11 @@ body {
   font-size: 15px;
   font-family: inherit;
 }
+
+.btn1 {width: 200px;}
+.btn2 {width: 50%;}
+.btn3 {width: 100%;}
+
 .btn:focus {
   outline: none;
 }
@@ -80,4 +106,6 @@ body {
   display: block;
   width: 100%;
 }
+
+
 </style>
