@@ -1,13 +1,252 @@
 <template>
-  <h3>HouseSearch</h3>
-  <router-link to="/">Go Back</router-link>
-  <p>City : {{ message }}</p>
-  <input v-model="message" placeholder="edit me" />
+    <!-- <div id="app">
+        <input type="text"
+        placeholder="Citysearch"
+        class="search-input"
+        v-model="searchValue"
+        />
+    </div> -->
+    <!-- <p>City : {{ message }}</p><input v-model="message" placeholder="edit me" /> -->
+     <!-- <div class="row">
+        <input @change="handleChange" 
+              v-model="house.city" 
+              name="name" 
+              type="text" 
+              required>
+      </div> -->
+      <h3 style="text-align:left">&nbsp;</h3>
+      <h3 style="text-align:left">Search your dream home</h3>
+        <div class="container2">
+            <div class="row">
+                <div class="col-sm-4"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
+                <div class="col-sm-6"><input v-model="house.city" placeholder="Enter city" /></div>
+            </div>
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Property Type" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-8">
+                    <input type="checkbox" id="any" value="any" v-model="house.checkedHouses"><label for="any">&nbsp;&nbsp;Any&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="mansion" value="mansion" v-model="house.checkedHouses"><label for="mansion">&nbsp;&nbsp;Mansion&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="townhomes" value="townhomes" v-model="house.checkedHouses"><label for="townhomes">&nbsp;&nbsp;Townhomes&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="condos" value="condos" v-model="house.checkedHouses"><label for="condos">&nbsp;&nbsp;Condos&nbsp;&nbsp;&nbsp;</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Price range ($)" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-4">  
+                    <select v-model="house.price_min">
+                        <option disabled value="min">Please select one</option>
+                        <option>50k</option>
+                        <option>100k</option>
+                        <option>200k</option>
+                        <option>300k</option>
+                        <option>400k</option>
+                        <option>500k</option>
+                        <option>800k</option>
+                        <option>1M</option>
+                    </select>
+                </div>
+                <div class="col col-sm-4">  
+                    <select v-model="house.price_max">
+                        <option disabled value="max">Please select one</option>
+                        <option>50k</option>
+                        <option>100k</option>
+                        <option>200k</option>
+                        <option>300k</option>
+                        <option>400k</option>
+                        <option>500k</option>
+                        <option>800k</option>
+                        <option>1M</option>
+                    </select>
+                </div>  
+                <div class="col col-sm-4"></div>         
+            </div>
+                        <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Home size (sqft)" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-4">  
+                    <select v-model="house.size_min">
+                        <option disabled value="min">Please select one</option>
+                        <option>500</option>
+                        <option>1000</option>
+                        <option>2000</option>
+                        <option>3000</option>
+                        <option>4000</option>
+                        <option>5000</option>
+                        <option>10000</option>
+                    </select>
+                </div>
+                <div class="col col-sm-4">  
+                    <select v-model="house.size_max">
+                        <option disabled value="max">Please select one</option>
+                        <option>500</option>
+                        <option>1000</option>
+                        <option>2000</option>
+                        <option>3000</option>
+                        <option>4000</option>
+                        <option>5000</option>
+                        <option>10000</option>
+                    </select>
+                </div>  
+                <div class="col col-sm-4"></div>         
+            </div>
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Bedrooms" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-8">
+                    <input type="checkbox" id="any" value="any" v-model="house.checkedHouses"><label for="any">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="mansion" value="mansion" v-model="house.checkedHouses"><label for="mansion">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="townhomes" value="townhomes" v-model="house.checkedHouses"><label for="townhomes">&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="condos" value="condos" v-model="house.checkedHouses"><label for="condos">&nbsp;&nbsp;4&nbsp;+&nbsp;&nbsp;&nbsp;</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Bathrooms" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-8">
+                    <input type="checkbox" id="any" value="any" v-model="house.checkedHouses"><label for="1">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="mansion" value="mansion" v-model="house.checkedHouses"><label for="mansion">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="townhomes" value="townhomes" v-model="house.checkedHouses"><label for="townhomes">&nbsp;&nbsp;3&nbsp;+&nbsp;&nbsp;</label>
+                </div>
+            </div>          
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Listing status" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.sale"><label for="checkbox">&nbsp;&nbsp;Is for sale ?</label></div>
+            </div>
+            <div class="row">
+                <div class="col col-sm-4 top20"><Button class="btn1" text="Sold more than once" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.sold"><label for="checkbox">&nbsp;&nbsp;</label></div>
+            </div>
+            <div class="row">
+                <div class="col col-sm-4 top20"><Button class="btn1" text="Expensive > 1M$" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.expensive"><label for="checkbox">&nbsp;&nbsp;</label></div>
+            </div>
+            
+            <div class="row">
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen" role="link"></Button></div>
+            </div>
+        </div>
+     <!-- <form action="/" @keydown="debug">
+        Second  : <input type="text" name="fname2"><br>
+    </form> -->
+    <br/>
+    <div class="container2">
+        Search Results : 
+    </div>
+    
+
+    <!-- <h2>Checkbox</h2>
+  <input type="checkbox" id="checkbox" v-model="checked">
+  <label for="checkbox">Checked: {{ checked }}</label>
+  <h2>Multi Checkbox</h2>
+  <input type="checkbox" id="any" value="any" v-model="checkedHouses">
+  <label for="jack">Jack</label>
+  <input type="checkbox" id="mansion" value="mansion" v-model="checkedHouses">
+  <label for="john">John</label>
+  <input type="checkbox" id="mike" value="Mike" v-model="checkedHouses">
+  <label for="mike">Mike</label>
+  <p>Checked names: <pre>{{ checkedNames }}</pre></p>
+
+  <h2>Radio</h2>
+  <input type="radio" id="one" value="One" v-model="picked">
+  <label for="one">One</label>
+  <br>
+  <input type="radio" id="two" value="Two" v-model="picked">
+  <label for="two">Two</label>
+  <br> -->
+  <!-- <span>Picked: {{ picked }}</span> -->
+
+  <!-- <h2>Select</h2>
+  <select v-model="selected">
+    <option disabled value="">Please select one</option>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+  </select> -->
+  <!-- <span>Selected: {{ selected }}</span> -->
+
+  <!-- <h2>Multi Select</h2>
+  <select v-model="multiSelected" multiple style="width:100px">
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+  </select>
+  <span>Selected: {{ multiSelected }}</span> -->
 </template>
 
 <script>
+
+import Button from '../components/Button'
 export default {
-  name: 'HouseSearch',
-  inheritAttrs: false, // disable 'non-props' warning
-};
+  name: 'HS',
+  components: {
+    Button
+  },
+  data() {
+    return {
+      house: {city: '', 
+                checkedHouses: [], 
+                sale : false, 
+                sold : false, 
+                expensive : false, 
+                price_min : [], 
+                price_max : [], 
+                size_min : [],
+                size_max : [],
+                bedroom : [],
+                bathroom : []
+                },
+    //   text : 'Edit me',
+    //   checked: true,
+    //   checkedNames: ['Jack'],
+    //   picked: 'One',
+    //   selected: 'A',
+    //   multiSelected: ['A']
+    }
+    // console.log(house.city)
+  }
+}
+    // name :'app',
+    // components: {},
+    // data: ( ) => ({
+    //     searchValue: '', 
+    //     users: {
+    //         name: 'john',
+    //         age: 45,
+    //     }
+    // }),
+
+// };
+
+
 </script>
+
+
+
+<style>
+#app{
+align-content: left;
+font: optional
+}
+.search-input{
+    
+    width:200px;
+    height:30px;
+    border-radius:2px;
+
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  vertical-align: left;
+  margin: 0.1em;
+}
+
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:30px; }
+
+</style>
