@@ -18,7 +18,7 @@ public class HomeOwnerService
 	}
 	
 	/**
-	 * validates and sanitizes a HomeOwner object
+	 * validates and sanitizes a HomeOwner object. Returns an error string, or null if the bean is valid 
 	 * @param homeOwner
 	 * @return
 	 */
