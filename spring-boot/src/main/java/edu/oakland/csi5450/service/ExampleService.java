@@ -5,7 +5,7 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.oakland.csi5450.bean.HomeOwnerResponse;
+import edu.oakland.csi5450.bean.HomeOwner;
 import edu.oakland.csi5450.repository.ExampleDao;
 import edu.oakland.csi5450.util.DaoFailedException;
 
@@ -15,8 +15,8 @@ public class ExampleService
 	@Autowired
 	ExampleDao dao;
 	
-	public HomeOwnerResponse getExampleResponse(int ssn) throws DaoFailedException {
-		HomeOwnerResponse response = new HomeOwnerResponse();
+	public HomeOwner getExampleResponse(int ssn) throws DaoFailedException {
+		HomeOwner response = new HomeOwner();
 		response.setSsn(ssn);
 		response.setFirstName("DOUG");
 		response.setLastName("JUDY");

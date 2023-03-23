@@ -2,7 +2,7 @@ package edu.oakland.csi5450.bean;
 
 import java.sql.Date;
 
-public class HomeOwnerResponse
+public class HomeOwner
 {
 	
 	private int ssn;
