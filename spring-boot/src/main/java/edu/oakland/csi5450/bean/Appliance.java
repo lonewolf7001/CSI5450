@@ -1,11 +1,21 @@
 package edu.oakland.csi5450.bean;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Appliance
 {
+	@Size(min=1, max=20)
 	private String applianceType;
+	@Size(min=1, max=25)
 	private String modelNumber;
+	@Size(min=1, max=15)
 	private String manufacturer;
+	@Min(1500)
 	private int year;
+	@NotNull
+	@Min(0)
 	private double price;
 	
 	public String getApplianceType()

@@ -1,5 +1,7 @@
 package edu.oakland.csi5450.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,21 +36,15 @@ public class AgentController
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<Object> createAgent(@RequestBody NewAgent agent) {
-		String validationError = agentService.validateNewAgent(agent);
-		if(validationError != null) {
-			return new ResponseEntity<>(new ErrorResponse(validationError), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> createAgent(@Valid @RequestBody NewAgent agent) {
+		agentService.sanitizeAgent(agent);
 		NewAgentResponse resp = agentService.createAgent(agent);
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Object> updateHomeOwner(@RequestBody Agent req) {
-		String validationError = agentService.validateAgent(req);
-		if(validationError != null) {
-			return new ResponseEntity<>(new ErrorResponse(validationError), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> updateHomeOwner(@Valid @RequestBody Agent req) {
+		agentService.sanitizeAgent(req);
 		if(!agentService.updateAgent(req))
 			return new ResponseEntity<>(new ErrorResponse("Cannot Update this Agent. Agent does not exist."), HttpStatus.BAD_REQUEST);
 		else

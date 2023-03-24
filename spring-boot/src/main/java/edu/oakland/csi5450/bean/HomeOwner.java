@@ -2,17 +2,43 @@ package edu.oakland.csi5450.bean;
 
 import java.sql.Date;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class HomeOwner
 {
 	
+	@Min(100000000)
+	@Max(999999999)
 	private int ssn;
+	
+	@Size(min=1, max=25)
 	private String firstName;
+	
+	@Size(min=1, max=30)
 	private String lastName;
+	
+	@NotNull
 	private int numDependents;
+	
+	@NotNull
 	private int annualIncome;
+	
+	@NotNull
 	private Date dateOfBirth;
+	
+	@Size(min=1, max=50)
 	private String profession;
+	
+	@Min(1000000000)
+	@Max(9999999999L)
 	private long phone;
+	
+	@Email
+	@Size(max=50)
 	private String email;
 
 	

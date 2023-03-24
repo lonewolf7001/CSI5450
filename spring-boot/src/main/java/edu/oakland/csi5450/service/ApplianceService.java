@@ -47,23 +47,10 @@ public class ApplianceService
 		return applianceDao.updateAppliance(appliance);
 	}
 	
-	public String validateAppliance(Appliance appliance) {
-		String error = validateModelNumber(appliance.getModelNumber());
-		if(error != null) return error;
-		
-		error = validateApplianceType(appliance.getApplianceType());
-		if(error != null) return error;
-		
-		error = validateManufacturer(appliance.getManufacturer());
-		if(error != null) return error;
-		
-		if(appliance.getYear() > 9999 || appliance.getYear() < 1000)
-			return "year must be exactly 4 digits";
-		
+	public void sanitizeAppliance(Appliance appliance) {
 		appliance.setModelNumber(appliance.getModelNumber().toUpperCase());
 		appliance.setApplianceType(appliance.getApplianceType().toUpperCase());
 		appliance.setManufacturer(appliance.getManufacturer().toUpperCase());
-		return null;
 	}
 	public String validateModelNumber(String modelNumber) {
 		if(isNullOrEmpty(modelNumber))

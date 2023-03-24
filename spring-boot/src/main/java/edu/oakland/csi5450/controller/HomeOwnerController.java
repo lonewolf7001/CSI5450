@@ -1,5 +1,7 @@
 package edu.oakland.csi5450.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +35,8 @@ public class HomeOwnerController
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<Object> createHomeOwner(@RequestBody HomeOwner req){
-		String validationError = homeOwnerService.validateHomeOwner(req);
-		if(validationError != null) {
-			return new ResponseEntity<>(new ErrorResponse(validationError), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> createHomeOwner(@Valid @RequestBody HomeOwner req){
+		homeOwnerService.sanitizeHomeOwner(req);
 		if(!homeOwnerService.createHomeOwner(req))
 			return new ResponseEntity<>(new ErrorResponse("An owner with this SSN already exists"), HttpStatus.BAD_REQUEST);
 		else
@@ -45,11 +44,8 @@ public class HomeOwnerController
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Object> updateHomeOwner(@RequestBody HomeOwner req) {
-		String validationError = homeOwnerService.validateHomeOwner(req);
-		if(validationError != null) {
-			return new ResponseEntity<>(new ErrorResponse(validationError), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> updateHomeOwner(@Valid @RequestBody HomeOwner req) {
+		homeOwnerService.sanitizeHomeOwner(req);
 		if(!homeOwnerService.updateHomeOwner(req))
 			return new ResponseEntity<>(new ErrorResponse("Cannot Update this Home Owner. Home Owner does not exist."), HttpStatus.BAD_REQUEST);
 		else

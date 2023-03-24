@@ -1,11 +1,27 @@
 package edu.oakland.csi5450.bean;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class NewAgent
 {
-	String firstName;
-	String lastName;
-	long phone;
-	String email;
+	@Size(min=1, max=25)
+	private String firstName;
+	
+	@Size(min=1, max=30)
+	private String lastName;
+	
+	@Min(1000000000)
+	@Max(9999999999L)
+	private long phone;
+	
+	@NotNull
+	@Email
+	private String email;
+	
 	public String getFirstName()
 	{
 		return firstName;

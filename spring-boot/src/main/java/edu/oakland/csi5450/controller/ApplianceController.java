@@ -2,6 +2,9 @@ package edu.oakland.csi5450.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +30,7 @@ public class ApplianceController
 	ApplianceService applianceService;
 	
 	@GetMapping("/model/{modelNumber}")
-	public ResponseEntity<Appliance> getAppliance(@PathVariable String modelNumber) {
-		String validationError = applianceService.validateModelNumber(modelNumber);
-		if(validationError != null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
+	public ResponseEntity<Appliance> getAppliance(@Size(min=1, max=25) @PathVariable String modelNumber) {
 		Appliance resp = applianceService.getApplianceByModelNumber(modelNumber);
 		if(resp == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -39,11 +38,8 @@ public class ApplianceController
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 	@GetMapping("/type")
-	public ResponseEntity<Object> getAppliances(@RequestParam String type, @RequestParam String manufacturer) {
-		if(applianceService.validateApplianceType(type) != null
-				|| applianceService.validateManufacturer(manufacturer) != null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<Object> getAppliances(@Size(min=1, max=20) @RequestParam String type, 
+			@Size(min=1, max=15) @RequestParam String manufacturer) {
 		
 		List<Appliance> resp = applianceService.getApplianceByTypeAndManufacturer(type, manufacturer);
 		if(resp.isEmpty())
@@ -53,11 +49,8 @@ public class ApplianceController
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Object> updateAppliance(@RequestBody Appliance appliance) {
-		String validationError = applianceService.validateAppliance(appliance);
-		if(validationError != null) {
-			return new ResponseEntity<>(new ErrorResponse(validationError), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> updateAppliance(@Valid @RequestBody Appliance appliance) {
+		applianceService.sanitizeAppliance(appliance);
 		
 		if(!applianceService.updateAppliance(appliance))
 			return new ResponseEntity<>(new ErrorResponse("Cannot Update this Appliance. Model Number does not exist."), HttpStatus.BAD_REQUEST);
@@ -66,11 +59,8 @@ public class ApplianceController
 		
 	}
 	@PostMapping("/add")
-	public ResponseEntity<Object> createAppliance(@RequestBody Appliance appliance) {
-		String validationError = applianceService.validateAppliance(appliance);
-		if(validationError != null) {
-			return new ResponseEntity<>(new ErrorResponse(validationError), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Object> createAppliance(@Valid @RequestBody Appliance appliance) {
+		applianceService.sanitizeAppliance(appliance);
 		if(!applianceService.createAppliance(appliance))
 			return new ResponseEntity<>(new ErrorResponse("An appliance with this model number already exists"), HttpStatus.BAD_REQUEST);
 		else
