@@ -14,6 +14,7 @@
               type="text" 
               required>
       </div> -->
+      <div>
       <h3 style="text-align:left">&nbsp;</h3>
       <h3 style="text-align:left">Search your dream home</h3>
         <div class="container2">
@@ -75,8 +76,8 @@
                     </select>
                 </div>
                 <div class="col col-sm-4">  
-                    <select v-model="house.size_max">
-                        <option disabled value="max">Please select one</option>
+                    <select v-model="house.size_max" >
+                        <option disabled value="max" placeholder="min">Please select one</option>
                         <option>500</option>
                         <option>1000</option>
                         <option>2000</option>
@@ -91,18 +92,18 @@
             <div class="row">
                 <div class="col col-sm-4"><Button class="btn1" text="Bedrooms" color="lightblue" disabled role="link"></Button></div>
                 <div class="col col-sm-8">
-                    <input type="checkbox" id="any" value="any" v-model="house.checkedHouses"><label for="any">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="mansion" value="mansion" v-model="house.checkedHouses"><label for="mansion">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="townhomes" value="townhomes" v-model="house.checkedHouses"><label for="townhomes">&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="condos" value="condos" v-model="house.checkedHouses"><label for="condos">&nbsp;&nbsp;4&nbsp;+&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="bedone" value="bedone" v-model="house.bedone"><label for="one">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="bedtwo" value="bedtwon" v-model="house.bedtwo"><label for="two">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="bedthree" value="bedthreees" v-model="house.bedthree"><label for="three">&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="bedfour" value="bedfour" v-model="house.bedfour"><label for="four">&nbsp;&nbsp;4&nbsp;+&nbsp;&nbsp;&nbsp;</label>
                 </div>
             </div>
             <div class="row">
                 <div class="col col-sm-4"><Button class="btn1" text="Bathrooms" color="lightblue" disabled role="link"></Button></div>
                 <div class="col col-sm-8">
-                    <input type="checkbox" id="any" value="any" v-model="house.checkedHouses"><label for="1">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="mansion" value="mansion" v-model="house.checkedHouses"><label for="mansion">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="townhomes" value="townhomes" v-model="house.checkedHouses"><label for="townhomes">&nbsp;&nbsp;3&nbsp;+&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="bathone" value="bathone" v-model="house.bath1"><label for="1">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="bathtwo" value="bathtwon" v-model="house.bath2"><label for="2">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="baththree" value="baththree" v-model="house.bath3"><label for="3+">&nbsp;&nbsp;3&nbsp;+&nbsp;&nbsp;</label>
                 </div>
             </div>          
             <div class="row">
@@ -129,9 +130,33 @@
         Second  : <input type="text" name="fname2"><br>
     </form> -->
     <br/>
+
     <div class="container2">
         Search Results : 
+        <table class = "table table-striped">
+            <thead>
+                <tr>
+                    <th> City</th>
+                    <th> PropertyType</th>
+                    <th> Price range</th>
+                    <th> homesize</th>
+                    <th> Bedrooms</th>
+                    <th> bathrooms</th>
+                    
+                </tr>
+                <tbody>
+                    <tr v-for="city in cites " v-bind:key="city.id">
+                        <td> {{city.id }}</td>
+                        <td> {{PropertyType }}</td>
+                        <td> {{pricerange}}</td>    
+                        <td> {{Bedrooms}}</td>
+                        <td> {{ bathrooms }} </td>
+                    </tr>
+                </tbody>
+            </thead>
+        </table>
     </div>
+</div>
     
 
     <!-- <h2>Checkbox</h2>
