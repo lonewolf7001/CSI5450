@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.City;
 import edu.oakland.csi5450.repository.CityDao;
@@ -15,20 +16,34 @@ public class CityService
 	CityDao cityDao;
 	
 	public List<City> getCities() {
-		return cityDao.getCities();
+		List<City> cities = cityDao.getCities(); 
+		for(City city: cities)
+			city.setName(city.getName().trim());
+		return cities; 
 	}
 	
 	public City getCity(String name) {
-		return cityDao.getCity(name.toUpperCase());
+		City city = cityDao.getCity(name.toUpperCase());
+		city.setName(city.getName().trim());
+		return city;
 	}
 	
+	
+	@Transactional
 	public boolean updateCity(City city) {
 		city.setName(city.getName().toUpperCase());
-		return cityDao.updateCity(city);
+		if(cityDao.getCity(city.getName()) == null)
+			return false;
+		cityDao.updateCity(city);
+		return true;
 	}
 	
+	@Transactional
 	public boolean createCity(City city) {
 		city.setName(city.getName().toUpperCase());
-		return cityDao.createCity(city);
+		if(cityDao.getCity(city.getName()) != null)
+			return false;
+		cityDao.createCity(city);
+		return true;
 	}
 }

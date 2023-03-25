@@ -2,10 +2,9 @@ package edu.oakland.csi5450.service;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.Company;
 import edu.oakland.csi5450.bean.NewCompany;
@@ -26,15 +25,20 @@ public class CompanyService
 		return companyDao.getCompany(id);
 	}
 
-	public int createCompany(@Valid NewCompany company)
+	@Transactional
+	public int createCompany(NewCompany company)
 	{
 		company.setName(company.getName().toUpperCase());
 		return companyDao.createCompany(company);
 	}
 
-	public boolean updateCompany(@Valid Company company)
+	@Transactional
+	public boolean updateCompany(Company company)
 	{
 		company.setName(company.getName().toUpperCase());
-		return companyDao.updateCompany(company);
+		if(companyDao.getCompany(company.getId()) == null)
+			return false;
+		companyDao.updateCompany(company);
+		return true;
 	}
 }

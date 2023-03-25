@@ -1,8 +1,12 @@
-<<<<<<< HEAD
 package edu.oakland.csi5450.bean;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 public class Agent extends NewAgent
 {
+	@NotNull
+	@Min(0)
 	int id;
 	
 	public int getId()
@@ -16,22 +20,3 @@ public class Agent extends NewAgent
 	
 
 }
-=======
-package edu.oakland.csi5450.bean;
-
-public class Agent extends NewAgent
-{
-	int id;
-	
-	public int getId()
-	{
-		return id;
-	}
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-	
-
-}
->>>>>>> b20760b47b0c298774b0cece3892c6dad2bd929e

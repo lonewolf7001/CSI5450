@@ -12,8 +12,6 @@ import edu.oakland.csi5450.service.ExampleService;
 import edu.oakland.csi5450.util.DaoFailedException;
 
 @RestController
-@RequestMapping("/api")
-@CrossOrigin("http://localhost:8081/")
 public class ExampleEndpoint
 {
 	@Autowired

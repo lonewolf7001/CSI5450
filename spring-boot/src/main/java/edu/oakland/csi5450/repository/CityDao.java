@@ -10,7 +10,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.City;
 import edu.oakland.csi5450.util.DaoFailedException;
@@ -65,10 +64,7 @@ public class CityDao
 		}
 	}
 	
-	@Transactional
-	public boolean createCity(City city) {
-		if(getCity(city.getName()) != null)
-			return false;
+	public void createCity(City city) {
 		final String query = "INSERT INTO CITY (city_name, population) VALUES (?,?)";
 		try {
 			int result = jdbcTemplate.update(query, city.getName(), city.getPopulation());
@@ -77,13 +73,10 @@ public class CityDao
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
-		return true;
+		
 	}
 	
-	@Transactional
-	public boolean updateCity(City city) {
-		if(getCity(city.getName()) == null)
-			return false;
+	public void updateCity(City city) {
 		final String query = "UPDATE CITY SET population=? where city_name=?";
 		try {
 			int result = jdbcTemplate.update(query, city.getPopulation(), city.getName());
@@ -92,6 +85,5 @@ public class CityDao
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
-		return true;
 	}
 }

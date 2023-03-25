@@ -1,14 +1,16 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 package edu.oakland.csi5450.service;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.Agent;
 import edu.oakland.csi5450.bean.NewAgent;
 import edu.oakland.csi5450.bean.NewAgentResponse;
 import edu.oakland.csi5450.repository.AgentDao;
+import edu.oakland.csi5450.repository.CompanyDao;
 
 @Service
 public class AgentService
@@ -16,6 +18,12 @@ public class AgentService
 	@Autowired
 	AgentDao agentDao;
 
+	@Autowired
+	CompanyDao companyDao;
+	
+	public List<Agent> getAllAgents() {
+		return agentDao.getAgents();
+	}
 	/**
 	 * returns null if no agent with the given id was found
 	 * @param id
@@ -26,6 +34,7 @@ public class AgentService
 		return agentDao.getAgentById(id);
 	}
 	
+	@Transactional
 	public NewAgentResponse createAgent(NewAgent agent) {
 		int id = agentDao.createAgent(agent);
 		NewAgentResponse resp = new NewAgentResponse();
@@ -38,6 +47,7 @@ public class AgentService
 	 * @param agent
 	 * @return true if update was successful, false if the id did not exist
 	 */
+	@Transactional
 	public boolean updateAgent(Agent agent)
 	{
 		return agentDao.updateAgent(agent);
@@ -49,94 +59,12 @@ public class AgentService
 		agent.setEmail(agent.getEmail().toUpperCase());
 	}
 
+	@Transactional
+	public boolean addAgentCompany(int agentId, int companyId) {
+		if(companyDao.getCompany(companyId) == null
+				|| agentDao.getAgentById(agentId) == null)
+			return false;
+		agentDao.addAgentCompany(agentId, companyId);
+		return true;
+	}
 }
-=======
-=======
->>>>>>> b20760b47b0c298774b0cece3892c6dad2bd929e
-package edu.oakland.csi5450.service;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import edu.oakland.csi5450.bean.Agent;
-import edu.oakland.csi5450.bean.NewAgent;
-import edu.oakland.csi5450.bean.NewAgentResponse;
-import edu.oakland.csi5450.repository.AgentDao;
-
-@Service
-public class AgentService
-{
-	@Autowired
-	AgentDao agentDao;
-
-	/**
-	 * returns null if no agent with the given id was found
-	 * @param id
-	 * @return
-	 */
-	public Agent getAgentById(int id)
-	{
-		return agentDao.getAgentById(id);
-	}
-	
-	public NewAgentResponse createAgent(NewAgent agent) {
-		int id = agentDao.createAgent(agent);
-		NewAgentResponse resp = new NewAgentResponse();
-		resp.setId(id);
-		return resp;
-	}
-	
-	/**
-	 * 
-	 * @param agent
-	 * @return true if update was successful, false if the id did not exist
-	 */
-	public boolean updateAgent(Agent agent)
-	{
-		return agentDao.updateAgent(agent);
-	}
-
-	
-	/**
-	 * validates and sanitizes the given agent. Returns the error message, or null if the bean is valid
-	 * @param agent
-	 * @return
-	 */
-	public String validateNewAgent(NewAgent agent) {
-		if(isNullOrEmpty(agent.getFirstName()))
-			return "firstName is required";
-		if(isNullOrEmpty(agent.getLastName()))
-			return "lastName is required";
-		if(agent.getPhone() < 1000000000 || agent.getPhone() > 9999999999L)
-			return "phone must be exactly 10 digits";
-		if(isNullOrEmpty(agent.getEmail()))
-			return "email is required";
-		if(agent.getFirstName().length() > 25)
-			return "firstName may be no more than 25 characters";
-		if(agent.getLastName().length() > 30)
-			return "lastName may be no more than 30 characters";
-		if(agent.getEmail().length() > 50)
-			return "email may be no more than 50 characters";
-		
-		agent.setFirstName(agent.getFirstName().toUpperCase());
-		agent.setLastName(agent.getLastName().toUpperCase());
-		agent.setEmail(agent.getEmail().toUpperCase());
-		
-		return null;	
-	}
-
-	private boolean isNullOrEmpty(String s) {
-		return s == null || s.isEmpty();
-	}
-	
-	public String validateAgent(Agent agent) {
-		if(agent.getId() < 0)
-			return "invalid agent id";
-		return validateNewAgent(agent);
-	}
-
-}
-<<<<<<< HEAD
->>>>>>> b20760b (Synced with calib backend springboot pages)
-=======
->>>>>>> b20760b47b0c298774b0cece3892c6dad2bd929e
