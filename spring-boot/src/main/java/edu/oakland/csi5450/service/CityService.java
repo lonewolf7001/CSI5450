@@ -15,11 +15,16 @@ public class CityService
 	CityDao cityDao;
 	
 	public List<City> getCities() {
-		return cityDao.getCities();
+		List<City> cities = cityDao.getCities(); 
+		for(City city: cities)
+			city.setName(city.getName().trim());
+		return cities; 
 	}
 	
 	public City getCity(String name) {
-		return cityDao.getCity(name.toUpperCase());
+		City city = cityDao.getCity(name.toUpperCase());
+		city.setName(city.getName().trim());
+		return city;
 	}
 	
 	public boolean updateCity(City city) {
