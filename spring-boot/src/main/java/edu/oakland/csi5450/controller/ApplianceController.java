@@ -29,6 +29,11 @@ public class ApplianceController
 	@Autowired
 	ApplianceService applianceService;
 	
+	@GetMapping("/")
+	public List<Appliance> getAllAppliances() {
+		return applianceService.getAllAppliances();
+	}
+	
 	@GetMapping("/model/{modelNumber}")
 	public ResponseEntity<Appliance> getAppliance(@Size(min=1, max=25) @PathVariable String modelNumber) {
 		Appliance resp = applianceService.getApplianceByModelNumber(modelNumber);

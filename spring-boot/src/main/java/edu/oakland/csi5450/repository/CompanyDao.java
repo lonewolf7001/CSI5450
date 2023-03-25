@@ -10,7 +10,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.Company;
 import edu.oakland.csi5450.bean.NewCompany;
@@ -67,7 +66,6 @@ public class CompanyDao
 		}
 	}
 	
-	@Transactional
 	public int createCompany(NewCompany company) {
 		final String query = "INSERT INTO REAL_ESTATE_COMPANY(company_name, commission_rate) VALUES (?,?) returning company_id";
 		Object[] params = { company.getName(), company.getCommission() };
@@ -79,10 +77,7 @@ public class CompanyDao
 		}
 	}
 	
-	@Transactional
-	public boolean updateCompany(Company company) {
-		if(getCompany(company.getId()) == null)
-			return false;
+	public void updateCompany(Company company) {
 		final String query = "UPDATE REAL_ESTATE_COMPANY SET company_name=?, commission_rate=? WHERE company_id=?";
 		try {
 			int result = jdbcTemplate.update(query, company.getName(), company.getCommission(), company.getId());
@@ -91,6 +86,5 @@ public class CompanyDao
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
-		return true;
 	}
 }

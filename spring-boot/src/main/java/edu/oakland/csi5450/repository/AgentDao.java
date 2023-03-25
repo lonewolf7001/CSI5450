@@ -10,7 +10,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.Agent;
 import edu.oakland.csi5450.bean.NewAgent;
@@ -22,6 +21,28 @@ public class AgentDao
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
+	public List<Agent> getAgents() {
+		final String query = "SELECT agent_id, first_name, last_name, phone, email from AGENT";
+		try {
+			return jdbcTemplate.query(query, new RowMapper<Agent>(){
+	
+				@Override
+				public Agent mapRow(ResultSet rs, int i) throws SQLException
+				{
+					Agent resp = new Agent();
+					resp.setId(rs.getInt("agent_id"));
+					resp.setFirstName(rs.getString("first_name"));
+					resp.setLastName(rs.getString("last_name"));
+					resp.setPhone(rs.getLong("phone"));
+					resp.setEmail(rs.getString("email"));
+					return resp;
+				}
+			});
+		} catch(DataAccessException e) {
+			throw new DaoFailedException(e);
+		}
+	}
+	
 	public Agent getAgentById(int id)
 	{
 		final String query = "SELECT agent_id, first_name, last_name, phone, email from AGENT where agent_id=?";
@@ -53,7 +74,6 @@ public class AgentDao
 	 * @param agent
 	 * @return the id of the newly created agent
 	 */
-	@Transactional
 	public int createAgent(NewAgent agent)
 	{
 		final String query = "INSERT INTO AGENT (first_name, last_name, phone, email) values (?,?,?,?) RETURNING agent_id";
@@ -68,7 +88,6 @@ public class AgentDao
 		});
 	}
 
-	@Transactional
 	public boolean updateAgent(Agent agent)
 	{
 		if(getAgentById(agent.getId()) == null)
@@ -80,4 +99,15 @@ public class AgentDao
 		return true;
 	}
 	
+	public void addAgentCompany(int agentId, int companyId) {
+		final String query = "INSERT INTO AGENT_COMPANY_MAPPING (agent_id, company_id) VALUES (?,?)";
+		try {
+			int result = jdbcTemplate.update(query, agentId, companyId);
+			if(result != 1)
+				throw new DaoFailedException("Error occurred while adding an agent-company mapping");
+			
+		} catch(DataAccessException e) {
+			throw new DaoFailedException(e);
+		}
+	}
 }

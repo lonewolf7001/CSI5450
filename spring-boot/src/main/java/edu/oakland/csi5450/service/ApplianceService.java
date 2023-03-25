@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.Appliance;
 import edu.oakland.csi5450.repository.ApplianceDao;
@@ -14,11 +15,20 @@ public class ApplianceService
 	@Autowired
 	ApplianceDao applianceDao;
 	
+	public List<Appliance> getAllAppliances() {
+		List<Appliance> appliances = applianceDao.getAppliances();
+		for(Appliance appliance : appliances) {
+			trimApplianceResult(appliance);
+		}
+		return appliances;
+	}
+	
 	public Appliance getApplianceByModelNumber(String modelNumber) {
 		Appliance result = applianceDao.getApplianceByModelNumber(modelNumber.toUpperCase());
 		trimApplianceResult(result);
 		return result;
 	}
+	
 	public List<Appliance> getApplianceByTypeAndManufacturer(String type, String manufacturer) {
 		List<Appliance> appliances = applianceDao.getApplianceByTypeAndManufacturer(type.toUpperCase(), manufacturer.toUpperCase());
 		for(Appliance appliance : appliances) {
@@ -33,8 +43,12 @@ public class ApplianceService
 	 * @param appliance
 	 * @return true if successfully created, false if an appliance with this model number already exists
 	 */
+	@Transactional
 	public boolean createAppliance(Appliance appliance) {
-		return applianceDao.createAppliance(appliance);
+		if(applianceDao.getApplianceByModelNumber(appliance.getModelNumber()) != null)
+			return false;
+		applianceDao.createAppliance(appliance);
+		return true;
 	}
 	
 	/**
@@ -42,9 +56,13 @@ public class ApplianceService
 	 * @param appliance
 	 * @return true if successfully modified, false if an appliance with this model number does not exist
 	 */
+	@Transactional
 	public boolean updateAppliance(Appliance appliance)
 	{
-		return applianceDao.updateAppliance(appliance);
+		if(applianceDao.getApplianceByModelNumber(appliance.getModelNumber()) == null)
+			return false;
+		applianceDao.updateAppliance(appliance);
+		return true;
 	}
 	
 	public void sanitizeAppliance(Appliance appliance) {

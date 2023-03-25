@@ -1,6 +1,10 @@
 package edu.oakland.csi5450.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.oakland.csi5450.bean.Agent;
@@ -25,6 +30,11 @@ public class AgentController
 {
 	@Autowired
 	AgentService agentService;
+	
+	@GetMapping("/")
+	public List<Agent> getAllAgents() {
+		return agentService.getAllAgents();
+	}
 	
 	@GetMapping("/id/{id}")
 	public ResponseEntity<Agent> getAgentById(@PathVariable int id) {
@@ -49,5 +59,12 @@ public class AgentController
 			return new ResponseEntity<>(new ErrorResponse("Cannot Update this Agent. Agent does not exist."), HttpStatus.BAD_REQUEST);
 		else
 			return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/company")
+	public ResponseEntity<Object> addAgentCompanyMapping(@RequestParam @NotNull @Min(1) Integer agentId, @RequestParam @NotNull @Min(1) Integer companyId) {
+		if(!agentService.addAgentCompany(agentId, companyId))
+			return new ResponseEntity<>(new ErrorResponse("Cannot add this agent to this company. Either the agent or the company doesn't exist"), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

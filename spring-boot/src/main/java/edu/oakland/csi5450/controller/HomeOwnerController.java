@@ -1,5 +1,7 @@
 package edu.oakland.csi5450.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,11 @@ public class HomeOwnerController
 {
 	@Autowired
 	HomeOwnerService homeOwnerService;
+	
+	@GetMapping("/")
+	public List<HomeOwner> getAllHomeOwners() {
+		return homeOwnerService.getAllHomeOwners();
+	}
 	
 	@GetMapping("/id/{id}")
 	public ResponseEntity<HomeOwner> getOwnerById(@PathVariable long id) {

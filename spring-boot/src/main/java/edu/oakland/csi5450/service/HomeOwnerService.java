@@ -1,7 +1,10 @@
 package edu.oakland.csi5450.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.HomeOwner;
 import edu.oakland.csi5450.repository.HomeOwnerDao;
@@ -12,6 +15,9 @@ public class HomeOwnerService
 	@Autowired
 	HomeOwnerDao homeOwnerDao;
 	
+	public List<HomeOwner> getAllHomeOwners() {
+		return homeOwnerDao.getHomeOwners();
+	}
 	
 	public HomeOwner getHomeOwnerById(long id) {
 		return homeOwnerDao.getHomeOwnerById(id);
@@ -35,8 +41,13 @@ public class HomeOwnerService
 	 * @param homeOwner
 	 * @return
 	 */
+	@Transactional
 	public boolean createHomeOwner(HomeOwner homeOwner) {
-		return homeOwnerDao.createHomeOwner(homeOwner);
+		if(homeOwnerDao.getHomeOwnerById(homeOwner.getSsn()) != null) {
+			return false;
+		}
+		homeOwnerDao.createHomeOwner(homeOwner);
+		return true;
 	}
 
 
@@ -45,8 +56,13 @@ public class HomeOwnerService
 	 * @param homeOwner
 	 * @return
 	 */
+	@Transactional
 	public boolean updateHomeOwner(HomeOwner homeOwner)
 	{
-		return homeOwnerDao.updateHomeOwner(homeOwner);
+		if(homeOwnerDao.getHomeOwnerById(homeOwner.getSsn()) == null) {
+			return false;
+		}
+		homeOwnerDao.updateHomeOwner(homeOwner);
+		return true;
 	}
 }
