@@ -20,9 +20,23 @@ export default {
       <div class= "col2"> <input v-model="owner.name" placeholder="owner name" /></div>
     </div>
     <div class="row2"> 
-      <div class="col1"><Button class="btn1" text="CITY" color="lightblue" disabled role="link"></Button></div>
+      <div class="col1"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
       <div class= "col2"> <input v-model="owner.city" placeholder="City name" /></div>
     </div>
+
+    <div class="row2"> 
+      <div class="col1"><Button class="btn1" text="Expensive Homes" color="lightblue" disabled role="link"></Button></div>
+      <div class="col2">
+                    <input type="checkbox" id="1million" value="1 million" v-model="owner.city"><label for=" 1million-5 million">&nbsp;&nbsp;1million-5 million&nbsp;&nbsp;&nbsp;</label>
+                    <input type="checkbox" id="5million+" value="5million+" v-model="owner.city"><label for="5million+">&nbsp;&nbsp;5million+&nbsp;&nbsp;&nbsp;</label>
+
+                </div>
+    </div>
+    <div class="row2"> 
+      <div class="col1"><Button class="btn1" text="Previously Owned" color="lightblue" disabled role="link"></Button></div>
+      <div class="col2"><input type="checkbox" id="preOwned" value="" v-model="owner.city"><label for="preowned ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
+    </div>
+
     <div class="row2">
       <div class="col1"></div>
       <div class="col2"><Button class="btn1" text=" Search" color="lightgreen" role="link"></Button></div>
@@ -43,6 +57,7 @@ export default {
   data() {
     return {
       owner: {city: ''
+              
       },
 
     }

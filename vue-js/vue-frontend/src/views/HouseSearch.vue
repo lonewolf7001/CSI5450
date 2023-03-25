@@ -101,6 +101,7 @@
             <div class="row">
                 <div class="col col-sm-4"><Button class="btn1" text="Bathrooms" color="lightblue" disabled role="link"></Button></div>
                 <div class="col col-sm-8">
+                    <input type="checkbox" id="bathone" value="Halfbath" v-model="house.Halfbath"><label for="1/2">&nbsp;&nbsp;1/2&nbsp;&nbsp;&nbsp;</label>
                     <input type="checkbox" id="bathone" value="bathone" v-model="house.bath1"><label for="1">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
                     <input type="checkbox" id="bathtwo" value="bathtwon" v-model="house.bath2"><label for="2">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
                     <input type="checkbox" id="baththree" value="baththree" v-model="house.bath3"><label for="3+">&nbsp;&nbsp;3&nbsp;+&nbsp;&nbsp;</label>
@@ -118,6 +119,20 @@
                 <div class="col col-sm-4 top20"><Button class="btn1" text="Expensive > 1M$" color="lightblue" disabled role="link"></Button></div>
                 <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.expensive"><label for="checkbox">&nbsp;&nbsp;</label></div>
             </div>
+
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Appliances Manufacture" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-4">  
+                    <select v-model="house.Appliance">
+                        <option disabled value="makernames">Please select one</option>
+                        <option>Maker1</option>
+                        <option>Maker2</option>
+                        <option>Maker3</option>
+                        <option>Maker4</option>
+                
+                    </select>
+                </div>
+                </div>
             
             <div class="row">
                 <div class="col col-lg"></div>
@@ -125,6 +140,11 @@
                 <div class="col col-lg"></div>
                 <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen" role="link"></Button></div>
             </div>
+            
+
+
+
+
         </div>
      <!-- <form action="/" @keydown="debug">
         Second  : <input type="text" name="fname2"><br>
@@ -218,7 +238,8 @@ export default {
                 size_min : [],
                 size_max : [],
                 bedroom : [],
-                bathroom : []
+                bathroom : [],
+                Appliance : []
                 },
     //   text : 'Edit me',
     //   checked: true,

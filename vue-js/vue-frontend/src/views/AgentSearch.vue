@@ -26,7 +26,7 @@ export default {
 
 <div class= "row1"> 
  <div class="col1"><Button class="btn1" text="Agent" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.name" placeholder="Agent name" /></div>
+  <div class= "col2"> <input v-model="agent.name" placeholder="Agent Name" /></div>
 </div>
 
 <div class= "row1"> 
@@ -36,14 +36,20 @@ export default {
 
 <div class= "row1"> 
  <div class="col1"><Button class="btn1" text="Company" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.company" placeholder="companyname" /></div>
+  <div class= "col2"> <input v-model="agent.company" placeholder="CompanyName" /></div>
 </div>
 
 
   <div class= "row1"> 
     <div class="col1"><Button class="btn1" text="CITY" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.city" placeholder="City name" /></div>
+  <div class= "col2"> <input v-model="agent.city" placeholder="City Name" /></div>
 </div>
+
+<div class= "row1"> 
+    <div class="col1"><Button class="btn1" text="Commission Rate" color="lightblue" disabled role="link"></Button></div>
+  <div class= "col2"> <input v-model="agent.city" placeholder="Purchased Price" /><label for="+15%">&nbsp;&nbsp;+15%&nbsp;&nbsp;&nbsp;</label></div>
+</div>
+
 
 
 <div class="row1">

@@ -7,20 +7,20 @@
 
   <div class= "container2">
     <div class= "row3"> 
-    <div class="col1"><Button class="btn1" text="First name" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Fname" placeholder="First name" /></div>
+    <div class="col1"><Button class="btn1" text="FirstName" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="agent.Fname" placeholder="FirstName" /></div>
     </div>
     <div class= "row3"> 
-    <div class="col1"><Button class="btn1" text="Last name" color="lightblue" disabled role="link"></Button></div>
+    <div class="col1"><Button class="btn1" text="LastName" color="lightblue" disabled role="link"></Button></div>
       <div class= "col2"> <input v-model="agent.Lname" placeholder="LastName" /></div>
     </div>
     <div class= "row3"> 
         <div class="col1"><Button class="btn1" text="Phone" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Phone" placeholder="Contactnumber" /></div>
+      <div class= "col2"> <input v-model="agent.Phone" placeholder="Phone number" /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="Email" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Email" placeholder="agentemail" /></div>
+      <div class= "col2"> <input v-model="agent.Email" placeholder="AgentEmail" /></div>
     </div>
     <div class="row3">
       <div class="col1"></div>
@@ -39,11 +39,11 @@
       <div class= "col2"> <input  v-model="agent.Ssn" placeholder="XXX XX XXXX"/></div>
     </div>
     <div class= "row3"> 
-      <div class="col1"><Button class="btn1" text="First Name" color="lightblue" disabled role="link"></Button></div>
+      <div class="col1"><Button class="btn1" text="FirstName" color="lightblue" disabled role="link"></Button></div>
       <div class= "col2"> <input v-model="agent.Fname" placeholder="" /></div>
     </div>
     <div class= "row3"> 
-      <div class="col1"><Button class="btn1" text="Last Name" color="lightblue" disabled role="link"></Button></div>
+      <div class="col1"><Button class="btn1" text="LastName" color="lightblue" disabled role="link"></Button></div>
       <div class= "col2"> <input v-model="agent.Lname" placeholder="" /></div>
     </div>
     <div class= "row3"> 
