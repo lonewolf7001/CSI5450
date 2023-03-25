@@ -26,7 +26,7 @@ public class AddressService
 		if(address != null) {
 			address.setStreet(address.getStreet().trim());
 			address.setCity(address.getCity().trim());
-			address.setCounty(address.getCounty());
+			address.setCounty(address.getCounty().trim());
 		}
 		return address;
 	}
