@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 package edu.oakland.csi5450.repository;
 
 import java.sql.ResultSet;
@@ -83,6 +84,8 @@ public class AgentDao
 	
 }
 =======
+=======
+>>>>>>> b20760b47b0c298774b0cece3892c6dad2bd929e
 package edu.oakland.csi5450.repository;
 
 import java.sql.ResultSet;
@@ -166,4 +169,7 @@ public class AgentDao
 	}
 	
 }
+<<<<<<< HEAD
 >>>>>>> b20760b (Synced with calib backend springboot pages)
+=======
+>>>>>>> b20760b47b0c298774b0cece3892c6dad2bd929e

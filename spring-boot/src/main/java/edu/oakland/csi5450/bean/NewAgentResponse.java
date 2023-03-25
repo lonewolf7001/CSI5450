@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 package edu.oakland.csi5450.bean;
 
 public class NewAgentResponse
@@ -18,6 +19,8 @@ public class NewAgentResponse
 
 }
 =======
+=======
+>>>>>>> b20760b47b0c298774b0cece3892c6dad2bd929e
 package edu.oakland.csi5450.bean;
 
 public class NewAgentResponse
@@ -36,4 +39,7 @@ public class NewAgentResponse
 
 
 }
+<<<<<<< HEAD
 >>>>>>> b20760b (Synced with calib backend springboot pages)
+=======
+>>>>>>> b20760b47b0c298774b0cece3892c6dad2bd929e
