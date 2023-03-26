@@ -1,69 +1,83 @@
 <template>
 <div>
-  <!----<div class ="hearder">
-    <h3 style="">AgentSearch</h3>
-    
+
+  <div class = "header">
+    <h3 style="text-align:left">&nbsp;</h3>
+    <h3 style="text-align:left"> Search your agent&nbsp;</h3>
+
+
   </div>
-  <h3>AgentSearch</h3>
-  <router-link to="/">Go Back</router-link>
-</template>
 
-<script>
-export default {
-  name: 'AgentSearch',
-  inheritAttrs: false, // disable 'non-props' warning
-};
-</script>-->
-
-<div class = "header">
-  <h3 style="text-align:left">&nbsp;</h3>
-  <h3 style="text-align:left"> Search your agent&nbsp;</h3>
-
-
-</div>
-
-<div class= "container2">
-
-<div class= "row1"> 
- <div class="col1"><Button class="btn1" text="Agent" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.name" placeholder="Agent Name" /></div>
-</div>
-
-<div class= "row1"> 
-    <div class="col1"><Button class="btn1" text="AgentID" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.ID" placeholder="AgentID" /></div>
-</div>
-
-<div class= "row1"> 
- <div class="col1"><Button class="btn1" text="Company" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.company" placeholder="CompanyName" /></div>
-</div>
-
+  <div class= "container2">
 
   <div class= "row1"> 
-    <div class="col1"><Button class="btn1" text="CITY" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.city" placeholder="City Name" /></div>
-</div>
+  <div class="col1"><Button class="btn1" text="Agent" color="lightblue" disabled role="link"></Button></div>
+    <div class= "col2"> <input v-model="agent.name" placeholder="Agent Name" /></div>
+  </div>
 
-<div class= "row1"> 
-    <div class="col1"><Button class="btn1" text="Commission Rate" color="lightblue" disabled role="link"></Button></div>
-  <div class= "col2"> <input v-model="agent.city" placeholder="Purchased Price" /><label for="+15%">&nbsp;&nbsp;+15%&nbsp;&nbsp;&nbsp;</label></div>
-</div>
+  <div class= "row1"> 
+      <div class="col1"><Button class="btn1" text="AgentID" color="lightblue" disabled role="link"></Button></div>
+    <div class= "col2"> <input v-model="agent.ID" placeholder="AgentID" /></div>
+  </div>
+
+  <div class= "row1"> 
+  <div class="col1"><Button class="btn1" text="Company" color="lightblue" disabled role="link"></Button></div>
+    <div class= "col2"> <input v-model="agent.company" placeholder="CompanyName" /></div>
+  </div>
+
+
+    <div class= "row1"> 
+      <div class="col1"><Button class="btn1" text="CITY" color="lightblue" disabled role="link"></Button></div>
+    <div class= "col2"> <input v-model="agent.city" placeholder="City Name" /></div>
+  </div>
+
+  <div class= "row1"> 
+      <div class="col1"><Button class="btn1" text="Commission Rate" color="lightblue" disabled role="link"></Button></div>
+    <div class= "col2"> <input v-model="agent.city" placeholder="Purchased Price" /><label for="+15%">&nbsp;&nbsp;+15%&nbsp;&nbsp;&nbsp;</label></div>
+  </div>
 
 
 
-<div class="row1">
-                <div class="col1"></div>
-                <div class="col2"><Button class="btn1" text=" Search" color="lightgreen" role="link"></Button></div>
-            </div>
-</div>
+  <div class="row1">
+                  <div class="col1"></div>
+                  <div class="col2"><Button class="btn1" text=" Search" color="lightgreen" v-on:click="owners = this.getAllagentsResponse()"></Button></div>
+              </div>
+  </div>
+
+  <div class="container2">
+        Search Results : 
+        <table class = "table table-striped">
+            <thead>
+                <tr>
+                  <th> Agent-ID </th>
+                    <th> First Name</th>
+                    <th> Last Name</th>
+                    <th> Phone</th>
+                    <th> Email</th>
+                </tr>
+              </thead>
+                <tbody>
+                    <tr v-for="agent in agents " v-bind:key="agent.id">
+                        <td> {{agent.id}}</td>
+                        <td> {{agent.firstName}}</td>
+                        <td> {{agent.lastName}}</td>    
+                        <td> {{agent.phone}}</td>
+                        <td> {{agent.email}} </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+
+
 </div>
 </template>
 
 <script>
 import Button from '../components/Button'
+import AgentService from '../services/AgentService';
+
 export default {
-  name: 'AS',
+  name: 'AgentSearch',
   components: {
     Button
   },
@@ -71,10 +85,17 @@ export default {
     return {
       agent: {city: ''
       },
-
+      agents: []
     }
+  },
+  methods:{
+    getAllagentsResponse(){
+      AgentService.getAllagents().then((response) => {
+        this.agents = response.data;
+      });
   }
 }
+};
 
 </script>
 

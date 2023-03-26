@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="container">
     <Header
       title="REAL ESTATE MANAGEMENT SYSTEM"
@@ -10,13 +11,14 @@
         
     <router-view></router-view>
         <!-- The springboot msg is : {{ string }} -->
+    </div>
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
 import Button from './components/Button'
-import ExampleService from './services/connectspringbootservice'
+// import ExampleService from './services/connectspringbootservice'
 export default {
   name: 'App',
   components: {
@@ -29,11 +31,11 @@ export default {
       }
     },
   methods: {
-    getExampleResponse(){
-      ExampleService.getExampleService().then((response) => {
-        this.string = response.data;
-      });
-    }
+    // getExampleResponse(){
+    //   ExampleService.getExampleService().then((response) => {
+    //     this.string = response.data;
+    //   });
+    // }
   }
 }
 </script>
@@ -69,7 +71,7 @@ body {
 }
 
 .container2 {
-  max-width: 900px;
+  /* max-width: 900px; */
   margin: 30px auto;
   /* overflow: 10px; */
   min-height: 100px;

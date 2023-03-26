@@ -39,9 +39,41 @@ export default {
 
     <div class="row2">
       <div class="col1"></div>
-      <div class="col2"><Button class="btn1" text=" Search" color="lightgreen" role="link"></Button></div>
+      <div class="col2"><Button class="btn1" text=" Search" color="lightgreen" v-on:click="owners = this.getAllownersResponse()" ></Button></div>
     </div>
   </div>
+   <div class="container2">
+        Search Results : 
+        <table class = "table table-striped">
+            <thead>
+                <tr>
+                    <th> SSN</th>
+                    <th> First Name</th>
+                    <th> Last Name</th>
+                    <th> Dependents</th>
+                    <th> Annual Income</th>
+                    <th> Date of Birth</th>
+                    <th> Profession </th>
+                    <th> Phone </th>
+                    <th> Email</th>
+                </tr>
+              </thead>
+                <tbody>
+                    <tr v-for="owner in owners" v-bind:key="owner.phone">
+                        <td> {{owner.ssn}}</td>
+                        <td> {{owner.firstName}}</td>
+                        <td> {{owner.lastName}}</td>    
+                        <td> {{owner.numDependents}}</td>
+                        <td> {{owner.annualIncome}} </td>
+                        <td> {{owner.dateOfBirth}} </td>
+                        <td> {{owner.profession}} </td>
+                        <td> {{owner.phone}} </td>
+                        <td> {{owner.email}} </td>
+                    </tr>
+                </tbody>
+
+        </table>
+    </div>
 </div>
 </template>
 
@@ -49,20 +81,30 @@ export default {
 
 
 import Button from '../components/Button'
+import OwnerService from '../services/OwnerService';
 export default {
-  name: 'OS',
+  name: 'OwnerSearch',
   components: {
     Button
   },
   data() {
     return {
-      owner: {city: ''
-              
+      owner: {city: ''      
       },
-
+      owners: []
     }
+  },
+  methods:{
+    getAllownersResponse(){
+      OwnerService.getAllowners().then((response) => {
+        this.owners = response.data;
+      });
+    },
+    // created() {
+    //     this.getAllownersResponse();
+    // }
   }
-}
+};
 
 
 

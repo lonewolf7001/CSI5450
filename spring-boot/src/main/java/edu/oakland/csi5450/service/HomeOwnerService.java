@@ -3,12 +3,12 @@ package edu.oakland.csi5450.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.HomeOwner;
 import edu.oakland.csi5450.repository.HomeOwnerDao;
-
 @Service
 public class HomeOwnerService
 {
