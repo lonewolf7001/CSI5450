@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.Appliance;
+import edu.oakland.csi5450.bean.ApplianceInstance;
 import edu.oakland.csi5450.repository.ApplianceDao;
+import edu.oakland.csi5450.repository.HomeDao;
 
 @Service
 public class ApplianceService
 {
 	@Autowired
 	ApplianceDao applianceDao;
+	
+	@Autowired
+	HomeDao homeDao;
 	
 	public List<Appliance> getAllAppliances() {
 		List<Appliance> appliances = applianceDao.getAppliances();
@@ -31,6 +36,14 @@ public class ApplianceService
 	
 	public List<Appliance> getApplianceByTypeAndManufacturer(String type, String manufacturer) {
 		List<Appliance> appliances = applianceDao.getApplianceByTypeAndManufacturer(type.toUpperCase(), manufacturer.toUpperCase());
+		for(Appliance appliance : appliances) {
+			trimApplianceResult(appliance);
+		}
+		return appliances;
+	}
+	
+	public List<Appliance> getAppliancesByHomeId(int homeId) {
+		List<Appliance> appliances = applianceDao.getAppliancesByHomeId(homeId);
 		for(Appliance appliance : appliances) {
 			trimApplianceResult(appliance);
 		}
@@ -65,31 +78,26 @@ public class ApplianceService
 		return true;
 	}
 	
+	@Transactional
+	public boolean addApplianceHomeMapping(ApplianceInstance instance) {
+		instance.setModelNumber(instance.getModelNumber().toUpperCase());
+		if(instance.getSerialNumber() != null)
+			instance.setSerialNumber(instance.getSerialNumber().toUpperCase());
+		
+		if(homeDao.getById(instance.getHomeId()) == null
+				|| applianceDao.getApplianceByModelNumber(instance.getModelNumber()) == null
+				|| applianceDao.doesApplianceHomeMappingExist(instance.getHomeId(), instance.getModelNumber())){
+			return false;
+		}
+				
+		applianceDao.addApplianceHome(instance);
+		return true;
+	}
+	
 	public void sanitizeAppliance(Appliance appliance) {
 		appliance.setModelNumber(appliance.getModelNumber().toUpperCase());
 		appliance.setApplianceType(appliance.getApplianceType().toUpperCase());
 		appliance.setManufacturer(appliance.getManufacturer().toUpperCase());
-	}
-	public String validateModelNumber(String modelNumber) {
-		if(isNullOrEmpty(modelNumber))
-			return "modelNumber is required";
-		if(modelNumber.length() > 25)
-			return "modelNumber may be no more than 25 characters";
-		return null;
-	}
-	public String validateManufacturer(String manufacturer) {
-		if(isNullOrEmpty(manufacturer))
-			return "manufacturer is required";
-		if(manufacturer.length() > 15)
-			return "manufacturer may be no more than 15 characters";
-		return null;
-	}
-	public String validateApplianceType(String type) {
-		if(isNullOrEmpty(type))
-			return "applianceType is required";
-		if(type.length() > 20)
-			return "applianceType may be no more than 20 characters";
-		return null;
 	}
 	
 	
@@ -97,9 +105,6 @@ public class ApplianceService
 		appliance.setModelNumber(appliance.getModelNumber().trim());
 		appliance.setApplianceType(appliance.getApplianceType().trim());
 		appliance.setManufacturer(appliance.getManufacturer().trim());	
-	}
-	private boolean isNullOrEmpty(String s) {
-		return s == null || s.isEmpty();
 	}
 	
 }

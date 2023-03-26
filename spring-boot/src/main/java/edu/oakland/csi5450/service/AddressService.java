@@ -20,13 +20,17 @@ public class AddressService
 	@Autowired
 	CityDao cityDao;
 	
+	public Address getAddressByHomeId(int homeId) {
+		Address address = addressDao.getAddressByHomeId(homeId);
+		if(address != null)
+			trimAddressResult(address);
+		return address;
+	}
 	public Address getAddressById(int id)
 	{
 		Address address = addressDao.getAddressById(id);
 		if(address != null) {
-			address.setStreet(address.getStreet().trim());
-			address.setCity(address.getCity().trim());
-			address.setCounty(address.getCounty().trim());
+			trimAddressResult(address);
 		}
 		return address;
 	}
@@ -64,5 +68,11 @@ public class AddressService
 		address.setStreet(address.getStreet().toUpperCase());
 		address.setCity(address.getCity().toUpperCase());
 		address.setCounty(address.getCounty().toUpperCase());
+	}
+	
+	private void trimAddressResult(Address address) {
+		address.setStreet(address.getStreet().trim());
+		address.setCity(address.getCity().trim());
+		address.setCounty(address.getCounty().trim());
 	}
 }

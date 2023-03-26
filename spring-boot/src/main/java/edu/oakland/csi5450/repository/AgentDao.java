@@ -49,21 +49,19 @@ public class AgentDao
 		Object[] params = { id };
 		int[] types = { Types.INTEGER };
 		try {
-			List<Agent> result = jdbcTemplate.query(query, params, types,  new RowMapper<Agent>(){
-	
-				@Override
-				public Agent mapRow(ResultSet rs, int i) throws SQLException
-				{
-					Agent resp = new Agent();
-					resp.setId(rs.getInt("agent_id"));
-					resp.setFirstName(rs.getString("first_name"));
-					resp.setLastName(rs.getString("last_name"));
-					resp.setPhone(rs.getLong("phone"));
-					resp.setEmail(rs.getString("email"));
-					return resp;
-				}
-			});
+			List<Agent> result = jdbcTemplate.query(query, params, types,  getRowMapper());
 			return result.isEmpty() ? null : result.get(0);
+		} catch(DataAccessException e) {
+			throw new DaoFailedException(e);
+		}
+	}
+	
+	public List<Agent> getAgentsByCompanyId(int companyId) {
+		final String query = "SELECT a.agent_id, a.first_name, a.last_name, a.phone, a.email from AGENT a, AGENT_COMPANY_MAPPING m where m.agent_id=a.agent_id and m.company_id=?";
+		Object[] params = { companyId };
+		int[] types = { Types.INTEGER };
+		try {
+		return jdbcTemplate.query(query,  params, types, getRowMapper());
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
@@ -109,5 +107,42 @@ public class AgentDao
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
+	}
+
+	public boolean doesAgentCompanyMappingExist(int agentId, int companyId) {
+		final String query = "SELECT agent_id, company_id from AGENT_COMPANY_MAPPING where agent_id=? and company_id=?";
+		Object[] params = { agentId, companyId };
+		int[] types = { Types.INTEGER, Types.INTEGER };
+		try {
+			List<Integer> result = jdbcTemplate.query(query, params, types, new RowMapper<Integer>(){
+
+				@Override
+				public Integer mapRow(ResultSet arg0, int arg1) throws SQLException
+				{
+					return 1;
+				}
+				
+			});
+			return !result.isEmpty();
+		} catch(DataAccessException e) {
+			throw new DaoFailedException(e);
+		}
+	}
+	
+	private RowMapper<Agent> getRowMapper() {
+		return new RowMapper<Agent>(){
+			
+			@Override
+			public Agent mapRow(ResultSet rs, int i) throws SQLException
+			{
+				Agent resp = new Agent();
+				resp.setId(rs.getInt("agent_id"));
+				resp.setFirstName(rs.getString("first_name"));
+				resp.setLastName(rs.getString("last_name"));
+				resp.setPhone(rs.getLong("phone"));
+				resp.setEmail(rs.getString("email"));
+				return resp;
+			}
+		};
 	}
 }

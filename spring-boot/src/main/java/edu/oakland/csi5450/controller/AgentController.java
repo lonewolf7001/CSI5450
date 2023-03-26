@@ -61,10 +61,18 @@ public class AgentController
 			return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping("/company")
+	@PostMapping("/company/add")
 	public ResponseEntity<Object> addAgentCompanyMapping(@RequestParam @NotNull @Min(1) Integer agentId, @RequestParam @NotNull @Min(1) Integer companyId) {
 		if(!agentService.addAgentCompany(agentId, companyId))
-			return new ResponseEntity<>(new ErrorResponse("Cannot add this agent to this company. Either the agent or the company doesn't exist"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorResponse("Cannot add this agent to this company. Either the agent or the company doesn't exist or the mapping already exists."), HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/company/{companyId}")
+	public ResponseEntity<List<Agent>> getAgentByCompanyId(@PathVariable int companyId) {
+		List<Agent> agents = agentService.getAgentsByCompanyId(companyId);
+		if(agents.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(agents, HttpStatus.OK);
 	}
 }

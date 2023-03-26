@@ -26,6 +26,15 @@ public class AddressController
 	@Autowired
 	AddressService addressService;
 	
+	@GetMapping("/home/{id}")
+	public ResponseEntity<Object> getAddressByHomeId(@PathVariable int id) {
+		Address address = addressService.getAddressByHomeId(id);
+		if(address == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else
+			return new ResponseEntity<>(address, HttpStatus.OK);
+	}
+	
 	@GetMapping("/id/{id}")
 	public ResponseEntity<Object> getAddressById(@PathVariable int id) {
 		Address address = addressService.getAddressById(id);
@@ -35,7 +44,6 @@ public class AddressController
 			return new ResponseEntity<>(address, HttpStatus.OK);
 	}
 	
-	//TODO: add GET method for lookup without ID
 	
 	@PostMapping("/")
 	public ResponseEntity<Object> createAddress(@Valid @RequestBody NewAddress address) {

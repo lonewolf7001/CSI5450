@@ -33,6 +33,14 @@ public class CompanyController
 		return companyService.getCompanies();
 	}
 	
+	@GetMapping("/agent/{agentId}")
+	public ResponseEntity<List<Company>> getCompaniesByAgentId(@PathVariable int agentId) {
+		List<Company> companies = companyService.getCompaniesByAgentId(agentId);
+		if(companies.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(companies, HttpStatus.OK);
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getCompany(@PathVariable int id) {
 		Company company = companyService.getCompanyById(id);

@@ -24,22 +24,22 @@ public class CompanyDao
 	public List<Company> getCompanies() {
 		final String query = "SELECT company_id, company_name, commission_rate from REAL_ESTATE_COMPANY order by company_id";
 		try {
-			return jdbcTemplate.query(query, new RowMapper<Company>(){
-
-				@Override
-				public Company mapRow(ResultSet rs, int i) throws SQLException
-				{
-					Company c = new Company();
-					c.setId(rs.getInt("company_id"));
-					c.setName(rs.getString("company_name"));
-					c.setCommission(rs.getDouble("commission_rate"));
-					return c;
-				}
-				
-			});
+			return jdbcTemplate.query(query, getRowMapper());
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
+	}
+	
+	public List<Company> getCompaniesByAgentId(int agentId) {
+		final String query = "SELECT c.company_id, c.company_name, c.commission_rate from REAL_ESTATE_COMPANY c, AGENT_COMPANY_MAPPING m where c.company_id=m.company_id and m.agent_id=?";
+		Object[] params = { agentId };
+		int[] types = { Types.INTEGER };
+		try {
+			return jdbcTemplate.query(query, params, types, getRowMapper());
+		} catch(DataAccessException e) {
+			throw new DaoFailedException(e);
+		}
+		
 	}
 	
 	public Company getCompany(int id) {
@@ -47,19 +47,7 @@ public class CompanyDao
 		Object[] params = { id };
 		int[] types = { Types.INTEGER };
 		try {
-			List<Company> result = jdbcTemplate.query(query, params, types, new RowMapper<Company>(){
-
-				@Override
-				public Company mapRow(ResultSet rs, int i) throws SQLException
-				{
-					Company c = new Company();
-					c.setId(rs.getInt("company_id"));
-					c.setName(rs.getString("company_name"));
-					c.setCommission(rs.getDouble("commission_rate"));
-					return c;
-				}
-				
-			});
+			List<Company> result = jdbcTemplate.query(query, params, types, getRowMapper());
 			return result.isEmpty() ? null : result.get(0);
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
@@ -86,5 +74,21 @@ public class CompanyDao
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
+	}
+
+	private RowMapper<Company> getRowMapper() {
+		return new RowMapper<Company>(){
+
+			@Override
+			public Company mapRow(ResultSet rs, int i) throws SQLException
+			{
+				Company c = new Company();
+				c.setId(rs.getInt("company_id"));
+				c.setName(rs.getString("company_name"));
+				c.setCommission(rs.getDouble("commission_rate"));
+				return c;
+			}
+			
+		};
 	}
 }

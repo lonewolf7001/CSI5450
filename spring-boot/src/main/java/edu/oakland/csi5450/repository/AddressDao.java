@@ -29,32 +29,23 @@ public class AddressDao
 		Object[] params = { id };
 		int[] types = { Types.INTEGER };
 		try {
-			List<Address> result = jdbcTemplate.query(query,  params, types, new RowMapper<Address>(){
-
-				@Override
-				public Address mapRow(ResultSet rs, int i) throws SQLException
-				{
-					Address a = new Address();
-					a.setId(rs.getInt("address_id"));
-					a.setHouseNum(rs.getInt("house_num"));					
-					a.setStreet(rs.getString("street"));
-					int aptNum = rs.getInt("apt_num");
-					if(!rs.wasNull())
-						a.setAptNum(aptNum);//nullable
-					a.setCity(rs.getString("city"));
-					a.setCounty(rs.getString("county"));
-					a.setZip(rs.getInt("zip"));
-					int homeId = rs.getInt("home_id");
-					if(!rs.wasNull())
-						a.setHomeId(homeId);
-					return a;
-				}
-				
-			});
+			List<Address> result = jdbcTemplate.query(query,  params, types, getRowMapper());
 			return result.isEmpty() ? null : result.get(0);
 		} catch(DataAccessException e) {
 			throw new DaoFailedException(e);
 		}
+	}
+	public Address getAddressByHomeId(int homeId) {
+		final String query = "SELECT address_id, house_num, street, apt_num, city, county, zip, home_id FROM ADDRESS WHERE home_id=?";
+		Object[] params = { homeId };
+		int[] types = { Types.INTEGER };
+		try {
+			List<Address> result = jdbcTemplate.query(query,  params, types, getRowMapper());
+			return result.isEmpty() ? null : result.get(0);
+		} catch(DataAccessException e) {
+			throw new DaoFailedException(e);
+		}
+		
 	}
 
 	public int createAddress(NewAddress address)
@@ -79,4 +70,28 @@ public class AddressDao
 		}
 	}
 
+	private RowMapper<Address> getRowMapper() {
+		return new RowMapper<Address>(){
+
+			@Override
+			public Address mapRow(ResultSet rs, int i) throws SQLException
+			{
+				Address a = new Address();
+				a.setId(rs.getInt("address_id"));
+				a.setHouseNum(rs.getInt("house_num"));					
+				a.setStreet(rs.getString("street"));
+				int aptNum = rs.getInt("apt_num");
+				if(!rs.wasNull())
+					a.setAptNum(aptNum);//nullable
+				a.setCity(rs.getString("city"));
+				a.setCounty(rs.getString("county"));
+				a.setZip(rs.getInt("zip"));
+				int homeId = rs.getInt("home_id");
+				if(!rs.wasNull())
+					a.setHomeId(homeId);
+				return a;
+			}
+			
+		};
+	}
 }

@@ -20,6 +20,9 @@ public class CompanyService
 		return companyDao.getCompanies();
 	}
 
+	public List<Company> getCompaniesByAgentId(int agentId) {
+		return companyDao.getCompaniesByAgentId(agentId);
+	}
 	public Company getCompanyById(int id)
 	{
 		return companyDao.getCompany(id);

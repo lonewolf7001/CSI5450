@@ -24,6 +24,10 @@ public class AgentService
 	public List<Agent> getAllAgents() {
 		return agentDao.getAgents();
 	}
+	
+	public List<Agent> getAgentsByCompanyId(int companyId) {
+		return agentDao.getAgentsByCompanyId(companyId);
+	}
 	/**
 	 * returns null if no agent with the given id was found
 	 * @param id
@@ -62,7 +66,8 @@ public class AgentService
 	@Transactional
 	public boolean addAgentCompany(int agentId, int companyId) {
 		if(companyDao.getCompany(companyId) == null
-				|| agentDao.getAgentById(agentId) == null)
+				|| agentDao.getAgentById(agentId) == null
+				|| agentDao.doesAgentCompanyMappingExist(agentId, companyId))
 			return false;
 		agentDao.addAgentCompany(agentId, companyId);
 		return true;

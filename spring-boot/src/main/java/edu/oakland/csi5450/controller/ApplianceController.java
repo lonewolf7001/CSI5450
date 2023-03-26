@@ -3,6 +3,8 @@ package edu.oakland.csi5450.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.oakland.csi5450.bean.Appliance;
+import edu.oakland.csi5450.bean.ApplianceInstance;
 import edu.oakland.csi5450.bean.ErrorResponse;
 import edu.oakland.csi5450.service.ApplianceService;
 
@@ -53,6 +56,15 @@ public class ApplianceController
 			return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 	
+	@GetMapping("/home/{id}")
+	public ResponseEntity<Object> getAppliancesByHomeId(@NotNull @Min(1) @PathVariable int id) {
+		List<Appliance> resp = applianceService.getAppliancesByHomeId(id);
+		if(resp.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else
+			return new ResponseEntity<>(resp, HttpStatus.OK);
+	}
+	
 	@PutMapping("/update")
 	public ResponseEntity<Object> updateAppliance(@Valid @RequestBody Appliance appliance) {
 		applianceService.sanitizeAppliance(appliance);
@@ -72,4 +84,10 @@ public class ApplianceController
 			return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@PostMapping("/home/add")
+	public ResponseEntity<Object> addApplianceHomeMapping(@Valid @RequestBody ApplianceInstance instance) {
+		if(!applianceService.addApplianceHomeMapping(instance))
+			return new ResponseEntity<>(new ErrorResponse("Mapping could not be added. Either the home or the model number does not exist, or the mapping exists already"), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
