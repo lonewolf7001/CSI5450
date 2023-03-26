@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 public class Home {
 
-    private Long homeId;
+    private Integer homeId;
 
     @NotNull
     @Min(1)
@@ -46,11 +46,11 @@ public class Home {
     @NotNull
     private Boolean isForSale;
 
-    public Long getHomeId() {
+    public Integer getHomeId() {
         return homeId;
     }
 
-    public void setHomeId(Long homeId) {
+    public void setHomeId(Integer homeId) {
         this.homeId = homeId;
     }
 

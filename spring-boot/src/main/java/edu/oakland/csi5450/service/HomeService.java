@@ -1,5 +1,7 @@
 package edu.oakland.csi5450.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,25 +11,27 @@ import edu.oakland.csi5450.repository.HomeDao;
 @Service
 public class HomeService {
 
-    // @Autowired
-    HomeDao homeDao;
-    // List<Home> getAll();
+    @Autowired
+    private HomeDao homeDao;
 
-    // public
-    public Home getHomeById(long id) {
-        return homeDao.getById(id);
+    public List<Home> getAll() {
+        return homeDao.getAll();
     }
 
-    public int save(Home home) {
-        return homeDao.save(home);
+    public Home getById(Integer homeId) {
+        return homeDao.getById(homeId);
+    }
+
+    public Integer save(Home home) {
+        Integer id = homeDao.save(home);
+        return id != null ? id.intValue() : null;
     }
 
     public int update(Home home) {
         return homeDao.update(home);
     }
 
-    public int deleteById(long id) {
-        return homeDao.deleteById(id);
+    public int deleteById(Integer homeId) {
+        return homeDao.deleteById(homeId);
     }
-
 }
