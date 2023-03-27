@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import edu.oakland.csi5450.bean.ErrorResponse;
+import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
 import edu.oakland.csi5450.bean.Sale;
 import edu.oakland.csi5450.service.HomeService;
@@ -49,11 +50,22 @@ public class HomeController {
     @GetMapping("/owner")
     public ResponseEntity<Object> getHomesByOwner(
     		@RequestParam @NotNull @Min(1) int owner, 
-    		@RequestParam @Size(max=30) String city,
-    		@RequestParam boolean prev) {
-    	//TODO: Complete
-    	return null;
-    	
+    		@RequestParam(required=false) @Size(max=30) String city,
+    		@RequestParam(required=false) boolean prev) {
+    	List<ExtendedHomeInfo> resp = homeService.getHomesByOwnerAndCity(owner, city, prev);
+    	if(resp.isEmpty())
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	else
+    		return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+    
+    @GetMapping("/city")
+    public ResponseEntity<Object> getHomesByCity(@RequestParam @NotNull @Size(min=1, max=30) String city) {
+    	List<ExtendedHomeInfo> resp = homeService.getHomesByCity(city);
+    	if(resp.isEmpty())
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	else
+    		return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @PostMapping("")

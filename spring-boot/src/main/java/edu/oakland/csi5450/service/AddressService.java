@@ -70,7 +70,7 @@ public class AddressService
 		address.setCounty(address.getCounty().toUpperCase());
 	}
 	
-	private void trimAddressResult(Address address) {
+	public void trimAddressResult(Address address) {
 		address.setStreet(address.getStreet().trim());
 		address.setCity(address.getCity().trim());
 		address.setCounty(address.getCounty().trim());

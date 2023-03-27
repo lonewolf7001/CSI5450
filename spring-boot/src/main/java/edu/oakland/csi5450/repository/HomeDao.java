@@ -14,9 +14,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
+import edu.oakland.csi5450.bean.Address;
+import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
 import edu.oakland.csi5450.util.DaoFailedException;
 
@@ -25,15 +26,31 @@ import edu.oakland.csi5450.util.DaoFailedException;
 public class HomeDao {
 
     private static final String SELECT_ALL_SQL = "SELECT * FROM home";
-    private static final String SELECT_BY_ID_SQL = "SELECT * FROM home WHERE home_id=?";
-    private static final String SELECT_BY_CURR_OWNER_ID = "SELECT * FROM home WHERE owner_id=?";
-    private static final String SELECT_BY_PREV_OWNER_ID = "SELECT h.* FROM home h, sale s WHERE s.owner_id=? and h.home_id=s.home_id";
-    private static final String SELECT_BY_CURR_OWNER_AND_CITY = " SELECT h.* from home h, address a WHERE a.home_id=h.home_id and h.owner_id=? and a.city=?";
-    private static final String SELECT_BY_PREV_OWNER_AND_CITY = " SELECT h.* from home h, address a, sale s WHERE s.home_id=h.home_id and a.home_id=h.home_id and s.owner_id= ? and a.city=?";
-    
-    private static final String INSERT_SQL = "INSERT INTO home(floor_space, num_floors, num_bedrooms, full_bath, half_bath, land_size, year_built, home_type, is_for_sale) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_SQL = "UPDATE home SET floor_space=?, num_floors=?, num_bedrooms=?, full_bath=?, half_bath=?, land_size=?, year_built=?, home_type=?, is_for_sale=? WHERE home_id=?";
+    private static final String SELECT_BY_ID_SQL = "SELECT * FROM home WHERE home_id=?";    
+    private static final String INSERT_SQL = "INSERT INTO home(floor_space, num_floors, num_bedrooms, num_fullbaths, num_halfbaths, land_size, year_built, home_type, is_for_sale) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_SQL = "UPDATE home SET floor_space=?, num_floors=?, num_bedrooms=?, num_fullbaths=?, num_halfbaths=?, land_size=?, year_built=?, home_type=?, is_for_sale=? WHERE home_id=?";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM home WHERE home_id=?";
+    
+    private static final String EXTENDED_SELECT_CLAUSE = 
+    		"select h.home_id, h.floor_space, h.num_floors, h.num_bedrooms, h.num_fullbaths, h.num_halfbaths, h.land_size, h.year_built, h.home_type, h.is_for_sale, h.owner_id,"
+    		+ " a.address_id, a.house_num, a.street, a.apt_num, a.city, a.county, a.zip, "
+    		+ " (select price from SALE s where s.home_id=h.home_id and s.sale_date=(select max(sale_date) from SALE s2 where s2.home_id=h.home_id)) as latest_price";
+    private static final String QUERY_BY_CURR_OWNER_ID = 
+    		" from HOME h, ADDRESS a"
+    		+ " where h.home_id = a.home_id and h.owner_id=?";
+    private static final String QUERY_BY_PREV_OWNER_ID = 
+    		" from HOME h, ADDRESS a, SALE s0"
+    		+ " where h.home_id = a.home_id and s0.home_id=h.home_id and h.owner_id=?";
+    private static final String QUERY_BY_CURR_OWNER_AND_CITY = 
+    		" from HOME h, ADDRESS a"
+    		+ " where h.home_id = a.home_id and h.owner_id=? and a.city=?";
+    private static final String QUERY_BY_PREV_OWNER_AND_CITY = 
+    		" from HOME h, ADDRESS a, SALE s0"
+    		+ " where h.home_id = a.home_id and s0.home_id=h.home_id and h.owner_id=? and a.city=?";
+    private static final String QUERY_BY_CITY = 
+    		" from HOME h, ADDRESS a"
+    		+ " where h.home_id = a.home_id and a.city=?";
+
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -47,17 +64,29 @@ public class HomeDao {
         return result.isEmpty() ? null : result.get(0);
     }
     
-    public List<Home> getHomesByOwner(int owner, boolean includePreviousOwners) {
-    	final String query = includePreviousOwners ? SELECT_BY_PREV_OWNER_ID : SELECT_BY_CURR_OWNER_ID;
+    public List<ExtendedHomeInfo> getHomesByOwner(int owner, boolean includePreviousOwners) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(EXTENDED_SELECT_CLAUSE);
+    	sb.append(includePreviousOwners ? QUERY_BY_PREV_OWNER_ID : QUERY_BY_CURR_OWNER_ID);
     	Object[] params = { owner };
     	int[] types = { Types.INTEGER };
-    	return jdbcTemplate.query(query,  params, types, new HomeRowMapper());
+    	return jdbcTemplate.query(sb.toString(),  params, types, new ExtendedHomeInfoRowMapper());
     }
-    public List<Home> getHomesByOwnerAndCity(int owner, String city, boolean includePreviousOwners) {
-    	final String query = includePreviousOwners ? SELECT_BY_PREV_OWNER_AND_CITY : SELECT_BY_CURR_OWNER_AND_CITY;
+    public List<ExtendedHomeInfo> getHomesByOwnerAndCity(int owner, String city, boolean includePreviousOwners) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(EXTENDED_SELECT_CLAUSE);
+    	sb.append(includePreviousOwners ? QUERY_BY_PREV_OWNER_AND_CITY : QUERY_BY_CURR_OWNER_AND_CITY);
     	Object[] params = { owner, city };
     	int[] types = { Types.INTEGER, Types.CHAR};
-    	return jdbcTemplate.query(query,  params, types, new HomeRowMapper());
+    	return jdbcTemplate.query(sb.toString(),  params, types, new ExtendedHomeInfoRowMapper());
+    }
+    public List<ExtendedHomeInfo> getHomesByCity(String city) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(EXTENDED_SELECT_CLAUSE);
+    	sb.append(QUERY_BY_CITY);
+    	Object[] params = { city };
+    	int[] types = { Types.CHAR };
+    	return jdbcTemplate.query(sb.toString(),  params, types, new ExtendedHomeInfoRowMapper());
     }
 
     public Integer save(Home home) {
@@ -118,6 +147,43 @@ public class HomeDao {
             home.setYearBuilt(rs.getShort("year_built"));
             home.setHomeType(rs.getString("home_type"));
             home.setIsForSale(rs.getBoolean("is_for_sale"));
+            return home;
+        }
+    }
+    
+    private static class ExtendedHomeInfoRowMapper implements RowMapper<ExtendedHomeInfo>{
+    	@Override
+        public ExtendedHomeInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+            ExtendedHomeInfo home = new ExtendedHomeInfo();
+            home.setHomeId(rs.getInt("home_id"));
+            home.setFloorSpace(rs.getInt("floor_space"));
+            home.setNumFloors(rs.getShort("num_floors"));
+            home.setNumBedrooms(rs.getShort("num_bedrooms"));
+            home.setFullBaths(rs.getInt("num_fullbaths"));
+            home.setHalfBaths(rs.getInt("num_halfbaths"));
+            home.setLandSize(rs.getDouble("land_size"));
+            home.setYearBuilt(rs.getShort("year_built"));
+            home.setHomeType(rs.getString("home_type"));
+            home.setIsForSale(rs.getBoolean("is_for_sale"));
+            home.setCurrentOwner(rs.getLong("owner_id"));
+            
+            Address a = new Address();
+            a.setId(rs.getInt("address_id"));
+			a.setHouseNum(rs.getInt("house_num"));					
+			a.setStreet(rs.getString("street"));
+			int aptNum = rs.getInt("apt_num");
+			if(!rs.wasNull())
+				a.setAptNum(aptNum);//nullable
+			a.setCity(rs.getString("city"));
+			a.setCounty(rs.getString("county"));
+			a.setZip(rs.getInt("zip"));
+			int homeId = rs.getInt("home_id");
+			if(!rs.wasNull())
+				a.setHomeId(homeId);
+						
+            home.setAddressInfo(a);
+            
+            home.setLatestPrice(rs.getInt("latest_price"));
             return home;
         }
     }
