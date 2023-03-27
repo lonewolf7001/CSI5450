@@ -45,6 +45,7 @@ public class Home {
 
     @NotNull
     private Boolean isForSale;
+    
 
     public Integer getHomeId() {
         return homeId;

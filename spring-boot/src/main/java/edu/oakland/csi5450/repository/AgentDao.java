@@ -67,6 +67,14 @@ public class AgentDao
 		}
 	}
 
+	public int getTotalCommission(int agentId) {
+		final String query = "select ceil(sum(s.price * c.commission_rate / 100)) as commission from SALE s, REAL_ESTATE_COMPANY c "
+				+ " where s.company_id = c.company_id"
+				+ " and s.agent_id=?";
+		Object[] params = { agentId };
+		int[] types = { Types.INTEGER };
+		return jdbcTemplate.queryForObject(query, params, types, Integer.class);
+	}
 	/**
 	 * 
 	 * @param agent
@@ -86,15 +94,12 @@ public class AgentDao
 		});
 	}
 
-	public boolean updateAgent(Agent agent)
+	public void updateAgent(Agent agent)
 	{
-		if(getAgentById(agent.getId()) == null)
-			return false;
 		final String query = "UPDATE AGENT SET first_name = ?, last_name = ?, phone = ?, email = ? WHERE agent_id = ?";
 		int result = jdbcTemplate.update(query, agent.getFirstName(), agent.getLastName(), agent.getPhone(), agent.getEmail(), agent.getId());
 		if(result != 1)
 			throw new DaoFailedException("Error while updating agent");
-		return true;
 	}
 	
 	public void addAgentCompany(int agentId, int companyId) {

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.oakland.csi5450.bean.Agent;
+import edu.oakland.csi5450.bean.Commission;
 import edu.oakland.csi5450.bean.ErrorResponse;
 import edu.oakland.csi5450.bean.NewAgent;
 import edu.oakland.csi5450.bean.NewAgentResponse;
@@ -43,6 +44,14 @@ public class AgentController
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		else
 			return new ResponseEntity<>(resp, HttpStatus.OK);
+	}
+	@GetMapping("/commission/{id}")
+	public ResponseEntity<Commission> getCommissionForAgent(@PathVariable @Min(1) int id) {
+		Commission c = agentService.getCommission(id);
+		if(c == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else 
+			return new ResponseEntity<>(c, HttpStatus.OK);
 	}
 	
 	@PostMapping("/add")

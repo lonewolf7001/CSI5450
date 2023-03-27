@@ -3,6 +3,9 @@ package edu.oakland.csi5450.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import edu.oakland.csi5450.bean.ErrorResponse;
 import edu.oakland.csi5450.bean.Home;
+import edu.oakland.csi5450.bean.Sale;
 import edu.oakland.csi5450.service.HomeService;
+import edu.oakland.csi5450.service.SaleService;
 
 @RestController
 @RequestMapping("/homes")
@@ -21,6 +27,9 @@ public class HomeController {
     @Autowired
     HomeService homeService;
 
+    @Autowired
+    SaleService saleService;
+    
     @GetMapping("")
     public ResponseEntity<List<Home>> getAllHomes() {
         List<Home> homes = homeService.getAll();
@@ -36,16 +45,34 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @GetMapping("/owner")
+    public ResponseEntity<Object> getHomesByOwner(
+    		@RequestParam @NotNull @Min(1) int owner, 
+    		@RequestParam @Size(max=30) String city,
+    		@RequestParam boolean prev) {
+    	//TODO: Complete
+    	return null;
+    	
+    }
 
     @PostMapping("")
     public ResponseEntity<Home> addHome(@Valid @RequestBody Home home) {
         Integer homeId = homeService.save(home);
         if (homeId != null) {
-            home.setHomeId(homeId.intValue());
+            home.setHomeId(homeId);
             return new ResponseEntity<>(home, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @PostMapping("/sell")
+    public ResponseEntity<Object> sellHome(@Valid @RequestBody Sale req) {
+    	String errorMessage = saleService.sellHome(req);
+    	if(errorMessage != null)
+    		return new ResponseEntity<>(new ErrorResponse(errorMessage), HttpStatus.BAD_REQUEST);
+    	else
+    		return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{homeId}")
@@ -73,4 +100,6 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    
 }
