@@ -26,6 +26,7 @@ import edu.oakland.csi5450.util.DaoFailedException;
 public class HomeDao {
 
     private static final String SELECT_ALL_SQL = "SELECT * FROM home";
+    
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM home WHERE home_id=?";    
     private static final String INSERT_SQL = "INSERT INTO home(floor_space, num_floors, num_bedrooms, num_fullbaths, num_halfbaths, land_size, year_built, home_type, is_for_sale) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_SQL = "UPDATE home SET floor_space=?, num_floors=?, num_bedrooms=?, num_fullbaths=?, num_halfbaths=?, land_size=?, year_built=?, home_type=?, is_for_sale=? WHERE home_id=?";
@@ -51,7 +52,10 @@ public class HomeDao {
     		" from HOME h, ADDRESS a"
     		+ " where h.home_id = a.home_id and a.city=?";
 
-
+    private static final String QUERY_BY_PRICE_SELECT = "select h.* from home h, (select h.home_id, s.price from home h, sale s where s.home_id=h.home_id and s.sale_date= (select max(sale_date) from SALE s2 where s2.home_id=h.home_id)) as home_price where h.home_id = home_price.home_id ";
+    private static final String PRICE_MAX_CLAUSE = " and home_price.price < ? ";
+    private static final String PRICE_MIN_CLAUSE = " and home_price.price > ? ";
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -62,6 +66,23 @@ public class HomeDao {
     public Home getById(Integer homeId) {
         List<Home> result = jdbcTemplate.query(SELECT_BY_ID_SQL, new HomeRowMapper(), homeId);
         return result.isEmpty() ? null : result.get(0);
+    }
+    
+    public List<Home> getHomesByPriceRange(Integer min, Integer max) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(QUERY_BY_PRICE_SELECT);
+    	if(min != null)
+    		sb.append(PRICE_MIN_CLAUSE);
+    	if(max != null)
+    		sb.append(PRICE_MAX_CLAUSE);
+    	String query = sb.toString();
+    	
+    	if (min == null)
+    		return jdbcTemplate.query(query, new HomeRowMapper(), max);
+    	else if (max == null)
+    		return jdbcTemplate.query(query, new HomeRowMapper(), min);
+    	else
+    		return jdbcTemplate.query(query, new HomeRowMapper(), min, max);
     }
     
     public List<ExtendedHomeInfo> getHomesByOwner(int owner, boolean includePreviousOwners) {

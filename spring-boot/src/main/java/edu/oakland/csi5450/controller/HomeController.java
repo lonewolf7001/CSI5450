@@ -47,6 +47,20 @@ public class HomeController {
         }
     }
     
+    @GetMapping("/price")
+    public ResponseEntity<Object> getHomesByPriceRange(
+    		@RequestParam(required=false) Integer min,
+    		@RequestParam(required=false) Integer max) {
+    	if(min == null && max == null) {
+    		return new ResponseEntity<>(new ErrorResponse("Either minimum price or maximum price must be specified"), HttpStatus.BAD_REQUEST);
+    	}
+    	List<Home> resp = homeService.getByPriceRange(min, max);
+    	if(resp.isEmpty())
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	else
+    		return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+    
     @GetMapping("/owner")
     public ResponseEntity<Object> getHomesByOwner(
     		@RequestParam @NotNull @Min(1) int owner, 

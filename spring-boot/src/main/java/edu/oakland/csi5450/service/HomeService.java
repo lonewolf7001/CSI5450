@@ -26,6 +26,10 @@ public class HomeService {
     public Home getById(Integer homeId) {
         return homeDao.getById(homeId);
     }
+    
+    public List<Home> getByPriceRange(Integer min, Integer max) {
+    	return homeDao.getHomesByPriceRange(min, max);
+    }
 
     public Integer save(Home home) {
         Integer id = homeDao.save(home);
