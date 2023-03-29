@@ -68,7 +68,7 @@ public class HomeController {
     		return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping("/add")
     public ResponseEntity<Home> addHome(@Valid @RequestBody Home home) {
         Integer homeId = homeService.save(home);
         if (homeId != null) {

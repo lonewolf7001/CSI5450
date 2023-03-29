@@ -28,12 +28,12 @@
     </div>
   </div>
 
-  <div class = "header">
+  <!-- <div class = "header">
     <h3 style="text-align:left">&nbsp;</h3>
     <h3 style="text-align:left"> Home owner registration&nbsp;</h3>
-  </div>
+  </div> -->
 
-  <div class= "container2">
+  <!-- <div class= "container2">
     <div class= "row3">
       <div class="col1"><Button class="btn1" text="SSN" color="lightblue" disabled role="link"></Button></div>
       <div class= "col2"> <input  v-model="agent.Ssn" placeholder="XXX XX XXXX"/></div>
@@ -74,6 +74,67 @@
       <div class="col1"></div>
       <div class="col2"><Button class="btn1" text="Add Owner" color="lightgreen" role="link"></Button></div>
     </div>
+  </div> -->
+  <div class = "header">
+    <h3 style="text-align:left">&nbsp;</h3>
+    <h3 style="text-align:left"> Add New Home to Database&nbsp;</h3>
+  </div>
+  <div class= "container2">
+    <div class= "row3"> 
+    <div class="col1"><Button class="btn1" text="Floor Space in Sqft. " color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="new_home.floorSpace" placeholder="" /></div>
+    </div>
+    <div class= "row3"> 
+    <div class="col1"><Button class="btn1" text="Number of Floors" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="new_home.numFloors" placeholder="" /></div>
+    </div>
+    <div class= "row3"> 
+    <div class="col1"><Button class="btn1" text="Number of Bedrooms" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="new_home.numBedrooms" placeholder="" /></div>
+    </div>
+    <div class= "row3"> 
+        <div class="col1"><Button class="btn1" text="No. of Full bathrooms" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="new_home.fullBaths" placeholder="" /></div>
+    </div>
+    <div class= "row3"> 
+      <div class="col1"><Button class="btn1" text="No. of Half bathrooms" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="new_home.halfBaths" placeholder="" /></div>
+    </div>
+    <div class= "row3"> 
+      <div class="col1"><Button class="btn1" text="Landsize acres" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="new_home.landSize" placeholder="" /></div>
+    </div>
+    <div class= "row3"> 
+      <div class="col1"><Button class="btn1" text="Year Built" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="new_home.yearBuilt" placeholder="" /></div>
+    </div>
+    <div class= "row3"> 
+      <div class="col1"><Button class="btn1" text="Home type" color="lightblue" disabled role="link"></Button></div>
+      <div class="col2">  
+          <select v-model="new_home.homeType">
+              <option disabled value="makernames">Please select one</option>
+              <option>M</option>
+              <option>C</option>
+              <option>A</option>
+              <option>T</option>
+              <option>O</option>      
+          </select>
+      </div>
+    </div>
+    <div class= "row3"> 
+      <div class="col1"><Button class="btn1" text="Is for Sale" color="lightblue" disabled role="link"></Button></div>
+      <div class="col2">  
+          <select v-model="new_home.isForSale">
+              <option disabled value="makernames">Please select one</option>
+              <option>true</option>
+              <option>false</option>  
+          </select>
+      </div>
+    </div>
+    <div class="row3">
+      <div class="col1"></div>
+      <div class="col2"><Button class="btn1" text="Add Home" color="lightgreen" v-on:click="agents = this.CreateHome()"></Button></div>
+    </div>
   </div>
 </div>
 </template>
@@ -81,6 +142,8 @@
 <script>
 import Button from '../components/Button'
 import AgentService from '@/services/AgentService';
+import HomeService from '@/services/HomeService';
+
 export default {
   name: 'TransactionS',
   components: {
@@ -93,6 +156,16 @@ export default {
                   phone : null ,
                   email :''
       },
+      new_home: { floorSpace: null,
+                  numFloors : null,
+                  numBedrooms: null,
+                  fullBaths: null,
+                  halfBaths: null,
+                  landSize: null,
+                  yearBuilt: null,
+                  homeType: "",
+                  isForSale: false,
+      }
     }
   },
   methods: {
@@ -108,13 +181,13 @@ export default {
         console.error(error);
       });
     },
-    CreateHomeowner(){
-      HomeService.create(this.new_owner).then(response => {
+    CreateHome(){
+      HomeService.create(this.new_home).then(response => {
         console.log(response.data);
-        this.new_owner.firstName = '';
-        this.new_owner.lastName = '';
-        this.new_agent.phone = '';
-        this.new_agent.email = '';
+        // this.new_owner.firstName = '';
+        // this.new_owner.lastName = '';
+        // this.new_agent.phone = '';
+        // this.new_agent.email = '';
       })
       .catch(error => {
         console.error(error);

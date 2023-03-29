@@ -251,7 +251,8 @@ export default {
                 bathroom : [],
                 Appliance : []
                 },
-                homes: []
+                homes: [],
+            
     }
   },
   methods:{
