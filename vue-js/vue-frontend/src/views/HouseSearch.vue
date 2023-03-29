@@ -138,7 +138,7 @@
                 <div class="col col-lg"></div>
                 <div class="col col-lg"></div>
                 <div class="col col-lg"></div>
-                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen" role="link"></Button></div>
+                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click="owners = this.getAllhomesResponse()"></Button></div>
             </div>
             
 
@@ -156,24 +156,32 @@
         <table class = "table table-striped">
             <thead>
                 <tr>
-                    <th> City</th>
-                    <th> PropertyType</th>
-                    <th> Price range</th>
-                    <th> homesize</th>
-                    <th> Bedrooms</th>
-                    <th> bathrooms</th>
-                    
+                    <th> homeId</th>
+                    <th> floorSpace</th>
+                    <th> numFloors</th>
+                    <th> numBedrooms</th>
+                    <th> fullBaths</th>
+                    <th> halfBaths</th>
+                    <th> landSize</th>  
+                    <th> yearBuilt</th>                      
+                    <th> homeType</th>
+                    <th> homeType</th>                                    
                 </tr>
+            </thead>
                 <tbody>
-                    <tr v-for="city in cites " v-bind:key="city.id">
-                        <td> {{city.id }}</td>
-                        <td> {{PropertyType }}</td>
-                        <td> {{pricerange}}</td>    
-                        <td> {{Bedrooms}}</td>
-                        <td> {{ bathrooms }} </td>
+                    <tr v-for="home in homes " v-bind:key="home.homeId">
+                        <td> {{home.homeId}}</td>
+                        <td> {{home.floorSpace}}</td>
+                        <td> {{home.numFloors}}</td>
+                        <td> {{home.numBedrooms}}</td>
+                        <td> {{home.fullBaths}}</td>
+                        <td> {{home.halfBaths}}</td>
+                        <td> {{home.landSize}}</td>
+                        <td> {{home.yearBuilt}}</td>
+                        <td> {{home.homeType}}</td>                        
+                        <td> {{home.isForSale}}</td>                        
                     </tr>
                 </tbody>
-            </thead>
         </table>
     </div>
 </div>
@@ -221,8 +229,10 @@
 <script>
 
 import Button from '../components/Button'
+import HomeService from '@/services/HomeService';
+
 export default {
-  name: 'HS',
+  name: 'HomeService',
   components: {
     Button
   },
@@ -241,13 +251,15 @@ export default {
                 bathroom : [],
                 Appliance : []
                 },
-    //   text : 'Edit me',
-    //   checked: true,
-    //   checkedNames: ['Jack'],
-    //   picked: 'One',
-    //   selected: 'A',
-    //   multiSelected: ['A']
+                homes: []
     }
+  },
+  methods:{
+    getAllhomesResponse(){
+      HomeService.getAllhomes().then((response) => {
+        this.homes = response.data;
+      });
+  }
     // console.log(house.city)
   }
 }
