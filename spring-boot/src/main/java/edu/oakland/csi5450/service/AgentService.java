@@ -54,7 +54,7 @@ public class AgentService
 	public NewAgentResponse createAgent(NewAgent agent) {
 		int id = agentDao.createAgent(agent);
 		NewAgentResponse resp = new NewAgentResponse();
-		resp.setId(id);
+		resp.setId(id+1);
 		return resp;
 	}
 	
