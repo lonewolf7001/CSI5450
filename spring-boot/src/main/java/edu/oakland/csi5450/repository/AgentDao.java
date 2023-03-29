@@ -73,7 +73,14 @@ public class AgentDao
 				+ " and s.agent_id=?";
 		Object[] params = { agentId };
 		int[] types = { Types.INTEGER };
-		return jdbcTemplate.queryForObject(query, params, types, Integer.class);
+		List<Integer> result = jdbcTemplate.query(query, params, types, new RowMapper<Integer>() {
+			@Override
+			public Integer mapRow(ResultSet rs, int arg1) throws SQLException
+			{
+				return rs.getInt(1);
+			}			
+		});
+		return result.isEmpty() ? 0 : result.get(0);
 	}
 	/**
 	 * 

@@ -62,7 +62,7 @@ public class AgentController
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Object> updateHomeOwner(@Valid @RequestBody Agent req) {
+	public ResponseEntity<Object> updateAgent(@Valid @RequestBody Agent req) {
 		agentService.sanitizeAgent(req);
 		if(!agentService.updateAgent(req))
 			return new ResponseEntity<>(new ErrorResponse("Cannot Update this Agent. Agent does not exist."), HttpStatus.BAD_REQUEST);
