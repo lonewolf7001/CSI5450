@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import edu.oakland.csi5450.bean.ErrorResponse;
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
+import edu.oakland.csi5450.bean.NewHomeWithAddress;
+import edu.oakland.csi5450.bean.NewHomeWithAddressResponse;
 import edu.oakland.csi5450.bean.Sale;
 import edu.oakland.csi5450.service.HomeService;
 import edu.oakland.csi5450.service.SaleService;
@@ -91,6 +93,16 @@ public class HomeController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    
+    @PostMapping("/add/address")
+    public ResponseEntity<Object> addHomeWithAddress(@Valid @RequestBody NewHomeWithAddress home) {
+    	NewHomeWithAddressResponse resp = homeService.saveWithAddress(home);
+    	if(resp == null)
+    		return new ResponseEntity<>(new ErrorResponse("City does not exist"), HttpStatus.BAD_REQUEST);
+    	else
+    		return new ResponseEntity<>(resp, HttpStatus.CREATED);
+    	
     }
     @PostMapping("/sell")
     public ResponseEntity<Object> sellHome(@Valid @RequestBody Sale req) {

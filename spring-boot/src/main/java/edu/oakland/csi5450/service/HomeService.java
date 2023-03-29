@@ -5,9 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
+import edu.oakland.csi5450.bean.NewAddress;
+import edu.oakland.csi5450.bean.NewHomeWithAddress;
+import edu.oakland.csi5450.bean.NewHomeWithAddressResponse;
+import edu.oakland.csi5450.repository.AddressDao;
+import edu.oakland.csi5450.repository.CityDao;
 import edu.oakland.csi5450.repository.HomeDao;
 
 @Service
@@ -18,6 +24,12 @@ public class HomeService {
     
     @Autowired
     private AddressService addressService;
+    
+    @Autowired
+    private AddressDao addressDao;
+    
+    @Autowired
+    private CityDao cityDao;
 
     public List<Home> getAll() {
         return homeDao.getAll();
@@ -31,11 +43,31 @@ public class HomeService {
     	return homeDao.getHomesByPriceRange(min, max);
     }
 
+    @Transactional
+    /**
+     * @param home
+     * @return null if the city does not exist
+     */
+    public NewHomeWithAddressResponse saveWithAddress(NewHomeWithAddress home) {
+    	sanitizeHomeWithAddress(home);
+    	if(cityDao.getCity(home.getAddress().getCity()) == null)
+    		return null;
+    	Integer homeId = homeDao.save(home);
+    	NewAddress address = home.getAddress();
+    	address.setHomeId(homeId);
+    	Integer addressId = addressDao.createAddress(address);
+    	NewHomeWithAddressResponse response = new NewHomeWithAddressResponse();
+    	response.setAddressId(addressId);
+    	response.setHomeId(homeId);
+    	return response;
+    }
+    @Transactional
     public Integer save(Home home) {
         Integer id = homeDao.save(home);
         return id != null ? id.intValue() : null;
     }
 
+    @Transactional
     public int update(Home home) {
         return homeDao.update(home);
     }
@@ -62,5 +94,10 @@ public class HomeService {
     	for(ExtendedHomeInfo item : items) {
     		addressService.trimAddressResult(item.getAddressInfo());
     	}
+    }
+    
+    public void sanitizeHomeWithAddress(NewHomeWithAddress home) {
+    	addressService.sanitizeAddress(home.getAddress());
+    	home.setHomeType(home.getHomeType().toUpperCase());
     }
 }
