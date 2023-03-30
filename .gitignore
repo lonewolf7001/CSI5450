@@ -2,3 +2,5 @@ spring-boot/target/classes/edu/oakland/csi5450/Application.class
 vue-js/vue-frontend/node_modules/
 spring-boot/target/classes/
 spring-boot/target/test-classes/dummy.txt.txt
+spring-boot/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+spring-boot/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst

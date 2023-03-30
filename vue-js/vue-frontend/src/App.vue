@@ -4,7 +4,7 @@
     <Header
       title="REAL ESTATE MANAGEMENT SYSTEM"
     />
-    <router-link to="/housesearch" v-slot="{ navigate }"><Button text="HOUSE SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
+    <router-link to="/housesearch" v-slot="{ navigate }"><Button text="HOME SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
     <router-link to="/ownersearch" v-slot="{ navigate }"><Button text="OWNER SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
     <router-link to="/agentsearch" v-slot="{ navigate }"><Button text="AGENT SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
     <router-link to="/transactions" v-slot="{ navigate }"><Button text="TRANSACTIONS" color="orange" @click="navigate" role="link"></Button></router-link>

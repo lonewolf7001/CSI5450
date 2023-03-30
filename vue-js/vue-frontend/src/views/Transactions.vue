@@ -28,53 +28,54 @@
     </div>
   </div>
 
-  <!-- <div class = "header">
+   <div class = "header">
     <h3 style="text-align:left">&nbsp;</h3>
     <h3 style="text-align:left"> Home owner registration&nbsp;</h3>
-  </div> -->
+  </div> 
 
-  <!-- <div class= "container2">
+  <div class= "container2">
     <div class= "row3">
       <div class="col1"><Button class="btn1" text="SSN" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input  v-model="agent.Ssn" placeholder="XXX XX XXXX"/></div>
+      <div class= "col2"> <input  v-model="new_owner.ssn" placeholder="XXX XX XXXX"/></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="FirstName" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Fname" placeholder="" /></div>
+      <div class= "col2"> <input v-model="new_owner.firstName" placeholder="" /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="LastName" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Lname" placeholder="" /></div>
+      <div class= "col2"> <input v-model="new_owner.lastName" placeholder="" /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="Number of Dependents" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.NumDependents" placeholder=""  /></div>
+      <div class= "col2"> <input v-model="new_owner.numDependents" placeholder=""  /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="Annual Income" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.AnnualIncome" placeholder="$" /></div>
+      <div class= "col2"> <input v-model="new_owner.annualIncome" placeholder="$" /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="Date of Birth" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.DateofBirth" placeholder="MMDDYYYY" /></div>
+      <div class= "col2"> <input v-model="new_owner.dateOfBirth" placeholder="MMDDYYYY" /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="Profession" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Profession" placeholder="" /></div>
+      <div class= "col2"> <input v-model="new_owner.profession" placeholder="" /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="Phone" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Phone" placeholder="" /></div>
+      <div class= "col2"> <input v-model="new_owner.phone" placeholder="" /></div>
     </div>
     <div class= "row3"> 
       <div class="col1"><Button class="btn1" text="Email" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="agent.Email" placeholder="" /></div>
+      <div class= "col2"> <input v-model="new_owner.email" placeholder="" /></div>
     </div>
     <div class="row3">
       <div class="col1"></div>
-      <div class="col2"><Button class="btn1" text="Add Owner" color="lightgreen" role="link"></Button></div>
+      <div class="col2"><Button class="btn1" text="Add Owner" color="lightgreen" v-on:click= this.CreateOwner() ></Button></div>
     </div>
-  </div> -->
+  </div> 
+  
   <div class = "header">
     <h3 style="text-align:left">&nbsp;</h3>
     <h3 style="text-align:left"> Add New Home to Database&nbsp;</h3>
@@ -131,11 +132,36 @@
           </select>
       </div>
     </div>
-    <div class="row3">
+    <div class= "row3"> 
+        <div class="col1"><Button class="btn1" text="House Number" color="lightblue" disabled role="link"></Button></div>
+        <div class= "col2"> <input v-model="new_home.address.houseNum" placeholder="" /></div>
+      </div>
+      <div class= "row3"> 
+        <div class="col1"><Button class="btn1" text="Street" color="lightblue" disabled role="link"></Button></div>
+        <div class= "col2"> <input v-model="new_home.address.street" placeholder="" /></div>
+      </div>
+      <div class= "row3"> 
+        <div class="col1"><Button class="btn1" text="Apartment No." color="lightblue" disabled role="link"></Button></div>
+        <div class= "col2"> <input v-model="new_home.address.aptNum" placeholder="" /></div>
+      </div>
+      <div class= "row3"> 
+        <div class="col1"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
+        <div class= "col2"> <input v-model="new_home.address.city" placeholder="" /></div>
+      </div>
+      <div class= "row3"> 
+        <div class="col1"><Button class="btn1" text="County" color="lightblue" disabled role="link"></Button></div>
+        <div class= "col2"> <input v-model="new_home.address.county" placeholder="" /></div>
+      </div>
+      <div class= "row3"> 
+        <div class="col1"><Button class="btn1" text="ZIP" color="lightblue" disabled role="link"></Button></div>
+        <div class= "col2"> <input v-model="new_home.address.zip" placeholder="" /></div>
+      </div>
+
+      <div class="row3">
       <div class="col1"></div>
-      <div class="col2"><Button class="btn1" text="Add Home" color="lightgreen" v-on:click="agents = this.CreateHome()"></Button></div>
+      <div class="col2"><Button class="btn1" text="Add Home" color="lightgreen" v-on:click= this.CreateHome() ></Button></div>
     </div>
-  </div>
+</div>
 </div>
 </template>
 
@@ -143,6 +169,7 @@
 import Button from '../components/Button'
 import AgentService from '@/services/AgentService';
 import HomeService from '@/services/HomeService';
+import OwnerService from '@/services/OwnerService';
 
 export default {
   name: 'TransactionS',
@@ -156,6 +183,18 @@ export default {
                   phone : null ,
                   email :''
       },
+
+      new_owner: { ssn:'',
+                  firstName:'',
+                  lastName:'',
+                  numDependents:'',
+                  annualIncome:'',
+                  dateOfBirth:'',
+                  profession:'',
+                  phone:'',
+                  email:''
+                 },
+                 
       new_home: { floorSpace: null,
                   numFloors : null,
                   numBedrooms: null,
@@ -165,6 +204,14 @@ export default {
                   yearBuilt: null,
                   homeType: "",
                   isForSale: false,
+                  address : {
+                    houseNum : null,
+                      street : '',
+                      aptNum : null,
+                      city : '',
+                      county : null,
+                      zip : null
+                  }
       }
     }
   },
@@ -176,6 +223,18 @@ export default {
         this.new_agent.lastName = '';
         this.new_agent.phone = '';
         this.new_agent.email = '';
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    },
+    CreateOwner(){
+      OwnerService.create(this.new_owner).then(response => {
+        console.log(response.data);
+        // this.new_agent.firstName = '';
+        // this.new_agent.lastName = '';
+        // this.new_agent.phone = '';
+        // this.new_agent.email = '';
       })
       .catch(error => {
         console.error(error);
