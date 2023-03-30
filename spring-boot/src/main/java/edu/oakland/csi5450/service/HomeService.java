@@ -21,13 +21,13 @@ public class HomeService {
 
     @Autowired
     private HomeDao homeDao;
-    
+
     @Autowired
     private AddressService addressService;
-    
+
     @Autowired
     private AddressDao addressDao;
-    
+
     @Autowired
     private CityDao cityDao;
 
@@ -38,9 +38,9 @@ public class HomeService {
     public Home getById(Integer homeId) {
         return homeDao.getById(homeId);
     }
-    
+
     public List<Home> getByPriceRange(Integer min, Integer max) {
-    	return homeDao.getHomesByPriceRange(min, max);
+        return homeDao.getHomesByPriceRange(min, max);
     }
 
     @Transactional
@@ -49,18 +49,19 @@ public class HomeService {
      * @return null if the city does not exist
      */
     public NewHomeWithAddressResponse saveWithAddress(NewHomeWithAddress home) {
-    	sanitizeHomeWithAddress(home);
-    	if(cityDao.getCity(home.getAddress().getCity()) == null)
-    		return null;
-    	Integer homeId = homeDao.save(home);
-    	NewAddress address = home.getAddress();
-    	address.setHomeId(homeId);
-    	Integer addressId = addressDao.createAddress(address);
-    	NewHomeWithAddressResponse response = new NewHomeWithAddressResponse();
-    	response.setAddressId(addressId);
-    	response.setHomeId(homeId);
-    	return response;
+        sanitizeHomeWithAddress(home);
+        if (cityDao.getCity(home.getAddress().getCity()) == null)
+            return null;
+        Integer homeId = homeDao.save(home);
+        NewAddress address = home.getAddress();
+        address.setHomeId(homeId);
+        Integer addressId = addressDao.createAddress(address);
+        NewHomeWithAddressResponse response = new NewHomeWithAddressResponse();
+        response.setAddressId(addressId);
+        response.setHomeId(homeId);
+        return response;
     }
+
     @Transactional
     public Integer save(Home home) {
         Integer id = homeDao.save(home);
@@ -75,29 +76,38 @@ public class HomeService {
     public int deleteById(Integer homeId) {
         return homeDao.deleteById(homeId);
     }
-    
-    public List<ExtendedHomeInfo> getHomesByOwnerAndCity(int owner, @Nullable String city, boolean includePreviousOwners) {
-    	List<ExtendedHomeInfo> result = (city == null) 
-    			? homeDao.getHomesByOwner(owner, includePreviousOwners)
-    			: homeDao.getHomesByOwnerAndCity(owner, city.toUpperCase(), includePreviousOwners);
-    	trimExtendedHomeResponse(result);
-    	return result;
+
+    public List<Home> getHomesByBedrooms(Short numBedrooms) {
+        return homeDao.getHomesByBedrooms(numBedrooms);
     }
-    
+
+    public List<Home> getHomesByFullBaths(Integer numFullBaths) {
+        return homeDao.getHomesByFullBaths(numFullBaths);
+    }
+
+    public List<ExtendedHomeInfo> getHomesByOwnerAndCity(int owner, @Nullable String city,
+            boolean includePreviousOwners) {
+        List<ExtendedHomeInfo> result = (city == null)
+                ? homeDao.getHomesByOwner(owner, includePreviousOwners)
+                : homeDao.getHomesByOwnerAndCity(owner, city.toUpperCase(), includePreviousOwners);
+        trimExtendedHomeResponse(result);
+        return result;
+    }
+
     public List<ExtendedHomeInfo> getHomesByCity(String city) {
-    	List<ExtendedHomeInfo> result = homeDao.getHomesByCity(city.toUpperCase());
-    	trimExtendedHomeResponse(result);
-    	return result;
+        List<ExtendedHomeInfo> result = homeDao.getHomesByCity(city.toUpperCase());
+        trimExtendedHomeResponse(result);
+        return result;
     }
-    
+
     public void trimExtendedHomeResponse(List<ExtendedHomeInfo> items) {
-    	for(ExtendedHomeInfo item : items) {
-    		addressService.trimAddressResult(item.getAddressInfo());
-    	}
+        for (ExtendedHomeInfo item : items) {
+            addressService.trimAddressResult(item.getAddressInfo());
+        }
     }
-    
+
     public void sanitizeHomeWithAddress(NewHomeWithAddress home) {
-    	addressService.sanitizeAddress(home.getAddress());
-    	home.setHomeType(home.getHomeType().toUpperCase());
+        addressService.sanitizeAddress(home.getAddress());
+        home.setHomeType(home.getHomeType().toUpperCase());
     }
 }

@@ -32,7 +32,7 @@ public class HomeController {
 
     @Autowired
     SaleService saleService;
-    
+
     @GetMapping("")
     public ResponseEntity<List<Home>> getAllHomes() {
         List<Home> homes = homeService.getAll();
@@ -48,40 +48,53 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
+
     @GetMapping("/price")
     public ResponseEntity<Object> getHomesByPriceRange(
-    		@RequestParam(required=false) Integer min,
-    		@RequestParam(required=false) Integer max) {
-    	if(min == null && max == null) {
-    		return new ResponseEntity<>(new ErrorResponse("Either minimum price or maximum price must be specified"), HttpStatus.BAD_REQUEST);
-    	}
-    	List<Home> resp = homeService.getByPriceRange(min, max);
-    	if(resp.isEmpty())
-    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    	else
-    		return new ResponseEntity<>(resp, HttpStatus.OK);
+            @RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max) {
+        if (min == null && max == null) {
+            return new ResponseEntity<>(new ErrorResponse("Either minimum price or maximum price must be specified"),
+                    HttpStatus.BAD_REQUEST);
+        }
+        List<Home> resp = homeService.getByPriceRange(min, max);
+        if (resp.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-    
+
+    @GetMapping("/bedrooms/{numBedrooms}")
+    public ResponseEntity<List<Home>> getHomesByBedrooms(@PathVariable Short numBedrooms) {
+        List<Home> homes = homeService.getHomesByBedrooms(numBedrooms);
+        return new ResponseEntity<>(homes, HttpStatus.OK);
+    }
+
+    @GetMapping("/fullbaths/{numFullBaths}")
+    public ResponseEntity<List<Home>> getHomesByFullBaths(@PathVariable Integer numFullBaths) {
+        List<Home> homes = homeService.getHomesByFullBaths(numFullBaths);
+        return new ResponseEntity<>(homes, HttpStatus.OK);
+    }
+
     @GetMapping("/owner")
     public ResponseEntity<Object> getHomesByOwner(
-    		@RequestParam @NotNull @Min(1) int owner, 
-    		@RequestParam(required=false) @Size(max=30) String city,
-    		@RequestParam(required=false) boolean prev) {
-    	List<ExtendedHomeInfo> resp = homeService.getHomesByOwnerAndCity(owner, city, prev);
-    	if(resp.isEmpty())
-    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    	else
-    		return new ResponseEntity<>(resp, HttpStatus.OK);
+            @RequestParam @NotNull @Min(1) int owner,
+            @RequestParam(required = false) @Size(max = 30) String city,
+            @RequestParam(required = false) boolean prev) {
+        List<ExtendedHomeInfo> resp = homeService.getHomesByOwnerAndCity(owner, city, prev);
+        if (resp.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-    
+
     @GetMapping("/city")
-    public ResponseEntity<Object> getHomesByCity(@RequestParam @NotNull @Size(min=1, max=30) String city) {
-    	List<ExtendedHomeInfo> resp = homeService.getHomesByCity(city);
-    	if(resp.isEmpty())
-    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    	else
-    		return new ResponseEntity<>(resp, HttpStatus.OK);
+    public ResponseEntity<Object> getHomesByCity(@RequestParam @NotNull @Size(min = 1, max = 30) String city) {
+        List<ExtendedHomeInfo> resp = homeService.getHomesByCity(city);
+        if (resp.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -94,23 +107,24 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     @PostMapping("/add/address")
     public ResponseEntity<Object> addHomeWithAddress(@Valid @RequestBody NewHomeWithAddress home) {
-    	NewHomeWithAddressResponse resp = homeService.saveWithAddress(home);
-    	if(resp == null)
-    		return new ResponseEntity<>(new ErrorResponse("City does not exist"), HttpStatus.BAD_REQUEST);
-    	else
-    		return new ResponseEntity<>(resp, HttpStatus.CREATED);
-    	
+        NewHomeWithAddressResponse resp = homeService.saveWithAddress(home);
+        if (resp == null)
+            return new ResponseEntity<>(new ErrorResponse("City does not exist"), HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<>(resp, HttpStatus.CREATED);
+
     }
+
     @PostMapping("/sell")
     public ResponseEntity<Object> sellHome(@Valid @RequestBody Sale req) {
-    	String errorMessage = saleService.sellHome(req);
-    	if(errorMessage != null)
-    		return new ResponseEntity<>(new ErrorResponse(errorMessage), HttpStatus.BAD_REQUEST);
-    	else
-    		return new ResponseEntity<>(HttpStatus.OK);
+        String errorMessage = saleService.sellHome(req);
+        if (errorMessage != null)
+            return new ResponseEntity<>(new ErrorResponse(errorMessage), HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{homeId}")
@@ -138,6 +152,5 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    
+
 }
