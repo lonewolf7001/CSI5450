@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
+import edu.oakland.csi5450.bean.HomeSearchCriteria;
+import edu.oakland.csi5450.bean.HomeWithPrice;
+import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.bean.NewAddress;
 import edu.oakland.csi5450.bean.NewHomeWithAddress;
 import edu.oakland.csi5450.bean.NewHomeWithAddressResponse;
@@ -39,8 +42,33 @@ public class HomeService {
         return homeDao.getById(homeId);
     }
 
-    public List<Home> getByPriceRange(Integer min, Integer max) {
-        return homeDao.getHomesByPriceRange(min, max);
+    public List<HomeWithPrice> getByPriceRange(Integer min, Integer max, String city) {
+    	String sanitizedCity = city == null ? null : city.toUpperCase();
+        return homeDao.getHomesByPriceRange(min, max, sanitizedCity);
+    }
+    
+    public List<HomeWithPrice> getByCriteria(HomeSearchCriteria criteria) {
+    	//sanitize input
+    	criteria.setCity(criteria.getCity() == null ? null : criteria.getCity().toUpperCase());
+    	criteria.setHomeType(criteria.getHomeType() == null ? null : criteria.getHomeType().toUpperCase());
+    	
+    	return homeDao.getHomesByCriteria(criteria);
+    }
+    
+    public List<HomeWithSoldCount> getByNumberOfTimesSold(Integer min, Integer max) {
+    	return homeDao.getHomesBySoldCount(min, max);
+    }
+    
+    /**
+     * returns true if criteria are valid, false if not specified
+     * @param criteria
+     * @return
+     */
+    public boolean validateCriteria(HomeSearchCriteria criteria) {
+    	return criteria.getCity() != null || criteria.getFloorSpace() != null || criteria.getNumFloors() != null 
+    			|| criteria.getNumBedrooms() != null || criteria.getFullBaths() != null || criteria.getHalfBaths() != null
+    			|| criteria.getLandSize() != null || criteria.getYearBuilt() != null || criteria.getHomeType() != null
+    			|| criteria.getIsForSale() != null;
     }
 
     @Transactional

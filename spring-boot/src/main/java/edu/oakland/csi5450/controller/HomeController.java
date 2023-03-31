@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import edu.oakland.csi5450.bean.ErrorResponse;
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
+import edu.oakland.csi5450.bean.HomeSearchCriteria;
+import edu.oakland.csi5450.bean.HomeWithPrice;
+import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.bean.NewHomeWithAddress;
 import edu.oakland.csi5450.bean.NewHomeWithAddressResponse;
 import edu.oakland.csi5450.bean.Sale;
@@ -53,12 +56,39 @@ public class HomeController {
     @GetMapping("/price")
     public ResponseEntity<Object> getHomesByPriceRange(
             @RequestParam(required = false) Integer min,
-            @RequestParam(required = false) Integer max) {
+            @RequestParam(required = false) Integer max,
+            @RequestParam(required = false) @Size(max=30) String city) {
         if (min == null && max == null) {
             return new ResponseEntity<>(new ErrorResponse("Either minimum price or maximum price must be specified"),
                     HttpStatus.BAD_REQUEST);
         }
-        List<Home> resp = homeService.getByPriceRange(min, max);
+        List<HomeWithPrice> resp = homeService.getByPriceRange(min, max, city);
+        if (resp.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+    @GetMapping("/criteria")
+    public ResponseEntity<Object> getHomesByCriteria(@RequestBody @Valid HomeSearchCriteria criteria) {
+    	
+    	if(!homeService.validateCriteria(criteria))
+    		return new ResponseEntity<>(new ErrorResponse("No criteria specified"), HttpStatus.BAD_REQUEST);
+    	List<HomeWithPrice> resp = homeService.getByCriteria(criteria);
+        if (resp.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+    
+    @GetMapping("/soldcount")
+    public ResponseEntity<Object> getHomesByNumberOfTimesSold(
+            @RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max) {
+    	if (min == null && max == null) {
+            return new ResponseEntity<>(new ErrorResponse("Either minimum or maximum number of times sold must be specified"),
+                    HttpStatus.BAD_REQUEST);
+        }
+        List<HomeWithSoldCount> resp = homeService.getByNumberOfTimesSold(min, max);
         if (resp.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
