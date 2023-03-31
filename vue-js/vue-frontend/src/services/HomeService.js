@@ -11,7 +11,21 @@ class HomeService{
         return axios.post('http://localhost:8081/homes/add/address', home)
     }
 
-    // addAddresstonewhome(id, address){
+    getAllcities(){
+        return axios.get('http://localhost:8081/city/')
+    }
+    getHomesbycity(city){
+        return axios.get('http://localhost:8081/homes/city?city='+city)
+    }
+    
+    getHomesbyprice(price_min,price_max){
+        return axios.get('http://localhost:8081/homes/price?min='+price_min+'&max='+price_max)
+    }
+
+    getAddressofhome(id){
+        return axios.get('http://localhost:8081/address/home/'+id)
+    }
+// addAddresstonewhome(id, address){
     //     return axios.post('http://localhost:8081/address/id/'+id, address)
     // }
 }

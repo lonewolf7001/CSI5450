@@ -1,28 +1,30 @@
 <template>
-    <!-- <div id="app">
-        <input type="text"
-        placeholder="Citysearch"
-        class="search-input"
-        v-model="searchValue"
-        />
-    </div> -->
-    <!-- <p>City : {{ message }}</p><input v-model="message" placeholder="edit me" /> -->
-     <!-- <div class="row">
-        <input @change="handleChange" 
-              v-model="house.city" 
-              name="name" 
-              type="text" 
-              required>
-      </div> -->
       <div>
       <h3 style="text-align:left">&nbsp;</h3>
-      <h3 style="text-align:left">Search your dream home</h3>
+      <h3 style="text-align:left">Search your dream home by city</h3>
         <div class="container2">
             <div class="row">
                 <div class="col-sm-4"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
-                <div class="col-sm-6"><input v-model="house.city" placeholder="Enter city" /></div>
-            </div>
+                <div class="col-sm-6">
+                    <select v-model="selected_city">
+                        <option value="">Select an city</option>
+                        <option v-for="city in cities"
+                                :key="city.name" 
+                                :value="city.name">{{ city.name }}
+                        </option>
+                    </select>
+                </div>
+            </div> 
+
             <div class="row">
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <!-- <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click="owners = this.getAllhomesResponse()"></Button></div> -->
+                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbycityResponse()></Button></div>            
+            </div>
+    </div>
+            <!-- <div class="row">
                 <div class="col col-sm-4"><Button class="btn1" text="Property Type" color="lightblue" disabled role="link"></Button></div>
                 <div class="col col-sm-8">
                     <input type="checkbox" id="any" value="any" v-model="house.checkedHouses"><label for="any">&nbsp;&nbsp;Any&nbsp;&nbsp;&nbsp;</label>
@@ -106,7 +108,7 @@
                     <input type="checkbox" id="bathtwo" value="bathtwon" v-model="house.bath2"><label for="2">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
                     <input type="checkbox" id="baththree" value="baththree" v-model="house.bath3"><label for="3+">&nbsp;&nbsp;3&nbsp;+&nbsp;&nbsp;</label>
                 </div>
-            </div>          
+            </div>           
             <div class="row">
                 <div class="col col-sm-4"><Button class="btn1" text="Listing status" color="lightblue" disabled role="link"></Button></div>
                 <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.sale"><label for="checkbox">&nbsp;&nbsp;Is for sale ?</label></div>
@@ -132,27 +134,116 @@
                 
                     </select>
                 </div>
-                </div>
+                </div> -->
+            <!-- <div>
+                <select name="city" id="city" class="form-control" tabindex="12">
+                    <option v-for="(city, index) in cities" 
+                            :key="index" 
+                            :value="city.id">{{ city.name }}
+                     </option>
+                </select>
+            </div> -->
             
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col col-lg"></div>
                 <div class="col col-lg"></div>
-                <div class="col col-lg"></div>
-                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click="owners = this.getAllhomesResponse()"></Button></div>
-            </div>
-            
+                <div class="col col-lg"></div> -->
+                <!-- <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click="owners = this.getAllhomesResponse()"></Button></div> -->
+                <!-- <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbycityResponse()></Button></div>            
+            </div> -->
 
-
-
-
-        </div>
-     <!-- <form action="/" @keydown="debug">
-        Second  : <input type="text" name="fname2"><br>
-    </form> -->
+        
     <br/>
 
     <div class="container2">
-        Search Results : 
+        Search Results : Showing results for {{this.selected_city}}
+        <table class = "table table-striped">
+            <thead>
+                <tr>
+                    <th> homeId</th>
+                    <th> floorSpace</th>
+                    <th> numFloors</th>
+                    <th> numBedrooms</th>
+                    <th> fullBaths</th>
+                    <th> yearBuilt</th>                      
+                    <th> homeType</th>
+                    <th> isForSale</th>
+                    <th></th>                                      
+                </tr>
+            </thead>
+                <tbody>
+                    <tr v-for="(home, index) in homes " v-bind:key="home.homeId">
+                        <td> {{home.homeId}}</td>
+                        <td> {{home.floorSpace}}</td>
+                        <td> {{home.numFloors}}</td>
+                        <td> {{home.numBedrooms}}</td>
+                        <td> {{home.fullBaths}}</td>
+                        <td> {{home.yearBuilt}}</td>
+                        <td> {{home.homeType}}</td>                        
+                        <td> {{home.isForSale}}</td>
+                        <td>
+                            <button @click="expandRow(index)">
+                                {{ isRowExpanded(index) ? 'Collapse' : 'Expand' }}
+                            </button>
+                        </td>                        
+                    </tr>
+                    <tr v-if="isAnyRowExpanded">
+                        <td colspan="3">
+                            <div v-if="isExpandedRow">
+                            <expandHome :data="getExpandedRowData" />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+    <div class = "header">
+        <h3 style="text-align:left">&nbsp;</h3>
+        <h3 style="text-align:left"> Search Home by price&nbsp;</h3>
+    </div> 
+    <div class= "container2">
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Price range ($)" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-4">  
+                    <select v-model="price_min">
+                        <option disabled value="min">Please select one</option>
+                        <option>1000</option>
+                        <option>100000</option>
+                        <option>200000</option>
+                        <option>300000</option>
+                        <option>400000</option>
+                        <option>500000</option>
+                        <option>800000</option>
+                        <option>1000000</option>
+                        <option>10000000</option>
+                    </select>
+                </div>
+                <div class="col col-sm-4">  
+                    <select v-model="price_max">
+                        <option disabled value="max">Please select one</option>
+                        <option>1000</option>
+                        <option>100000</option>
+                        <option>200000</option>
+                        <option>300000</option>
+                        <option>400000</option>
+                        <option>500000</option>
+                        <option>800000</option>
+                        <option>1000000</option>
+                        <option>10000000</option>
+                    </select>
+                </div>  
+                <div class="col col-sm-4"></div>         
+            </div> 
+            <div class="row">
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div> 
+                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbypriceResponse()></Button></div>            
+            </div>
+            
+            </div>
+    <div class="container2">
+    Search Results : Showing results for price range ${{this.price_min}} to ${{this.price_max}}
         <table class = "table table-striped">
             <thead>
                 <tr>
@@ -165,117 +256,131 @@
                     <th> landSize</th>  
                     <th> yearBuilt</th>                      
                     <th> homeType</th>
-                    <th> homeType</th>                                    
+                    <th> isForSale</th>
+                    <th></th> 
                 </tr>
             </thead>
                 <tbody>
-                    <tr v-for="home in homes " v-bind:key="home.homeId">
-                        <td> {{home.homeId}}</td>
-                        <td> {{home.floorSpace}}</td>
-                        <td> {{home.numFloors}}</td>
-                        <td> {{home.numBedrooms}}</td>
-                        <td> {{home.fullBaths}}</td>
-                        <td> {{home.halfBaths}}</td>
-                        <td> {{home.landSize}}</td>
-                        <td> {{home.yearBuilt}}</td>
-                        <td> {{home.homeType}}</td>                        
-                        <td> {{home.isForSale}}</td>                        
+                    <tr v-for="homep in homes_price " v-bind:key="homep.homeId">
+                        <td> {{homep.homeId}}</td>
+                        <td> {{homep.floorSpace}}</td>
+                        <td> {{homep.numFloors}}</td>
+                        <td> {{homep.numBedrooms}}</td>
+                        <td> {{homep.fullBaths}}</td>
+                        <td> {{homep.halfBaths}}</td>
+                        <td> {{homep.landSize}}</td>
+                        <td> {{homep.yearBuilt}}</td>
+                        <td> {{homep.homeType}}</td>                        
+                        <td> {{homep.isForSale}}</td>
                     </tr>
                 </tbody>
+                        
         </table>
     </div>
 </div>
-    
 
-    <!-- <h2>Checkbox</h2>
-  <input type="checkbox" id="checkbox" v-model="checked">
-  <label for="checkbox">Checked: {{ checked }}</label>
-  <h2>Multi Checkbox</h2>
-  <input type="checkbox" id="any" value="any" v-model="checkedHouses">
-  <label for="jack">Jack</label>
-  <input type="checkbox" id="mansion" value="mansion" v-model="checkedHouses">
-  <label for="john">John</label>
-  <input type="checkbox" id="mike" value="Mike" v-model="checkedHouses">
-  <label for="mike">Mike</label>
-  <p>Checked names: <pre>{{ checkedNames }}</pre></p>
 
-  <h2>Radio</h2>
-  <input type="radio" id="one" value="One" v-model="picked">
-  <label for="one">One</label>
-  <br>
-  <input type="radio" id="two" value="Two" v-model="picked">
-  <label for="two">Two</label>
-  <br> -->
-  <!-- <span>Picked: {{ picked }}</span> -->
-
-  <!-- <h2>Select</h2>
-  <select v-model="selected">
-    <option disabled value="">Please select one</option>
-    <option>A</option>
-    <option>B</option>
-    <option>C</option>
-  </select> -->
-  <!-- <span>Selected: {{ selected }}</span> -->
-
-  <!-- <h2>Multi Select</h2>
-  <select v-model="multiSelected" multiple style="width:100px">
-    <option>A</option>
-    <option>B</option>
-    <option>C</option>
-  </select>
-  <span>Selected: {{ multiSelected }}</span> -->
 </template>
 
 <script>
 
 import Button from '../components/Button'
-import HomeService from '@/services/HomeService';
+import HomeService from '@/services/HomeService'
+import expandHome from '../components/expandHome.vue'
 
 export default {
   name: 'HomeService',
   components: {
-    Button
+    Button,
+    expandHome
   },
   data() {
     return {
-      house: {city: '', 
-                checkedHouses: [], 
-                sale : false, 
-                sold : false, 
-                expensive : false, 
-                price_min : [], 
-                price_max : [], 
-                size_min : [],
-                size_max : [],
-                bedroom : [],
-                bathroom : [],
-                Appliance : []
-                },
-                homes: [],
-            
-    }
+        selected_city: '',
+        homes: [],
+        homes_price: [],
+        cities: [],
+       price_min : [], 
+        price_max : [],
+        // expandedRows: [],
+        expandedRowIndex: -1,
+        // address: {
+        //     houseNum: '',
+        //     street: '',
+        //     aptNum: '',
+        //     city: '',
+        //     county: '',
+        //     zip: '',
+        //     homeId: '',
+        //     id: ''
+        // }
+                // checkedHouses: [], 
+                // sale : false, 
+                // sold : false, 
+                // expensive : false, 
+                // price_min : [], 
+                // price_max : [], 
+                // size_min : [],
+                // size_max : [],
+                // bedroom : [],
+                // bathroom : [],
+                // Appliance : [] 
+    };
   },
+  created(){
+        HomeService.getAllcities().then((response) => {
+        this.cities = response.data;
+        console.log(this.cities)
+    });
+},
   methods:{
     getAllhomesResponse(){
       HomeService.getAllhomes().then((response) => {
         this.homes = response.data;
       });
-  }
-    // console.log(house.city)
-  }
+  },
+  getHomesbycityResponse(){
+      HomeService.getHomesbycity(this.selected_city).then((response) => {
+        this.homes = response.data;
+      })
+      .catch(error => {
+        this.homes = []
+        console.error(error);
+      });
+      console.log(this.homes)
+  },
+  expandRow(index) {
+      this.expandedRowIndex = this.expandedRowIndex === index ? -1 : index;
+    },
+    isRowExpanded(index) {
+      return this.expandedRowIndex === index;
+    },
+
+    getHomesbypriceResponse(){
+        console.log(this.price_min)
+        console.log(this.price_max)
+        HomeService.getHomesbyprice(this.price_min,this.price_max).then((response)=>{
+        this.homes_price=response.data;
+      })
+      .catch(error => {
+        this.owners = []
+        console.error(error);
+      });
+    }
+},
+computed: {
+    isAnyRowExpanded() {
+      return this.expandedRowIndex !== -1;
+    },
+    isExpandedRow() {
+      return this.expandedRowIndex !== -1;
+    },
+    getExpandedRowData() {
+        console.log()
+      return this.homes[this.expandedRowIndex];
+    },
+  },
 }
-    // name :'app',
-    // components: {},
-    // data: ( ) => ({
-    //     searchValue: '', 
-    //     users: {
-    //         name: 'john',
-    //         age: 45,
-    //     }
-    // }),
-
-// };
-
 
 </script>
 

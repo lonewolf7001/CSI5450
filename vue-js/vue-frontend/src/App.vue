@@ -4,11 +4,11 @@
     <Header
       title="REAL ESTATE MANAGEMENT SYSTEM"
     />
+    <router-link to="/homepage" v-slot="{ navigate }"><Button text="HOME PAGE" color="orange" @click="navigate" role="link"></Button></router-link>
     <router-link to="/housesearch" v-slot="{ navigate }"><Button text="HOME SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
     <router-link to="/ownersearch" v-slot="{ navigate }"><Button text="OWNER SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
     <router-link to="/agentsearch" v-slot="{ navigate }"><Button text="AGENT SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
-    <router-link to="/transactions" v-slot="{ navigate }"><Button text="TRANSACTIONS" color="orange" @click="navigate" role="link"></Button></router-link>
-        
+    <router-link to="/transactions" v-slot="{ navigate }"><Button text="TRANSACTIONS" color="orange" @click="navigate" role="link"></Button></router-link>     
     <router-view></router-view>
         <!-- The springboot msg is : {{ string }} -->
     </div>
@@ -18,7 +18,7 @@
 <script>
 import Header from './components/Header'
 import Button from './components/Button'
-// import ExampleService from './services/connectspringbootservice'
+
 export default {
   name: 'App',
   components: {
@@ -84,9 +84,9 @@ body {
   display: inline-block;
   background: #000;
   color: #fff;
-  border: none;
+  border: 3px;
   padding: 10px 20px;
-  margin: 5px;
+  margin: 2px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;

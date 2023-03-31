@@ -11,6 +11,10 @@ class AgentService{
     create(agent){
         return axios.post('http://localhost:8081/agent/add', agent)
     }
+
+    update(agent){
+        return axios.put('http://localhost:8081/agent/update',agent)
+    }
 }
 
 export default new AgentService();

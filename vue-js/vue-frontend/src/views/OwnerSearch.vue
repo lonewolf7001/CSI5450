@@ -16,15 +16,15 @@ export default {
   </div>
   <div class="container2">
     <div class="row2">
-      <div class="col1"><Button class="btn1" text="Owner" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="owner.name" placeholder="owner name" /></div>
+      <div class="col1"><Button class="btn1" text="OwnerID" color="lightblue" disabled role="link"></Button></div>
+      <div class= "col2"> <input v-model="ssn" placeholder="XXX XX XXXX" /></div>
     </div>
     <div class="row2"> 
       <div class="col1"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
-      <div class= "col2"> <input v-model="owner.city" placeholder="City name" /></div>
+      <div class= "col2"> <input v-model="city" placeholder="City name" /></div>
     </div>
 
-    <div class="row2"> 
+    <!-- <div class="row2"> 
       <div class="col1"><Button class="btn1" text="Expensive Homes" color="lightblue" disabled role="link"></Button></div>
       <div class="col2">
                     <input type="checkbox" id="1million" value="1 million" v-model="owner.city"><label for=" 1million-5 million">&nbsp;&nbsp;1million-5 million&nbsp;&nbsp;&nbsp;</label>
@@ -35,11 +35,11 @@ export default {
     <div class="row2"> 
       <div class="col1"><Button class="btn1" text="Previously Owned" color="lightblue" disabled role="link"></Button></div>
       <div class="col2"><input type="checkbox" id="preOwned" value="" v-model="owner.city"><label for="preowned ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>
-    </div>
+    </div> -->
 
     <div class="row2">
       <div class="col1"></div>
-      <div class="col2"><Button class="btn1" text=" Search" color="lightgreen" v-on:click="owners = this.getAllownersResponse()" ></Button></div>
+      <div class="col2"><Button class="btn1" text=" Search" color="lightgreen" v-on:click=getHomesbyownercityResponse()></Button></div>
     </div>
   </div>
    <div class="container2">
@@ -47,28 +47,47 @@ export default {
         <table class = "table table-striped">
             <thead>
                 <tr>
-                    <th> SSN</th>
-                    <th> First Name</th>
-                    <th> Last Name</th>
-                    <th> Dependents</th>
-                    <th> Annual Income</th>
-                    <th> Date of Birth</th>
-                    <th> Profession </th>
-                    <th> Phone </th>
-                    <th> Email</th>
+                    <th> homeId</th>
+                    <th> floorSpace</th>
+                    <th> numFloors</th>
+                    <th> numBedrooms</th>
+                    <th> fullBaths</th>
+                    <th> halfBaths</th>
+                    <th> landSize </th>
+                    <th> yearBuilt</th>
+                    <th> homeType</th>
+                    <th> isForSale</th>
+                    <th> addressInfo</th>
+                    <th> street</th>
+                    <th> city</th>
+                    <th> zip</th>
+                    <th> homeId</th>
+                    <th> Id</th>
+                    <th> latestPrice</th>
+                    <th> currentOwner</th>
+
                 </tr>
               </thead>
                 <tbody>
-                    <tr v-for="owner in owners" v-bind:key="owner.phone">
-                        <td> {{owner.ssn}}</td>
-                        <td> {{owner.firstName}}</td>
-                        <td> {{owner.lastName}}</td>    
-                        <td> {{owner.numDependents}}</td>
-                        <td> {{owner.annualIncome}} </td>
-                        <td> {{owner.dateOfBirth}} </td>
-                        <td> {{owner.profession}} </td>
-                        <td> {{owner.phone}} </td>
-                        <td> {{owner.email}} </td>
+                    <tr v-for="owner in owners" v-bind:key="owner.city">
+                        <td> {{owner.homeId}}</td>
+                        <td> {{owner.floorSpace}}</td>
+                        <td> {{owner.numFloors}}</td>    
+                        <td> {{owner.numBedrooms}}</td>
+                        <td> {{owner.fullBaths}} </td>
+                        <td> {{owner.halfBaths}} </td>
+                        <td> {{owner.landSize}} </td>
+                        <td> {{owner.yearBuilt}} </td>
+                        <td> {{owner.homeType}} </td>
+                        <td> {{owner.isForSale}} </td>
+                        <td> {{owner.addressInfo}} </td>
+                        <td> {{owner.street}} </td>
+                        <td> {{owner.city}} </td>
+                        <td> {{owner.zip}} </td>
+                        <td> {{owner.homeId}} </td>
+                        <td> {{owner.ID}} </td>
+                        <td> {{owner.latestPrice}} </td>
+                        <td> {{owner.currentOwner}} </td>
                     </tr>
                 </tbody>
 
@@ -89,10 +108,12 @@ export default {
   },
   data() {
     return {
-      owner: {city: ''      
-      },
-      owners: []
-    }
+      //  owner: { city:'',
+      //  },
+      owners: [],
+      city: '',
+      ssn: ''
+     }
   },
   methods:{
     getAllownersResponse(){
@@ -100,6 +121,15 @@ export default {
         this.owners = response.data;
       });
     },
+    getHomesbyownercityResponse(){
+      OwnerService.getHomesbyownercity(this.ssn,this.city).then((response)=>{
+        this.owners=response.data;
+      })
+      .catch(error => {
+        this.owners = []
+        console.error(error);
+      });
+    }
     // created() {
     //     this.getAllownersResponse();
     // }
