@@ -48,10 +48,10 @@ public class HomeDao {
     private static final String QUERY_BY_CITY = " from HOME h, ADDRESS a"
             + " where h.home_id = a.home_id and a.city=?";
 
-    private static final String QUERY_BY_PRICE_SELECT = "select h.* from home h, (select h.home_id, s.price from home h, sale s where s.home_id=h.home_id and s.sale_date= (select max(sale_date) from SALE s2 where s2.home_id=h.home_id)) as home_price where h.home_id = home_price.home_id ";
+    private static final String QUERY_BY_PRICE_SELECT = "select h.*, home_price.price as latest_price from home h, address a, (select h.home_id, s.price from home h, sale s where s.home_id=h.home_id and s.sale_date= (select max(sale_date) from SALE s2 where s2.home_id=h.home_id)) as home_price where h.home_id = home_price.home_id and a.home_id=h.home_id ";
     private static final String PRICE_MAX_CLAUSE = " and home_price.price < ? ";
     private static final String PRICE_MIN_CLAUSE = " and home_price.price > ? ";
-	private static final String CITY_CLAUSE = " and h.city = ?";
+	private static final String CITY_CLAUSE = " and a.city = ?";
     private static final String CRITERIA_SELECT_CLAUSE = "select h.*, (select price from SALE s where s.home_id=h.home_id and s.sale_date=(select max(sale_date) from SALE s2 where s2.home_id=h.home_id)) as latest_price";
     private static final String CRITERIA_FROM_CLAUSE = " from home h";
     
@@ -94,11 +94,11 @@ public class HomeDao {
         	typeList.add(Types.INTEGER);
         }
         if(max != null) {
-        	params.add(min);
+        	params.add(max);
         	typeList.add(Types.INTEGER);
         }
         if(city != null) {
-        	params.add(min);
+        	params.add(city);
         	typeList.add(Types.CHAR);
         }
         int[] types = typeList.stream().mapToInt(i->i).toArray();
