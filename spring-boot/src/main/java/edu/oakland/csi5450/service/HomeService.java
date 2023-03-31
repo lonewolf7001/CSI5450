@@ -1,7 +1,6 @@
 package edu.oakland.csi5450.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import edu.oakland.csi5450.bean.NewHomeWithAddressResponse;
 import edu.oakland.csi5450.repository.AddressDao;
 import edu.oakland.csi5450.repository.CityDao;
 import edu.oakland.csi5450.repository.HomeDao;
+import edu.oakland.csi5450.repository.InvalidDataException;
 
 @Service
 public class HomeService {
@@ -41,6 +41,20 @@ public class HomeService {
 
     public List<Home> getByPriceRange(Integer min, Integer max) {
         return homeDao.getHomesByPriceRange(min, max);
+    }
+
+    @Transactional
+    public Integer saveHome(Home home) {
+        if (home.getHomeType().equals("APARTMENT") && home.getNumFloors() != null && home.getNumFloors() > 1) {
+            throw new InvalidDataException("Apartments cannot have more than one floor.");
+        }
+        if (home.getHomeType().equals("MANSION") && home.getFloorSpace() < 6000) {
+            throw new InvalidDataException("Mansions must have at least 6000 square feet of floor space.");
+        }
+        if (!home.isValid()) {
+            throw new InvalidDataException("Invalid home data");
+        }
+        return homeDao.save(home);
     }
 
     @Transactional

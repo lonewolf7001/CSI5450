@@ -7,6 +7,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import edu.oakland.csi5450.repository.InvalidDataException;
+
 public class Home {
 
     private Integer homeId;
@@ -45,7 +47,6 @@ public class Home {
 
     @NotNull
     private Boolean isForSale;
-    
 
     public Integer getHomeId() {
         return homeId;
@@ -63,11 +64,21 @@ public class Home {
         this.floorSpace = floorSpace;
     }
 
+    public boolean isValid() {
+        if (this.homeType.equals("Mansion") && this.floorSpace < 6000) {
+            return false;
+        }
+        return true;
+    }
+
     public Short getNumFloors() {
         return numFloors;
     }
 
     public void setNumFloors(Short numFloors) {
+        if (this.homeType.equals("APARTMENT") && numFloors != null && numFloors > 1) {
+            throw new InvalidDataException("Apartments cannot have more than one floor.");
+        }
         this.numFloors = numFloors;
     }
 

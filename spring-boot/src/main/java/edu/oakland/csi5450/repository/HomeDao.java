@@ -1,12 +1,12 @@
 package edu.oakland.csi5450.repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+//import java.sql.PreparedStatement;
+//import java.sql.Statement;
 import java.sql.Types;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
+//
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -118,32 +118,47 @@ public class HomeDao {
     }
 
     public Integer save(Home home) {
-        // query returns newly generated key
+        if (home.getHomeType().equals("APARTMENT") && home.getNumFloors() != null && home.getNumFloors() > 1) {
+            throw new InvalidDataException("Apartments cannot have more than one floor.");
+        }
+        if (home.getHomeType().equals("MANSION") && home.getFloorSpace() < 6000) {
+            throw new InvalidDataException("Mansions must have at least 6000 square feet of floor space.");
+        }
         return jdbcTemplate.queryForObject(INSERT_SQL, Integer.class, home.getFloorSpace(),
                 home.getNumFloors(), home.getNumBedrooms(), home.getFullBaths(), home.getHalfBaths(),
                 home.getLandSize(), home.getYearBuilt(), home.getHomeType(), home.getIsForSale());
-        // KeyHolder keyHolder = new GeneratedKeyHolder();
-        // jdbcTemplate.update(new PreparedStatementCreator() {
-        // @Override
-        // public PreparedStatement createPreparedStatement(java.sql.Connection
-        // connection) throws SQLException {
-        // PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL,
-        // Statement.RETURN_GENERATED_KEYS);
-        // pstmt.setInt(1, home.getFloorSpace());
-        // pstmt.setShort(2, home.getNumFloors());
-        // pstmt.setShort(3, home.getNumBedrooms());
-        // pstmt.setInt(4, home.getFullBaths());
-        // pstmt.setInt(5, home.getHalfBaths());
-        // pstmt.setDouble(6, home.getLandSize());
-        // pstmt.setShort(7, home.getYearBuilt());
-        // pstmt.setString(8, home.getHomeType());
-        // pstmt.setBoolean(9, home.getIsForSale());
-        // return pstmt;
-        // }
-        // }, keyHolder);
-        // Number key = keyHolder.getKey();
-        // return key != null ? key.intValue() : null;
     }
+
+    // public Integer save(Home home) {
+    // query returns newly generated key
+    // return jdbcTemplate.queryForObject(INSERT_SQL, Integer.class,
+    // home.getFloorSpace(),
+    // home.getNumFloors(), home.getNumBedrooms(), home.getFullBaths(),
+    // home.getHalfBaths(),
+    // home.getLandSize(), home.getYearBuilt(), home.getHomeType(),
+    // home.getIsForSale());
+    // KeyHolder keyHolder = new GeneratedKeyHolder();
+    // jdbcTemplate.update(new PreparedStatementCreator() {
+    // @Override
+    // public PreparedStatement createPreparedStatement(java.sql.Connection
+    // connection) throws SQLException {
+    // PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL,
+    // Statement.RETURN_GENERATED_KEYS);
+    // pstmt.setInt(1, home.getFloorSpace());
+    // pstmt.setShort(2, home.getNumFloors());
+    // pstmt.setShort(3, home.getNumBedrooms());
+    // pstmt.setInt(4, home.getFullBaths());
+    // pstmt.setInt(5, home.getHalfBaths());
+    // pstmt.setDouble(6, home.getLandSize());
+    // pstmt.setShort(7, home.getYearBuilt());
+    // pstmt.setString(8, home.getHomeType());
+    // pstmt.setBoolean(9, home.getIsForSale());
+    // return pstmt;
+    // }
+    // }, keyHolder);
+    // Number key = keyHolder.getKey();
+    // return key != null ? key.intValue() : null;
+    // }
 
     public int update(Home home) {
         return jdbcTemplate.update(UPDATE_SQL, home.getFloorSpace(), home.getNumFloors(), home.getNumBedrooms(),

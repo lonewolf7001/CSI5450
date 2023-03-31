@@ -21,6 +21,7 @@ import edu.oakland.csi5450.bean.NewHomeWithAddressResponse;
 import edu.oakland.csi5450.bean.Sale;
 import edu.oakland.csi5450.service.HomeService;
 import edu.oakland.csi5450.service.SaleService;
+import edu.oakland.csi5450.repository.InvalidDataException;
 
 @RestController
 @RequestMapping("/homes")
@@ -116,6 +117,18 @@ public class HomeController {
         else
             return new ResponseEntity<>(resp, HttpStatus.CREATED);
 
+    }
+
+    @PostMapping
+    public ResponseEntity<Integer> saveHome(@RequestBody Home home) {
+        if (home.getHomeType().equals("APARTMENT") && home.getNumFloors() != null && home.getNumFloors() > 1) {
+            throw new InvalidDataException("Apartments cannot have more than one floor.");
+        }
+        if (home.getHomeType().equals("MANSION") && home.getFloorSpace() < 6000) {
+            throw new InvalidDataException("Mansions must have at least 6000 square feet of floor space.");
+        }
+        Integer savedHomeId = homeService.saveHome(home);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedHomeId);
     }
 
     @PostMapping("/sell")
