@@ -79,9 +79,7 @@ public class HomeService {
         if (home.getHomeType().equals("MANSION") && home.getFloorSpace() < 6000) {
             throw new InvalidDataException("Mansions must have at least 6000 square feet of floor space.");
         }
-        if (!home.isValid()) {
-            throw new InvalidDataException("Invalid home data");
-        }
+        
         return homeDao.save(home);
     }
 

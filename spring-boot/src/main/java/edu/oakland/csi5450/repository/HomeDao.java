@@ -22,7 +22,6 @@ import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.util.DaoFailedException;
 
 @Repository
-
 public class HomeDao {
 
     private static final String SELECT_ALL_SQL = "SELECT * FROM home";
