@@ -17,6 +17,7 @@ import edu.oakland.csi5450.bean.ErrorResponse;
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
 import edu.oakland.csi5450.bean.HomeSearchCriteria;
+import edu.oakland.csi5450.bean.HomeWithApplianceManufacturer;
 import edu.oakland.csi5450.bean.HomeWithPrice;
 import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.bean.NewHomeWithAddress;
@@ -93,6 +94,11 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+    
+    @GetMapping("/singlebrand")
+    public List<HomeWithApplianceManufacturer> getSingleBrandHomes() {
+    	return homeService.getSingleBrandHomes();
     }
 
     @GetMapping("/bedrooms/{numBedrooms}")

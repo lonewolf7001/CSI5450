@@ -17,6 +17,7 @@ import edu.oakland.csi5450.bean.Address;
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
 import edu.oakland.csi5450.bean.HomeSearchCriteria;
+import edu.oakland.csi5450.bean.HomeWithApplianceManufacturer;
 import edu.oakland.csi5450.bean.HomeWithPrice;
 import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.util.DaoFailedException;
@@ -57,6 +58,8 @@ public class HomeDao {
     
     private static final String QUERY_BY_SOLD_COUNT_SUBQUERY = "select h.home_id, count(s.sale_date) as sales from home h, sale s where h.home_id = s.home_id group by h.home_id ";
     
+    private static final String QUERY_BY_SAME_APPLIANCE = "select h.*, home_brand.brand from home h, (select h2.home_id, min(a.manufacturer) as brand from home h2, home_appliance_mapping m, appliance a where h2.home_id = m.home_id and m.model_number = a.model_number group by h2.home_id having count(distinct a.manufacturer) = 1) as home_brand where h.home_id = home_brand.home_id";
+    
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -69,6 +72,9 @@ public class HomeDao {
         return result.isEmpty() ? null : result.get(0);
     }
 
+    public List<HomeWithApplianceManufacturer> getHomesWithSameApplianceManufacturer() {
+    	return jdbcTemplate.query(QUERY_BY_SAME_APPLIANCE, getHomeApplianceMapper());
+    }
     /**
      * Either min or max (or both) should be specified. City is optional
      * @param min
@@ -325,6 +331,10 @@ public class HomeDao {
     	});
     }
     
+    private HomeRowMapper<HomeWithApplianceManufacturer> getHomeApplianceMapper() {
+        return new HomeRowMapper<>(HomeWithApplianceManufacturer::new, (h, rs) -> h.setManufacturer(rs.getString("brand")));    	
+    }
+
     @FunctionalInterface
     private static interface FieldMapper<T extends Home> {
     	public void accept(T home, ResultSet rs) throws SQLException;

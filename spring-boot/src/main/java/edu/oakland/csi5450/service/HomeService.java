@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
 import edu.oakland.csi5450.bean.HomeSearchCriteria;
+import edu.oakland.csi5450.bean.HomeWithApplianceManufacturer;
 import edu.oakland.csi5450.bean.HomeWithPrice;
 import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.bean.NewAddress;
@@ -40,6 +41,13 @@ public class HomeService {
 
     public Home getById(Integer homeId) {
         return homeDao.getById(homeId);
+    }
+    
+    public List<HomeWithApplianceManufacturer> getSingleBrandHomes() {
+    	List<HomeWithApplianceManufacturer> resp = homeDao.getHomesWithSameApplianceManufacturer();
+    	for(HomeWithApplianceManufacturer home : resp)
+    		home.setManufacturer(home.getManufacturer().trim());
+    	return resp;
     }
 
     public List<HomeWithPrice> getByPriceRange(Integer min, Integer max, String city) {
