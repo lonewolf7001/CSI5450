@@ -137,20 +137,22 @@ public class HomeService {
         return null;
     }
 
-    public List<HomeOwner> getFormerOwners(int homeId) {
-        List<HomeOwner> formerOwners = new ArrayList<>();
-        List<Sale> sales = saleDao.getSalesByHomeId(homeId);
-        for (Sale sale : sales) {
-            if (!sale.getIsCurrentOwner()) {
-                Long ownerId = sale.getOwnerId();
-                HomeOwner owner = homeOwnerDao.getById(ownerId);
-                if (owner != null) {
-                    owner.setSsn(ownerId);
-                    formerOwners.add(owner);
+    public List<String> getFormerOwners(int homeId) {
+        List<String> result = new ArrayList<>();
+        Home home = homeDao.getById(homeId);
+        if (home != null) {
+
+            List<Sale> sales = ((edu.oakland.csi5450.repository.SaleDao) saleDao).getSalesByHome(homeId);
+            for (Sale sale : sales) {
+
+                HomeOwner formerOwner = homeOwnerDao.getHomeOwnerById(sale.getOwnerId());
+                if (formerOwner != null) {
+                    String fullName = formerOwner.getFirstName() + " " + formerOwner.getLastName();
+                    result.add(fullName);
                 }
             }
         }
-        return formerOwners;
+        return result;
     }
 
 }

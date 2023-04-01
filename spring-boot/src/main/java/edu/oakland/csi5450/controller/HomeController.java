@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import edu.oakland.csi5450.bean.ErrorResponse;
 import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
-import edu.oakland.csi5450.bean.HomeOwner;
 import edu.oakland.csi5450.bean.HomeSearchCriteria;
+import edu.oakland.csi5450.bean.HomeWithApplianceManufacturer;
 import edu.oakland.csi5450.bean.HomeWithPrice;
 import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.bean.NewHomeWithAddress;
@@ -58,7 +58,7 @@ public class HomeController {
     public ResponseEntity<Object> getHomesByPriceRange(
             @RequestParam(required = false) Integer min,
             @RequestParam(required = false) Integer max,
-            @RequestParam(required = false) @Size(max = 30) String city) {
+            @RequestParam(required = false) @Size(max=30) String city) {
         if (min == null && max == null) {
             return new ResponseEntity<>(new ErrorResponse("Either minimum price or maximum price must be specified"),
                     HttpStatus.BAD_REQUEST);
@@ -69,26 +69,24 @@ public class HomeController {
         else
             return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-
     @GetMapping("/criteria")
     public ResponseEntity<Object> getHomesByCriteria(@RequestBody @Valid HomeSearchCriteria criteria) {
-
-        if (!homeService.validateCriteria(criteria))
-            return new ResponseEntity<>(new ErrorResponse("No criteria specified"), HttpStatus.BAD_REQUEST);
-        List<HomeWithPrice> resp = homeService.getByCriteria(criteria);
+    	
+    	if(!homeService.validateCriteria(criteria))
+    		return new ResponseEntity<>(new ErrorResponse("No criteria specified"), HttpStatus.BAD_REQUEST);
+    	List<HomeWithPrice> resp = homeService.getByCriteria(criteria);
         if (resp.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-
+    
     @GetMapping("/soldcount")
     public ResponseEntity<Object> getHomesByNumberOfTimesSold(
             @RequestParam(required = false) Integer min,
             @RequestParam(required = false) Integer max) {
-        if (min == null && max == null) {
-            return new ResponseEntity<>(
-                    new ErrorResponse("Either minimum or maximum number of times sold must be specified"),
+    	if (min == null && max == null) {
+            return new ResponseEntity<>(new ErrorResponse("Either minimum or maximum number of times sold must be specified"),
                     HttpStatus.BAD_REQUEST);
         }
         List<HomeWithSoldCount> resp = homeService.getByNumberOfTimesSold(min, max);
@@ -96,6 +94,11 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+    
+    @GetMapping("/singlebrand")
+    public List<HomeWithApplianceManufacturer> getSingleBrandHomes() {
+    	return homeService.getSingleBrandHomes();
     }
 
     @GetMapping("/bedrooms/{numBedrooms}")
@@ -152,7 +155,7 @@ public class HomeController {
 
     }
 
-    @PostMapping("/home")
+    @PostMapping
     public ResponseEntity<Integer> saveHome(@RequestBody Home home) {
         if (home.getHomeType().equals("APARTMENT") && home.getNumFloors() != null && home.getNumFloors() > 1) {
             throw new InvalidDataException("Apartments cannot have more than one floor.");
@@ -160,7 +163,7 @@ public class HomeController {
         if (home.getHomeType().equals("MANSION") && home.getFloorSpace() < 6000) {
             throw new InvalidDataException("Mansions must have at least 6000 square feet of floor space.");
         }
-        Integer savedHomeId = homeService.save(home);
+        Integer savedHomeId = homeService.saveHome(home);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedHomeId);
     }
 
@@ -196,16 +199,6 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/{id}/former-owners")
-    public ResponseEntity<List<HomeOwner>> getFormerHomeOwners(@PathVariable Integer id) {
-        List<HomeOwner> formerOwners = homeService.getFormerOwners(id);
-        if (formerOwners != null && !formerOwners.isEmpty()) {
-            return ResponseEntity.ok(formerOwners);
-        } else {
-            return ResponseEntity.notFound().build();
         }
     }
 

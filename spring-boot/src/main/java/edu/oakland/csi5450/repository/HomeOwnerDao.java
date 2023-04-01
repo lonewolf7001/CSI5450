@@ -88,8 +88,4 @@ public class HomeOwnerDao {
 			}
 		};
 	}
-
-	public HomeOwner getById(Long ownerId) {
-		return null;
-	}
 }
