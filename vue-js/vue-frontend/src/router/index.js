@@ -10,7 +10,7 @@ import NewHome from '../components/NewHome'
 // import EditHome from '../components/EditHome'
 // import DeleteHome from '../components/DeleteHome'
 import NewOwner from '../components/NewOwner'
-// import EditOwner from '../components/EditOwner'
+import EditOwner from '../components/EditOwner'
 // import DeleteOwner from '../components/DeleteOwner'
 // import HomeSell from '../components/HomeSell'
 import App from '../App'
@@ -71,11 +71,11 @@ const routes = [
     name: 'NewOwner',
     component: NewOwner,
   },
-  // {
-  //   path: '/transactions/editowner',
-  //   name: 'EditOwner',
-  //   component: EditOwner,
-  // },
+  {
+    path: '/transactions/editowner',
+    name: 'EditOwner',
+    component: EditOwner,
+  },
   // {
   //   path: '/transactions/deleteowner',
   //   name: 'DeleteOwner',

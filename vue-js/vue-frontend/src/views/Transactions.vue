@@ -13,17 +13,17 @@
         <div class= "row3"> 
           <div class="col col-lg"><router-link to="/transactions/newhome" v-slot="{ navigate }"><Button text="Add / Register New Home" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
           <div class="col col-lg"><router-link to="/transactions/edithome" v-slot="{ navigate }"><Button text="Edit Home" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
-          <div class="col col-lg"><router-link to="/transactions/deletehome" v-slot="{ navigate }"><Button text="Delete Home" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
+          <!-- <div class="col col-lg"><router-link to="/transactions/deletehome" v-slot="{ navigate }"><Button text="Delete Home" color="lightblue" @click="navigate" role="link"></Button></router-link></div> -->
         </div>
         <div class= "row3"> 
           <div class="col1"><router-link to="/transactions/newagent" v-slot="{ navigate }"><Button text="Add New Agent" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
           <div class="col1"><router-link to="/transactions/editagent" v-slot="{ navigate }"><Button text="Edit Agent" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
-          <div class="col1"><router-link to="/transactions/deleteagent" v-slot="{ navigate }"><Button text="Delete Agent" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
+          <!-- <div class="col1"><router-link to="/transactions/deleteagent" v-slot="{ navigate }"><Button text="Delete Agent" color="lightblue" @click="navigate" role="link"></Button></router-link></div> -->
         </div>
         <div class= "row3"> 
           <div class="col1"><router-link to="/transactions/newowner" v-slot="{ navigate }"><Button text="Add New Owner" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
           <div class="col2"><router-link to="/transactions/editowner" v-slot="{ navigate }"><Button text="Edit Owner" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
-          <div class="col3"><router-link to="/transactions/deleteowner" v-slot="{ navigate }"><Button text="Delete Owner" color="lightblue" @click="navigate" role="link"></Button></router-link></div>
+          <!-- <div class="col3"><router-link to="/transactions/deleteowner" v-slot="{ navigate }"><Button text="Delete Owner" color="lightblue" @click="navigate" role="link"></Button></router-link></div> -->
         </div>
         <div class= "row3"> 
           <router-link to="/transactions/homesell" v-slot="{ navigate }"><Button text="Home Sale" color="lightblue" @click="navigate" role="link"></Button></router-link>

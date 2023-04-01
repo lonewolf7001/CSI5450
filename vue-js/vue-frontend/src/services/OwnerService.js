@@ -15,8 +15,14 @@ class OwnerService{
     getHomesbyownercity(ssn,city){
         return axios.get('http://localhost:8081/homes/owner?owner='+ssn+'&city='+city)
     }
-    
 
+    update(owner){
+        return axios.put('http://localhost:8081/owner/update',owner)
+    }
+    
+    getHomeownerbyID(id){
+        return axios.get('http://localhost:8081/owner/id/'+id)
+    }
 
 }
 

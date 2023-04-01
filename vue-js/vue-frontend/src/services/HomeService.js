@@ -22,8 +22,16 @@ class HomeService{
         return axios.get('http://localhost:8081/homes/price?min='+price_min+'&max='+price_max)
     }
 
+    getHomesbysoldcount(min,max){
+        return axios.get('http://localhost:8081/homes/soldcount?min='+min+'&max='+max)
+    }
+
     getAddressofhome(id){
         return axios.get('http://localhost:8081/address/home/'+id)
+    }
+
+    deleteHomebyId(homeId){
+        return axios.delete('http://localhost:8081/homes/'+homeId,homeId)
     }
 // addAddresstonewhome(id, address){
     //     return axios.post('http://localhost:8081/address/id/'+id, address)

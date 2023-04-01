@@ -201,6 +201,7 @@
         <h3 style="text-align:left">&nbsp;</h3>
         <h3 style="text-align:left"> Search Home by price&nbsp;</h3>
     </div> 
+    <!-- //Implementation of search home with Price min and price max -->
     <div class= "container2">
             <div class="row">
                 <div class="col col-sm-4"><Button class="btn1" text="Price range ($)" color="lightblue" disabled role="link"></Button></div>
@@ -242,8 +243,56 @@
             </div>
             
             </div>
+            <div class = "header">
+        <h3 style="text-align:left">&nbsp;</h3>
+        <h3 style="text-align:left"> Search Home by sold count&nbsp;</h3>
+    </div> 
+    <!-- //Implementation of with Price min and price max -->
+    <div class= "container2">
+            <div class="row">
+                <div class="col col-sm-4"><Button class="btn1" text="Sold count ($)" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-4">  
+                    <select v-model="soldcount_min">
+                        <option disabled value="min">Please select one</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                    </select>
+                </div>
+                <div class="col col-sm-4">  
+                    <select v-model="soldcount_max">
+                        <option disabled value="max">Please select one</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                    </select>
+                </div>
+             
+                <div class="col col-sm-4"></div>         
+            </div> 
+            <div class="row">
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div> 
+                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbysoldcountResponse()></Button></div>            
+            </div> 
+        </div> 
+     
+                
     <div class="container2">
-    Search Results : Showing results for price range ${{this.price_min}} to ${{this.price_max}}
+    Search Results : Showing results for Sold count range ${{this.soldcount_min}} to ${{this.soldcount_max}}
         <table class = "table table-striped">
             <thead>
                 <tr>
@@ -257,26 +306,31 @@
                     <th> yearBuilt</th>                      
                     <th> homeType</th>
                     <th> isForSale</th>
+                    <th> Sold count</th>
                     <th></th> 
                 </tr>
             </thead>
                 <tbody>
-                    <tr v-for="homep in homes_price " v-bind:key="homep.homeId">
-                        <td> {{homep.homeId}}</td>
-                        <td> {{homep.floorSpace}}</td>
-                        <td> {{homep.numFloors}}</td>
-                        <td> {{homep.numBedrooms}}</td>
-                        <td> {{homep.fullBaths}}</td>
-                        <td> {{homep.halfBaths}}</td>
-                        <td> {{homep.landSize}}</td>
-                        <td> {{homep.yearBuilt}}</td>
-                        <td> {{homep.homeType}}</td>                        
-                        <td> {{homep.isForSale}}</td>
+                    <tr v-for="homesS in homes_soldcount " v-bind:key="homesS.homeId">
+                        <td> {{homesS.homeId}}</td>
+                        <td> {{homesS.floorSpace}}</td>
+                        <td> {{homesS.numFloors}}</td>
+                        <td> {{homesS.numBedrooms}}</td>
+                        <td> {{homesS.fullBaths}}</td>
+                        <td> {{homesS.halfBaths}}</td>
+                        <td> {{homesS.landSize}}</td>
+                        <td> {{homesS.yearBuilt}}</td>
+                        <td> {{homesS.homeType}}</td>                        
+                        <td> {{homesS.isForSale}}</td>
+                        <td> {{homesS.soldCount}}</td>
                     </tr>
                 </tbody>
                         
         </table>
     </div>
+        <!-- //Implementation of with sold count min and max -->
+
+
 </div>
 
 
@@ -297,8 +351,21 @@ export default {
   data() {
     return {
         selected_city: '',
+        homesearch:{
+            floorSpace : null,
+            numFloors : null,
+            numBedrooms : null,
+            fullBaths : null,
+            halfBaths : null,
+            landSize : null,
+            yearBuilt : null,
+            homeType : null,
+            isForSale: null
+        },
+        // this.$set(this.homesearch, 'floorSpace', 'Mal)
         homes: [],
         homes_price: [],
+        homes_soldcount: [],
         cities: [],
        price_min : [], 
         price_max : [],
@@ -342,6 +409,16 @@ export default {
   getHomesbycityResponse(){
       HomeService.getHomesbycity(this.selected_city).then((response) => {
         this.homes = response.data;
+      })
+      .catch(error => {
+        this.homes = []
+        console.error(error);
+      });
+      console.log(this.homes)
+  },
+  getHomesbysoldcountResponse(){
+      HomeService.getHomesbysoldcount(this.soldcount_min,this.soldcount_max).then((response) => {
+        this.homes_soldcount = response.data;
       })
       .catch(error => {
         this.homes = []
