@@ -125,4 +125,8 @@ public class Home {
     public void setIsForSale(Boolean isForSale) {
         this.isForSale = isForSale;
     }
+
+    public Object getOwnerId() {
+        return null;
+    }
 }
