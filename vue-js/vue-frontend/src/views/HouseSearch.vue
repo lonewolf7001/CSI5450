@@ -4,20 +4,21 @@
       <h3 style="text-align:left">Search your dream home by city and price</h3>
         <div class="container2">
             <div class="row">
-                <div class="col-sm-4"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
+                <div class="col-sm-4"><Button class="btn1" text="City" color="lightblue" disabled role="link" :style="{ fontSize: '16px', padding: '0px 10px' }"></Button></div>
                 <div class="col-sm-6">
-                    <select v-model="selected_city">
+                    <select v-model="selected_city" style="display: inline-block; margin: 100 10px;">
                         <option value="">Select an city</option>
                         <option v-for="city in cities"
                                 :key="city.name" 
                                 :value="city.name">{{ city.name }}
                         </option>
                     </select>
+                        
                 </div>
             </div> 
 
             <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Price range ($)" color="lightblue" disabled role="link"></Button></div>
+                <div class="col col-sm-4"><Button class="btn1" text="Price range ($)" color="lightblue" disabled role="link" :style="{ fontSize: '16px', padding: '0px 10px' }"></Button></div>
                 <div class="col col-sm-4">  
                     <select v-model="price_min">
                         <option disabled value="min">Please select one</option>
@@ -33,7 +34,7 @@
                     </select>
                 </div>
                 <div class="col col-sm-4">  
-                    <select v-model="price_max">
+                    <select v-model="price_max" style="display: inline-block; margin: 0 -100px;">
                         <option disabled value="max">Please select one</option>
                         <option>1000</option>
                         <option>100000</option>

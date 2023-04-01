@@ -15,6 +15,7 @@ import EditOwner from '../components/EditOwner'
  import HomeSell from '../components/HomeSell'
 import App from '../App'
 
+
 const routes = [
   {
     path: '/HouseSearch',
@@ -87,7 +88,7 @@ const routes = [
    component: HomeSell,
    },
   {
-    path: '/homepage',
+    path: '/',
     name: 'HomePage',
     component: App,
   }
