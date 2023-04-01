@@ -75,4 +75,8 @@ public class SaleDao {
 	public List<Sale> getAllSales() {
 		return null;
 	}
+
+	public List<Sale> getSalesByHomeId(int homeId) {
+		return null;
+	}
 }
