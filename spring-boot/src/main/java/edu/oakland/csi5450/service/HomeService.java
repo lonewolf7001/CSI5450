@@ -3,8 +3,6 @@ package edu.oakland.csi5450.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -14,7 +12,9 @@ import edu.oakland.csi5450.bean.ExtendedHomeInfo;
 import edu.oakland.csi5450.bean.Home;
 import edu.oakland.csi5450.bean.HomeOwner;
 import edu.oakland.csi5450.bean.HomeSearchCriteria;
+import edu.oakland.csi5450.bean.HomeWithApplianceManufacturer;
 import edu.oakland.csi5450.bean.HomeWithPrice;
+import edu.oakland.csi5450.bean.HomeWithSoldCount;
 import edu.oakland.csi5450.bean.NewAddress;
 import edu.oakland.csi5450.bean.NewHomeWithAddress;
 import edu.oakland.csi5450.bean.NewHomeWithAddressResponse;
@@ -55,16 +55,48 @@ public class HomeService {
         return homeDao.getById(homeId);
     }
 
-    public List<Home> getByPriceRange(Integer min, Integer max) {
-        return homeDao.getHomesByPriceRange(min, max);
+    public List<HomeWithApplianceManufacturer> getSingleBrandHomes() {
+    	List<HomeWithApplianceManufacturer> resp = homeDao.getHomesWithSameApplianceManufacturer();
+    	for(HomeWithApplianceManufacturer home : resp)
+    		home.setManufacturer(home.getManufacturer().trim());
+    	return resp;
+    }
+    
+    public List<HomeWithPrice> getByPriceRange(Integer min, Integer max, String city) {
+    	String sanitizedCity = city == null ? null : city.toUpperCase();
+        return homeDao.getHomesByPriceRange(min, max, sanitizedCity);
+    }
+    
+    public List<HomeWithPrice> getByCriteria(HomeSearchCriteria criteria) {
+    	//sanitize input
+    	criteria.setCity(criteria.getCity() == null ? null : criteria.getCity().toUpperCase());
+    	criteria.setHomeType(criteria.getHomeType() == null ? null : criteria.getHomeType().toUpperCase());
+    	
+    	return homeDao.getHomesByCriteria(criteria);
+    }
+    
+    public List<HomeWithSoldCount> getByNumberOfTimesSold(Integer min, Integer max) {
+    	return homeDao.getHomesBySoldCount(min, max);
+    }
+
+    /**
+     * returns true if criteria are valid, false if not specified
+     * @param criteria
+     * @return
+     */
+    public boolean validateCriteria(HomeSearchCriteria criteria) {
+    	return criteria.getCity() != null || criteria.getFloorSpace() != null || criteria.getNumFloors() != null 
+    			|| criteria.getNumBedrooms() != null || criteria.getFullBaths() != null || criteria.getHalfBaths() != null
+    			|| criteria.getLandSize() != null || criteria.getYearBuilt() != null || criteria.getHomeType() != null
+    			|| criteria.getIsForSale() != null;
     }
 
     @Transactional
     public Integer save(Home home) {
-        if (home.getHomeType().equals("APARTMENT") && home.getNumFloors() != null && home.getNumFloors() > 1) {
+        if (home.getHomeType().equals("A") && home.getNumFloors() != null && home.getNumFloors() > 1) {
             throw new InvalidDataException("Apartments cannot have more than one floor.");
         }
-        if (home.getHomeType().equals("MANSION") && home.getFloorSpace() < 6000) {
+        if (home.getHomeType().equals("M") && home.getFloorSpace() < 6000) {
             throw new InvalidDataException("Mansions must have at least 6000 square feet of floor space.");
         }
         Integer id = homeDao.save(home);
@@ -133,6 +165,7 @@ public class HomeService {
         home.setHomeType(home.getHomeType().toUpperCase());
     }
 
+<<<<<<< HEAD
     public List<HomeWithPrice> getByCriteria(@Valid HomeSearchCriteria criteria) {
         return null;
     }
@@ -147,6 +180,20 @@ public class HomeService {
                 if (owner != null) {
                     owner.setSsn(ownerId);
                     formerOwners.add(owner);
+=======
+    public List<String> getFormerOwners(int homeId) {
+        List<String> result = new ArrayList<>();
+        Home home = homeDao.getById(homeId);
+        if (home != null) {
+
+            List<Sale> sales = saleDao.getSalesByHome(homeId);
+            for (Sale sale : sales) {
+
+                HomeOwner formerOwner = homeOwnerDao.getHomeOwnerById(sale.getOwnerId());
+                if (formerOwner != null) {
+                    String fullName = formerOwner.getFirstName() + " " + formerOwner.getLastName();
+                    result.add(fullName);
+>>>>>>> 2bd83f719f795dc6e18b7a5d771805e7eb21ecf1
                 }
             }
         }
