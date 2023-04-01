@@ -1,19 +1,19 @@
 import axios from 'axios'
 
 
-const SPRING_BOOT_AGENT_URL = 'http://localhost:8081/agent/'
+const SERVER_URL ='http://csi5450finalprojectbackend-env.eba-vdqznnev.us-east-2.elasticbeanstalk.com/'
 
 class AgentService{
     getAllagents(){
-        return axios.get(SPRING_BOOT_AGENT_URL);
+        return axios.get(SERVER_URL+'agent/');
     }
 
     create(agent){
-        return axios.post('http://localhost:8081/agent/add', agent)
+        return axios.post(SERVER_URL+'agent/add', agent)
     }
 
     update(agent){
-        return axios.put('http://localhost:8081/agent/update',agent)
+        return axios.put(SERVER_URL+'agent/update',agent)
     }
 }
 

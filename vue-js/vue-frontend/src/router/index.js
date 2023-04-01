@@ -7,12 +7,12 @@ import NewAgent from '../components/NewAgent'
 import EditAgent from '../components/EditAgent'
 // import DeleteAgent from '../components/DeleteAgent'
 import NewHome from '../components/NewHome'
-// import EditHome from '../components/EditHome'
+import EditHome from '../components/EditHome'
 // import DeleteHome from '../components/DeleteHome'
 import NewOwner from '../components/NewOwner'
 import EditOwner from '../components/EditOwner'
 // import DeleteOwner from '../components/DeleteOwner'
-// import HomeSell from '../components/HomeSell'
+ import HomeSell from '../components/HomeSell'
 import App from '../App'
 
 const routes = [
@@ -41,11 +41,11 @@ const routes = [
     name: 'NewHome',
     component: NewHome,
   },
-  // {
-  //   path: '/transactions/edithome',
-  //   name: 'EditHome',
-  //   component: EditHome,
-  // },
+  {
+    path: '/transactions/edithome',
+    name: 'EditHome',
+    component: EditHome,
+  },
   // {
   //   path: '/transactions/deletehome',
   //   name: 'DeleteHome',
@@ -81,11 +81,11 @@ const routes = [
   //   name: 'DeleteOwner',
   //   component: DeleteOwner,
   // },
-  // {
-  //   path: '/transactions/homesell',
-  //   name: 'HomeSell',
-  //   component: HomeSell,
-  // },
+  {
+   path: '/transactions/homesell',
+   name: 'HomeSell',
+   component: HomeSell,
+   },
   {
     path: '/homepage',
     name: 'HomePage',

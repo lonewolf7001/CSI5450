@@ -15,13 +15,7 @@
                                 :value="agent.id">{{ agent.firstName }} {{ agent.lastName }}
                         </option>
                     </select>
-                    <!-- {{ selectedAgent }} -->
-                    <!-- {{ test = selectedItem() }} -->
-                    <!-- {{test = this.agents.find(agents => agents.id === this.selected_agent)}} -->
-                    <!-- {{ test }} -->
                     <div class= "row3"> 
-            <!-- <div class="col1"><Button class="btn1" text="FirstName" color="lightblue" disabled></Button></div> -->
-            <!-- <div class= "col2"> <input v-model="selected_agent" placeholder="FirstName" /></div> -->
             </div>
                 </div>
             </div>

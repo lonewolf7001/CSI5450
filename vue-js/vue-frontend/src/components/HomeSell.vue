@@ -7,54 +7,75 @@
     
         <div class= "container2">
             <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="FirstName" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="new_agent.firstName" placeholder="FirstName" /></div>
+            <div class="col1"><Button class="btn1" text="HomeId" color="lightblue" disabled role="link"></Button></div>
+            <div class= "col2"> <input v-model="home_sale.homeId" placeholder="homeID" /></div>
             </div>
             <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="LastName" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="new_agent.lastName" placeholder="LastName" /></div>
+            <div class="col1"><Button class="btn1" text="SaleDate" color="lightblue" disabled role="link"></Button></div>
+            <div class= "col2"> <input v-model="home_sale.saleDate" placeholder="saledate" /></div>
             </div>
             <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Phone" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="new_agent.phone" placeholder="Phone number" /></div>
+                <div class="col1"><Button class="btn1" text="OwnerId" color="lightblue" disabled role="link"></Button></div>
+            <div class= "col2"> <input v-model="home_sale.ownerId" placeholder="ownerid" /></div>
             </div>
             <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="Email" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="new_agent.email" placeholder="AgentEmail" /></div>
+            <div class="col1"><Button class="btn1" text="agentId" color="lightblue" disabled role="link"></Button></div>
+            <div class= "col2"> <input v-model="home_sale.agentId" placeholder="agentId" /></div>
             </div>
+            <div class= "row3"> 
+            <div class="col1"><Button class="btn1" text="CompanyId" color="lightblue" disabled role="link"></Button></div>
+            <div class= "col2"> <input v-model="home_sale.companyId" placeholder="companyid" /></div>
+            </div>
+            <div class= "row3"> 
+            <div class="col1"><Button class="btn1" text="price" color="lightblue" disabled role="link"></Button></div>
+            <div class= "col2"> <input v-model="home_sale.price" placeholder="price" /></div>
+            </div>
+
             <div class="row3">
             <div class="col1"></div>
-            <div class="col2"><Button class="btn1" text="Add Agent" color="lightgreen" v-on:click="agents = this.CreateAgent()"></Button></div>
+            <div class="col2"><Button class="btn1" text="UpdateHomesale" color="lightgreen" v-on:click=" this.UpdateHomeSellResponse()"></Button></div>
             </div>
         </div>
     </div>
     </template>
     <script>
     import Button from '../components/Button'
-    import AgentService from '@/services/AgentService';
+    import HomeService from '@/services/HomeService';
     
     export default {
-      name: 'NewAgent',
+      name: 'HomeSell',
       components: {
         Button
       },
       data() {
         return {
-            new_agent: {firstName: '',
-                        lastName:'',
-                        phone : null ,
-                        email :''
+          home_sale: {  homeId: '',
+                        saleDate:'',
+                        ownerId : null ,
+                        agentId :null,
+                        companyId: null,
+                        price: ''
             }
           }
         },
       methods: {
-        CreateAgent(){
-          AgentService.create(this.new_agent).then(response => {
+        UpdateHomeSellResponse(){
+          // console.log(home_sale.homeId)
+          // console.log( home_sale.saleDate)
+          // console.log(home_sale.ownerId)
+          // console.log( home_sale.agentId)
+          // console.log(home_sale.companyId)
+          // console.log( home_sale.price)
+          console.log(this.home_sale);
+          HomeService.sell(this.home_sale).then(response => {
             console.log(response.data);
-            this.new_agent.firstName = '';
-            this.new_agent.lastName = '';
-            this.new_agent.phone = '';
-            this.new_agent.email = '';
+
+            // this.home_sale.homeId = '';
+            // this.home_sale.SaleDate = '';
+            // this.home_sale.ownerId = '';
+            // this.home_sale.agentId = '';
+            // this.home_sale.companyId = '';
+            // this.home_sale.price = '';
           })
           .catch(error => {
             console.error(error);

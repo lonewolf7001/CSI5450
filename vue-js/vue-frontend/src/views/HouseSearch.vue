@@ -1,7 +1,7 @@
 <template>
       <div>
       <h3 style="text-align:left">&nbsp;</h3>
-      <h3 style="text-align:left">Search your dream home by city</h3>
+      <h3 style="text-align:left">Search your dream home by city and price</h3>
         <div class="container2">
             <div class="row">
                 <div class="col-sm-4"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
@@ -16,193 +16,6 @@
                 </div>
             </div> 
 
-            <div class="row">
-                <div class="col col-lg"></div>
-                <div class="col col-lg"></div>
-                <div class="col col-lg"></div>
-                <!-- <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click="owners = this.getAllhomesResponse()"></Button></div> -->
-                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbycityResponse()></Button></div>            
-            </div>
-    </div>
-            <!-- <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Property Type" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-8">
-                    <input type="checkbox" id="any" value="any" v-model="house.checkedHouses"><label for="any">&nbsp;&nbsp;Any&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="mansion" value="mansion" v-model="house.checkedHouses"><label for="mansion">&nbsp;&nbsp;Mansion&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="townhomes" value="townhomes" v-model="house.checkedHouses"><label for="townhomes">&nbsp;&nbsp;Townhomes&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="condos" value="condos" v-model="house.checkedHouses"><label for="condos">&nbsp;&nbsp;Condos&nbsp;&nbsp;&nbsp;</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Price range ($)" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-4">  
-                    <select v-model="house.price_min">
-                        <option disabled value="min">Please select one</option>
-                        <option>50k</option>
-                        <option>100k</option>
-                        <option>200k</option>
-                        <option>300k</option>
-                        <option>400k</option>
-                        <option>500k</option>
-                        <option>800k</option>
-                        <option>1M</option>
-                    </select>
-                </div>
-                <div class="col col-sm-4">  
-                    <select v-model="house.price_max">
-                        <option disabled value="max">Please select one</option>
-                        <option>50k</option>
-                        <option>100k</option>
-                        <option>200k</option>
-                        <option>300k</option>
-                        <option>400k</option>
-                        <option>500k</option>
-                        <option>800k</option>
-                        <option>1M</option>
-                    </select>
-                </div>  
-                <div class="col col-sm-4"></div>         
-            </div>
-                        <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Home size (sqft)" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-4">  
-                    <select v-model="house.size_min">
-                        <option disabled value="min">Please select one</option>
-                        <option>500</option>
-                        <option>1000</option>
-                        <option>2000</option>
-                        <option>3000</option>
-                        <option>4000</option>
-                        <option>5000</option>
-                        <option>10000</option>
-                    </select>
-                </div>
-                <div class="col col-sm-4">  
-                    <select v-model="house.size_max" >
-                        <option disabled value="max" placeholder="min">Please select one</option>
-                        <option>500</option>
-                        <option>1000</option>
-                        <option>2000</option>
-                        <option>3000</option>
-                        <option>4000</option>
-                        <option>5000</option>
-                        <option>10000</option>
-                    </select>
-                </div>  
-                <div class="col col-sm-4"></div>         
-            </div>
-            <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Bedrooms" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-8">
-                    <input type="checkbox" id="bedone" value="bedone" v-model="house.bedone"><label for="one">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="bedtwo" value="bedtwon" v-model="house.bedtwo"><label for="two">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="bedthree" value="bedthreees" v-model="house.bedthree"><label for="three">&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="bedfour" value="bedfour" v-model="house.bedfour"><label for="four">&nbsp;&nbsp;4&nbsp;+&nbsp;&nbsp;&nbsp;</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Bathrooms" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-8">
-                    <input type="checkbox" id="bathone" value="Halfbath" v-model="house.Halfbath"><label for="1/2">&nbsp;&nbsp;1/2&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="bathone" value="bathone" v-model="house.bath1"><label for="1">&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="bathtwo" value="bathtwon" v-model="house.bath2"><label for="2">&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;</label>
-                    <input type="checkbox" id="baththree" value="baththree" v-model="house.bath3"><label for="3+">&nbsp;&nbsp;3&nbsp;+&nbsp;&nbsp;</label>
-                </div>
-            </div>           
-            <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Listing status" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.sale"><label for="checkbox">&nbsp;&nbsp;Is for sale ?</label></div>
-            </div>
-            <div class="row">
-                <div class="col col-sm-4 top20"><Button class="btn1" text="Sold more than once" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.sold"><label for="checkbox">&nbsp;&nbsp;</label></div>
-            </div>
-            <div class="row">
-                <div class="col col-sm-4 top20"><Button class="btn1" text="Expensive > 1M$" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-6"><input type="checkbox" id="checkbox" v-model="house.expensive"><label for="checkbox">&nbsp;&nbsp;</label></div>
-            </div>
-
-            <div class="row">
-                <div class="col col-sm-4"><Button class="btn1" text="Appliances Manufacture" color="lightblue" disabled role="link"></Button></div>
-                <div class="col col-sm-4">  
-                    <select v-model="house.Appliance">
-                        <option disabled value="makernames">Please select one</option>
-                        <option>Maker1</option>
-                        <option>Maker2</option>
-                        <option>Maker3</option>
-                        <option>Maker4</option>
-                
-                    </select>
-                </div>
-                </div> -->
-            <!-- <div>
-                <select name="city" id="city" class="form-control" tabindex="12">
-                    <option v-for="(city, index) in cities" 
-                            :key="index" 
-                            :value="city.id">{{ city.name }}
-                     </option>
-                </select>
-            </div> -->
-            
-            <!-- <div class="row">
-                <div class="col col-lg"></div>
-                <div class="col col-lg"></div>
-                <div class="col col-lg"></div> -->
-                <!-- <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click="owners = this.getAllhomesResponse()"></Button></div> -->
-                <!-- <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbycityResponse()></Button></div>            
-            </div> -->
-
-        
-    <br/>
-
-    <div class="container2">
-        Search Results : Showing results for {{this.selected_city}}
-        <table class = "table table-striped">
-            <thead>
-                <tr>
-                    <th> homeId</th>
-                    <th> floorSpace</th>
-                    <th> numFloors</th>
-                    <th> numBedrooms</th>
-                    <th> fullBaths</th>
-                    <th> yearBuilt</th>                      
-                    <th> homeType</th>
-                    <th> isForSale</th>
-                    <th></th>                                      
-                </tr>
-            </thead>
-                <tbody>
-                    <tr v-for="(home, index) in homes " v-bind:key="home.homeId">
-                        <td> {{home.homeId}}</td>
-                        <td> {{home.floorSpace}}</td>
-                        <td> {{home.numFloors}}</td>
-                        <td> {{home.numBedrooms}}</td>
-                        <td> {{home.fullBaths}}</td>
-                        <td> {{home.yearBuilt}}</td>
-                        <td> {{home.homeType}}</td>                        
-                        <td> {{home.isForSale}}</td>
-                        <td>
-                            <button @click="expandRow(index)">
-                                {{ isRowExpanded(index) ? 'Collapse' : 'Expand' }}
-                            </button>
-                        </td>                        
-                    </tr>
-                    <tr v-if="isAnyRowExpanded">
-                        <td colspan="3">
-                            <div v-if="isExpandedRow">
-                            <expandHome :data="getExpandedRowData" />
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-        </table>
-    </div>
-    <div class = "header">
-        <h3 style="text-align:left">&nbsp;</h3>
-        <h3 style="text-align:left"> Search Home by price&nbsp;</h3>
-    </div> 
-    <!-- //Implementation of search home with Price min and price max -->
-    <div class= "container2">
             <div class="row">
                 <div class="col col-sm-4"><Button class="btn1" text="Price range ($)" color="lightblue" disabled role="link"></Button></div>
                 <div class="col col-sm-4">  
@@ -235,14 +48,74 @@
                 </div>  
                 <div class="col col-sm-4"></div>         
             </div> 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col col-lg"></div>
                 <div class="col col-lg"></div>
                 <div class="col col-lg"></div> 
                 <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbypriceResponse()></Button></div>            
+            </div> -->
+            
+            
+
+            <div class="row">
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <div class="col col-lg"></div>
+                <!-- <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click="owners = this.getAllhomesResponse()"></Button></div> -->
+                <div class="col col-sm"><Button class="btn1" text="SEARCH" color="lightgreen"  v-on:click=this.getHomesbycityandpriceResponse()></Button></div>            
             </div>
             
-            </div>
+    </div>
+           
+
+        
+    <br/>
+
+    <div class="container2">
+        Search Results : Showing results for {{this.selected_city}}
+        <table class = "table table-striped">
+            <thead>
+                <tr>
+                    <th> ID</th>
+                    <th> Area</th>
+                    <th> Floors</th>
+                    <th> Bedrooms</th>
+                    <th> Full Baths</th>
+                    <th> Year Built</th>                      
+                    <th> Type</th>
+                    <th> Latest Price</th>
+                    <th> Is for Sale</th>
+                    <th></th>                                      
+                </tr>
+            </thead>
+                <tbody>
+                    <tr v-for="(home, index) in homes " v-bind:key="home.homeId">
+                        <td> {{home.homeId}}</td>
+                        <td> {{home.floorSpace}}</td>
+                        <td> {{home.numFloors}}</td>
+                        <td> {{home.numBedrooms}}</td>
+                        <td> {{home.fullBaths}}</td>
+                        <td> {{home.yearBuilt}}</td>
+                        <td> {{home.homeType}}</td>                        
+                        <td> {{home.latestPrice}}</td>
+                        <td> {{home.isForSale}}</td>
+                        <td>
+                            <button @click="expandRow(index)">
+                                {{ isRowExpanded(index) ? 'Collapse' : 'Expand' }}
+                            </button>
+                        </td>                        
+                    </tr>
+                    <tr v-if="isAnyRowExpanded">
+                        <td colspan="3">
+                            <div v-if="isExpandedRow">
+                            <expandHome :data="getExpandedRowData" />
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+   
             <div class = "header">
         <h3 style="text-align:left">&nbsp;</h3>
         <h3 style="text-align:left"> Search Home by sold count&nbsp;</h3>
@@ -292,7 +165,7 @@
      
                 
     <div class="container2">
-    Search Results : Showing results for Sold count range ${{this.soldcount_min}} to ${{this.soldcount_max}}
+    Search Results : Showing results for Sold count range {{this.soldcount_min}} to {{this.soldcount_max}}
         <table class = "table table-striped">
             <thead>
                 <tr>
@@ -366,6 +239,8 @@ export default {
         homes: [],
         homes_price: [],
         homes_soldcount: [],
+        soldcount_min:'',
+        soldcount_max:'',
         cities: [],
        price_min : [], 
         price_max : [],
@@ -406,16 +281,16 @@ export default {
         this.homes = response.data;
       });
   },
-  getHomesbycityResponse(){
-      HomeService.getHomesbycity(this.selected_city).then((response) => {
-        this.homes = response.data;
-      })
-      .catch(error => {
-        this.homes = []
-        console.error(error);
-      });
-      console.log(this.homes)
-  },
+//   getHomesbycityResponse(){
+//       HomeService.getHomesbycity(this.selected_city).then((response) => {
+//         this.homes = response.data;
+//       })
+//       .catch(error => {
+//         this.homes = []
+//         console.error(error);
+//       });
+//       console.log(this.homes)
+//   },
   getHomesbysoldcountResponse(){
       HomeService.getHomesbysoldcount(this.soldcount_min,this.soldcount_max).then((response) => {
         this.homes_soldcount = response.data;
@@ -433,14 +308,16 @@ export default {
       return this.expandedRowIndex === index;
     },
 
-    getHomesbypriceResponse(){
+    getHomesbycityandpriceResponse(){
         console.log(this.price_min)
         console.log(this.price_max)
-        HomeService.getHomesbyprice(this.price_min,this.price_max).then((response)=>{
-        this.homes_price=response.data;
+        console.log(this.selected_city)
+
+        HomeService.getHomesbycityandprice(this.price_min,this.price_max,this.selected_city).then((response)=>{
+        this.homes=response.data;
       })
       .catch(error => {
-        this.owners = []
+        this.homes = []
         console.error(error);
       });
     }

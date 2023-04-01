@@ -54,6 +54,7 @@ body {
   max-width: 50px;
   margin: 30px auto;
   /* overflow: 10px; */
+  overflow-y: auto;
   min-height: 50px;
   border: 1px solid rgb(248, 248, 248);
   padding: 30px;
@@ -63,9 +64,10 @@ body {
 .container1 {
   max-width: 1000px;
   margin: 30px auto;
+  overflow-y: auto;
   /* overflow: 10px; */
   max-height: 50px;
-  border: 1px solid rgb(255, 255, 255);
+  border: 1px solid rgb(156, 154, 154);
   /* padding: 30px; */
   border-radius: 5px;
 }
@@ -73,9 +75,11 @@ body {
 .container2 {
   /* max-width: 900px; */
   margin: 30px auto;
+  overflow-y: auto;
   /* overflow: 10px; */
   min-height: 100px;
-  border: 1px solid rgb(145, 47, 47);
+  border: 2px solid rgb(101, 101, 101);
+  background-color: rgb(231, 240, 255);
   padding: 30px;
   border-radius: 5px;
 }
@@ -83,14 +87,14 @@ body {
 .btn {
   display: inline-block;
   background: #000;
-  color: #fff;
+  color: #000000;
   border: 3px;
   padding: 10px 20px;
   margin: 2px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 20px;
   font-family: inherit;
 }
 
