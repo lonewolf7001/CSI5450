@@ -1,27 +1,25 @@
 import axios from 'axios'
-
-
-const SPRING_BOOT_OWNER_URL = 'http://localhost:8081/owner/'
+const SERVER_URL ='http://csi5450finalprojectbackend-env.eba-vdqznnev.us-east-2.elasticbeanstalk.com/'
 
 class OwnerService{
     getAllowners(){
-        return axios.get(SPRING_BOOT_OWNER_URL);
+        return axios.get(SERVER_URL+'owner/');
     }
 
     create(owner){
-        return axios.post('http://localhost:8081/owner/add', owner)
+        return axios.post(SERVER_URL+'owner/add', owner)
     }
     
     getHomesbyownercity(ssn,city){
-        return axios.get('http://localhost:8081/homes/owner?owner='+ssn+'&city='+city)
+        return axios.get(SERVER_URL+'homes/owner?owner='+ssn+'&city='+city)
     }
 
     update(owner){
-        return axios.put('http://localhost:8081/owner/update',owner)
+        return axios.put(SERVER_URL+'owner/update',owner)
     }
     
     getHomeownerbyID(id){
-        return axios.get('http://localhost:8081/owner/id/'+id)
+        return axios.get(SERVER_URL+'owner/id/'+id)
     }
 
 }
