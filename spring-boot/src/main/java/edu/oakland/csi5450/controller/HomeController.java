@@ -157,13 +157,13 @@ public class HomeController {
 
     @PostMapping
     public ResponseEntity<Integer> saveHome(@RequestBody Home home) {
-        if (home.getHomeType().equals("APARTMENT") && home.getNumFloors() != null && home.getNumFloors() > 1) {
+        if (home.getHomeType().equals("A") && home.getNumFloors() != null && home.getNumFloors() > 1) {
             throw new InvalidDataException("Apartments cannot have more than one floor.");
         }
-        if (home.getHomeType().equals("MANSION") && home.getFloorSpace() < 6000) {
+        if (home.getHomeType().equals("M") && home.getFloorSpace() < 6000) {
             throw new InvalidDataException("Mansions must have at least 6000 square feet of floor space.");
         }
-        Integer savedHomeId = homeService.saveHome(home);
+        Integer savedHomeId = homeService.save(home);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedHomeId);
     }
 
@@ -202,4 +202,13 @@ public class HomeController {
         }
     }
 
+    @GetMapping("/{id}/former-owners")
+    public ResponseEntity<List<String>> getFormerHomeOwners(@PathVariable Integer id) {
+        List<String> formerOwners = homeService.getFormerOwners(id);
+        if (formerOwners != null && !formerOwners.isEmpty()) {
+            return ResponseEntity.ok(formerOwners);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
