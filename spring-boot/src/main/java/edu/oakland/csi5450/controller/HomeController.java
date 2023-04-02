@@ -69,7 +69,7 @@ public class HomeController {
         else
             return new ResponseEntity<>(resp, HttpStatus.OK);
     }
-    @GetMapping("/criteria")
+    @PostMapping("/criteria")
     public ResponseEntity<Object> getHomesByCriteria(@RequestBody @Valid HomeSearchCriteria criteria) {
     	
     	if(!homeService.validateCriteria(criteria))

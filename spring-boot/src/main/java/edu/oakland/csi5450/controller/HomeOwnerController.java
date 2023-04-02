@@ -1,5 +1,6 @@
 package edu.oakland.csi5450.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -43,6 +44,19 @@ public class HomeOwnerController
 		}
 	}
 	
+	@PostMapping("/homeType")
+	public ResponseEntity<Object> getOwnersByHomeType(@RequestBody List<String> homeTypes) {
+		List<String> sanitized = new ArrayList<>();
+		for(String type: homeTypes)
+			if(type.length() != 1)
+				return ResponseEntity.badRequest().body(new ErrorResponse("Invalid home type. Must be single character."));
+			else
+				sanitized.add(type.toUpperCase());
+		List<HomeOwner> result = homeOwnerService.getHomeOwnerByHomeType(sanitized);
+		if(result.isEmpty())
+			return ResponseEntity.notFound().build();
+		else return ResponseEntity.ok(result);
+	}
 	@PostMapping("/add")
 	public ResponseEntity<Object> createHomeOwner(@Valid @RequestBody HomeOwner req){
 		homeOwnerService.sanitizeHomeOwner(req);

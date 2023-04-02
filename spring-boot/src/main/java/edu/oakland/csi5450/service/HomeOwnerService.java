@@ -22,6 +22,9 @@ public class HomeOwnerService {
 		return homeOwnerDao.getHomeOwnerById(id);
 	}
 
+	public List<HomeOwner> getHomeOwnerByHomeType(List<String> homeTypes) {
+		return homeOwnerDao.getHomeOwnerByHomeType(homeTypes);
+	}
 	/**
 	 * validates and sanitizes a HomeOwner object. Returns an error string, or null
 	 * if the bean is valid

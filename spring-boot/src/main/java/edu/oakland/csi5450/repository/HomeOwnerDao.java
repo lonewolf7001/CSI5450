@@ -3,6 +3,8 @@ package edu.oakland.csi5450.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,27 @@ public class HomeOwnerDao {
 		}
 	}
 
+	public List<HomeOwner> getHomeOwnerByHomeType(List<String> homeTypes) {
+		String query1 = "select o.* "
+				+ "from home_owner o, "
+				+ 	" (select o2.ssn "
+				+ 		" from home h, home_owner o2 "
+				+ 		" where h.owner_id=o2.ssn and h.home_type in (";
+		String query2 = ") group by o2.ssn "
+				+ 		" having count(distinct h.home_type) = ?) as target_owners "
+				+ "where o.ssn = target_owners.ssn";
+		String values = String.join(",", Collections.nCopies(homeTypes.size(), "?"));
+		String query = query1 + values + query2;
+		
+		//params are each homeType in the input list (CHAR), followed by an INT (the size of the list)
+		List<Object> params = new ArrayList<>(homeTypes);
+		params.add(homeTypes.size());
+		List<Integer> typeList = new ArrayList<>(Collections.nCopies(homeTypes.size(), Types.CHAR));
+		typeList.add(Types.INTEGER);
+		int[] types = typeList.stream().mapToInt(i->i).toArray();
+		
+		return jdbcTemplate.query(query, params.toArray(), types, getRowMapper());
+	}
 	public void createHomeOwner(HomeOwner o) {
 		final String query = "INSERT INTO HOME_OWNER(ssn, first_name, last_name, num_dependents, annual_income, date_of_birth, profession, phone, email)"
 				+ "values (?,?,?,?,?,?,?,?, ?)";
