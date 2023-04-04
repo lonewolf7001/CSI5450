@@ -96,9 +96,9 @@ public class HomeController {
             return new ResponseEntity<>(resp, HttpStatus.OK);
     }
     
-    @GetMapping("/singlebrand")
-    public List<HomeWithApplianceManufacturer> getSingleBrandHomes() {
-    	return homeService.getSingleBrandHomes();
+    @GetMapping("/singlebrand/{brand}")
+    public List<HomeWithApplianceManufacturer> getSingleBrandHomes(@PathVariable @NotNull @Size(min=1, max=15) String brand) {
+    	return homeService.getSingleBrandHomes(brand);
     }
 
     @GetMapping("/bedrooms/{numBedrooms}")

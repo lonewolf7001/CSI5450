@@ -60,7 +60,7 @@ public class HomeDao {
     
     private static final String QUERY_BY_SOLD_COUNT_SUBQUERY = "select h.home_id, count(s.sale_date) as sales from home h, sale s where h.home_id = s.home_id group by h.home_id ";
     
-    private static final String QUERY_BY_SAME_APPLIANCE = "select h.*, home_brand.brand from home h, (select h2.home_id, min(a.manufacturer) as brand from home h2, home_appliance_mapping m, appliance a where h2.home_id = m.home_id and m.model_number = a.model_number group by h2.home_id having count(distinct a.manufacturer) = 1) as home_brand where h.home_id = home_brand.home_id";
+    private static final String QUERY_BY_SAME_APPLIANCE = "select h.*, home_brand.brand from home h, (select h2.home_id, min(a.manufacturer) as brand from home h2, home_appliance_mapping m, appliance a where h2.home_id = m.home_id and m.model_number = a.model_number group by h2.home_id having count(distinct a.manufacturer) = 1) as home_brand where h.home_id = home_brand.home_id and home_brand.brand=?";
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -74,8 +74,8 @@ public class HomeDao {
         return result.isEmpty() ? null : result.get(0);
     }
 
-    public List<HomeWithApplianceManufacturer> getHomesWithSameApplianceManufacturer() {
-    	return jdbcTemplate.query(QUERY_BY_SAME_APPLIANCE, getHomeApplianceMapper());
+    public List<HomeWithApplianceManufacturer> getHomesWithSameApplianceManufacturer(String manufacturer) {
+    	return jdbcTemplate.query(QUERY_BY_SAME_APPLIANCE, getHomeApplianceMapper(), manufacturer);
     }
     /**
      * Either min or max (or both) should be specified. City is optional

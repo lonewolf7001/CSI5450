@@ -55,8 +55,8 @@ public class HomeService {
         return homeDao.getById(homeId);
     }
 
-    public List<HomeWithApplianceManufacturer> getSingleBrandHomes() {
-    	List<HomeWithApplianceManufacturer> resp = homeDao.getHomesWithSameApplianceManufacturer();
+    public List<HomeWithApplianceManufacturer> getSingleBrandHomes(String brand) {
+    	List<HomeWithApplianceManufacturer> resp = homeDao.getHomesWithSameApplianceManufacturer(brand.toUpperCase());
     	for(HomeWithApplianceManufacturer home : resp)
     		home.setManufacturer(home.getManufacturer().trim());
     	return resp;
