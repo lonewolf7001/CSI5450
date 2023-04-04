@@ -1,54 +1,87 @@
 <template>
   <div>
-  <div class="container">
-  <Header
-    title="REAL ESTATE MANAGEMENT SYSTEM"
-  />
-  <router-link to="/homepage" v-slot="{ navigate }"><Button text="HOME PAGE" color="orange" @click="navigate" role="link"></Button></router-link>
-  <router-link to="/housesearch" v-slot="{ navigate }"><Button text="HOUSE SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
-  <router-link to="/ownersearch" v-slot="{ navigate }"><Button text="OWNER SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
-  <router-link to="/agentsearch" v-slot="{ navigate }"><Button text="AGENT SEARCH" color="orange" @click="navigate" role="link"></Button></router-link>
-  <router-link to="/transactions" v-slot="{ navigate }"><Button text="TRANSACTIONS" color="orange" @click="navigate" role="link"></Button></router-link>     
-  <router-view :key="$route.fullPath"></router-view>
+    <div class="container">
+      <Header title="REAL ESTATE MANAGEMENT SYSTEM" />
+      <router-link to="/homepage" v-slot="{ navigate }"
+        ><Button
+          text="HOME PAGE"
+          color="orange"
+          @click="navigate"
+          role="link"
+        ></Button
+      ></router-link>
+      <router-link to="/homesearch" v-slot="{ navigate }"
+        ><Button
+          text="HOME SEARCH"
+          color="orange"
+          @click="navigate"
+          role="link"
+        ></Button
+      ></router-link>
+      <router-link to="/agentsearch" v-slot="{ navigate }"
+        ><Button
+          text="AGENT SEARCH"
+          color="orange"
+          @click="navigate"
+          role="link"
+        ></Button
+      ></router-link>
+      <router-link to="/transactions" v-slot="{ navigate }"
+        ><Button
+          text="TRANSACTIONS"
+          color="orange"
+          @click="navigate"
+          role="link"
+        ></Button
+      ></router-link>
+      <router-link to="/ownersearch" v-slot="{ navigate }"
+        ><Button
+          text="OWNER SEARCH"
+          color="orange"
+          @click="navigate"
+          role="link"
+        ></Button
+      ></router-link>
+      <router-view></router-view>
       <!-- The springboot msg is : {{ string }} -->
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import Header from './components/Header'
-import Button from './components/Button'
+import Header from "./components/Header";
+import Button from "./components/Button";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Button,
     Header,
   },
-  data(){
-      return {
-          string: []
-      }
-    },
+  data() {
+    return {
+      string: [],
+    };
+  },
   methods: {
     // getExampleResponse(){
     //   ExampleService.getExampleService().then((response) => {
     //     this.string = response.data;
     //   });
     // }
-  }
-}
+  },
+};
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .container {
   max-width: 50px;
@@ -98,9 +131,15 @@ body {
   font-family: inherit;
 }
 
-.btn1 {width: 200px;}
-.btn2 {width: 50%;}
-.btn3 {width: 100%;}
+.btn1 {
+  width: 200px;
+}
+.btn2 {
+  width: 50%;
+}
+.btn3 {
+  width: 100%;
+}
 
 .btn:focus {
   outline: none;
@@ -112,6 +151,4 @@ body {
   display: block;
   width: 100%;
 }
-
-
 </style>

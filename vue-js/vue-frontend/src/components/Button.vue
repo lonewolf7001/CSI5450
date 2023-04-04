@@ -6,15 +6,15 @@
 
 <script>
 export default {
-  name: 'ButtonCustom',
+  name: "ButtonCustom",
   props: {
     text: String,
     color: String,
   },
   methods: {
     onClick() {
-      this.$emit('btn-click')
+      this.$emit("btn-click");
     },
   },
-}
+};
 </script>

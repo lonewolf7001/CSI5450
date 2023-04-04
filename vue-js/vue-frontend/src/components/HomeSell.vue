@@ -1,86 +1,187 @@
 <template>
-    <div>
-        <div class = "header">
-            <h3 style="text-align:left">&nbsp;</h3>
-            <h3 style="text-align:left"> Update Home Sale Data &nbsp;</h3>
-        </div>
-    
-        <div class= "container2">
-            <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="HomeId" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="home_sale.homeId" placeholder="homeID" /></div>
-            </div>
-            <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="SaleDate" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="home_sale.saleDate" placeholder="saledate" /></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="OwnerId" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="home_sale.ownerId" placeholder="ownerid" /></div>
-            </div>
-            <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="agentId" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="home_sale.agentId" placeholder="agentId" /></div>
-            </div>
-            <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="CompanyId" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="home_sale.companyId" placeholder="companyid" /></div>
-            </div>
-            <div class= "row3"> 
-            <div class="col1"><Button class="btn1" text="price" color="lightblue" disabled role="link"></Button></div>
-            <div class= "col2"> <input v-model="home_sale.price" placeholder="price" /></div>
-            </div>
-
-            <div class="row3">
-            <div class="col1"></div>
-            <div class="col2"><Button class="btn1" text="UpdateHomesale" color="lightgreen" v-on:click=" this.UpdateHomeSellResponse()"></Button></div>
-            </div>
-        </div>
+  <div>
+    <div class="header">
+      <h3 style="text-align: left">&nbsp;</h3>
+      <h3 style="text-align: left">Update Home Sale Data &nbsp;</h3>
     </div>
-    </template>
-    <script>
-    import Button from '../components/Button'
-    import HomeService from '@/services/HomeService';
-    
-    export default {
-      name: 'HomeSell',
-      components: {
-        Button
+    <div class="container2">
+      <div class="row3">
+        <div class="col1">
+          <Button
+            class="btn1"
+            text="Home ID"
+            color="lightblue"
+            disabled
+            role="link"
+          ></Button>
+        </div>
+        <div class="col2">
+          <input v-model="home_sale.homeId" placeholder="homeID" />
+        </div>
+      </div>
+      <div class="row3">
+        <div class="col1">
+          <Button
+            class="btn1"
+            text="Sale Date"
+            color="lightblue"
+            disabled
+            role="link"
+          ></Button>
+        </div>
+        <div class="col2">
+          <input v-model="home_sale.saleDate" placeholder="YYYY-MM-DD" />
+        </div>
+      </div>
+      <div class="row3">
+        <div class="col1">
+          <Button
+            class="btn1"
+            text="Owner ID"
+            color="lightblue"
+            disabled
+            role="link"
+          ></Button>
+        </div>
+        <div class="col2">
+          <select v-model="home_sale.ownerId">
+            <option value="">Select a Owner</option>
+            <option v-for="owner in owners" :key="owner.ssn" :value="owner.ssn">
+              {{ owner.firstName }} {{ owner.lastName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row3">
+        <div class="col1">
+          <Button
+            class="btn1"
+            text="Company ID"
+            color="lightblue"
+            disabled
+            role="link"
+          ></Button>
+        </div>
+        <!-- <div class= "col2"> <input v-model="home_sale.companyId" placeholder="companyid" /></div> -->
+        <div class="col2">
+          <select
+            v-model="home_sale.companyId"
+            v-on:change="getagentofcompanyResponse()"
+          >
+            <option value="">Select a Company</option>
+            <option
+              v-for="company in companies"
+              :key="company.id"
+              :value="company.id"
+            >
+              {{ company.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row3">
+        <div class="col1">
+          <Button
+            class="btn1"
+            text="Agent ID"
+            color="lightblue"
+            disabled
+            role="link"
+          ></Button>
+        </div>
+        <!-- <div class= "col2"> <input v-model="home_sale.agentId" placeholder="agentId" /></div> -->
+        <div class="col2">
+          <select v-model="home_sale.agentId">
+            <option value="">Select an Agent</option>
+            <option v-for="agent in agents" :key="agent.id" :value="agent.id">
+              {{ agent.firstName }} {{ agent.lastName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row3">
+        <div class="col1">
+          <Button
+            class="btn1"
+            text="Price"
+            color="lightblue"
+            disabled
+            role="link"
+          ></Button>
+        </div>
+        <div class="col2">
+          <input v-model="home_sale.price" placeholder="price" />
+        </div>
+      </div>
+      <div class="row3">
+        <div class="col1"></div>
+        <div class="col2">
+          <Button
+            class="btn1"
+            text="UpdateHomesale"
+            color="lightgreen"
+            v-on:click="this.UpdateHomeSellResponse()"
+          ></Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import Button from "../components/Button";
+import HomeService from "@/services/HomeService";
+import AgentService from "@/services/AgentService";
+import OwnerService from "../services/OwnerService";
+export default {
+  name: "HomeSell",
+  components: {
+    Button,
+  },
+  data() {
+    return {
+      home_sale: {
+        homeId: "",
+        saleDate: "",
+        ownerId: null,
+        agentId: null,
+        companyId: null,
+        price: "",
       },
-      data() {
-        return {
-          home_sale: {  homeId: '',
-                        saleDate:'',
-                        ownerId : null ,
-                        agentId :null,
-                        companyId: null,
-                        price: ''
-            }
-          }
-        },
-      methods: {
-        UpdateHomeSellResponse(){
-          // console.log(home_sale.homeId)
-          // console.log( home_sale.saleDate)
-          // console.log(home_sale.ownerId)
-          // console.log( home_sale.agentId)
-          // console.log(home_sale.companyId)
-          // console.log( home_sale.price)
-          console.log(this.home_sale);
-          HomeService.sell(this.home_sale).then(response => {
-            console.log(response.data);
+      agents: [],
+      companies: [],
+      owners: [],
+    };
+  },
+  created() {
+    AgentService.getAllcompanies().then((response) => {
+      this.companies = response.data;
+      console.log(this.companies);
+    });
+    OwnerService.getAllowners().then((response) => {
+      this.owners = response.data;
+    });
+  },
 
-            // this.home_sale.homeId = '';
-            // this.home_sale.SaleDate = '';
-            // this.home_sale.ownerId = '';
-            // this.home_sale.agentId = '';
-            // this.home_sale.companyId = '';
-            // this.home_sale.price = '';
-          })
-          .catch(error => {
-            console.error(error);
-          });
+  methods: {
+    UpdateHomeSellResponse() {
+      console.log(this.home_sale);
+      HomeService.sell(this.home_sale)
+        .then((response) => {
+          console.log(response.data);
+          this.home_sale = [];
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    getagentofcompanyResponse() {
+      AgentService.getAgentofcompany(this.home_sale.companyId).then(
+        (response) => {
+          this.agents = response.data;
+          console.log(this.agents);
         }
-      }
-    }
-    </script>
+      );
+    },
+  },
+};
+</script>
