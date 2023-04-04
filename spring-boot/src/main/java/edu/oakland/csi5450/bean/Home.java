@@ -50,6 +50,8 @@ public class Home {
         return homeId;
     }
 
+    private Object ownerId;
+
     public void setHomeId(Integer homeId) {
         this.homeId = homeId;
     }
@@ -127,6 +129,11 @@ public class Home {
     }
 
     public Object getOwnerId() {
-        return null;
+        return ownerId;
     }
+
+    public void setOwnerId(Object ownerId) {
+        this.ownerId = ownerId;
+    }
+
 }

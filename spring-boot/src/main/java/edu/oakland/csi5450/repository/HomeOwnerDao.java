@@ -98,7 +98,7 @@ public class HomeOwnerDao {
 			@Override
 			public HomeOwner mapRow(ResultSet rs, int i) throws SQLException {
 				HomeOwner resp = new HomeOwner();
-				resp.setSsn(rs.getInt("ssn"));
+				resp.setSsn(rs.getLong("ssn"));
 				resp.setFirstName(rs.getString("first_name"));
 				resp.setLastName(rs.getString("last_name"));
 				resp.setNumDependents(rs.getInt("num_dependents"));
@@ -107,8 +107,18 @@ public class HomeOwnerDao {
 				resp.setProfession(rs.getString("profession"));
 				resp.setPhone(rs.getLong("phone"));
 				resp.setEmail(rs.getString("email"));
+				resp.setOwnerId(rs.getLong("ssn"));
 				return resp;
 			}
 		};
 	}
+
+	public HomeOwner getById(Long ownerId) {
+
+		return getHomeOwnerById(ownerId);
+	}
+
+	// public List<HomeOwner> getHomeOwners() {
+	// 	return null;
+	// }
 }

@@ -13,9 +13,9 @@ public class HomeOwner
 	
 	@Min(100000000)
 	@Max(999999999)
-	private int ssn;
-	
-	@Size(min=1, max=25)
+	private Long ssn;
+
+	@Size(min = 1, max = 25)
 	private String firstName;
 	
 	@Size(min=1, max=30)
@@ -41,14 +41,14 @@ public class HomeOwner
 	@Size(max=50)
 	private String email;
 
-	
-	public int getSsn()
-	{
+	private Object ownerId;
+
+	public @Min(100000000) @Max(999999999) Long getSsn() {
 		return ssn;
 	}
-	public void setSsn(int ssn)
-	{
-		this.ssn = ssn;
+
+	public void setSsn(Long ownerId) {
+		this.ssn = ownerId;
 	}
 	public String getFirstName()
 	{
@@ -110,8 +110,16 @@ public class HomeOwner
 	{
 		return email;
 	}
-	public void setEmail(String email)
-	{
+
+	public Object getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(Object ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	public void setEmail(String email) {
 		this.email = email;
 	}
 }

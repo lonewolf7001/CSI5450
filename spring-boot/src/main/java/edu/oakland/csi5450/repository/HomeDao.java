@@ -236,6 +236,10 @@ public class HomeDao {
         return jdbcTemplate.query(sb.toString(), params, types, getExtendedMapper());
     }
 
+    //
+    /**
+     * @param home
+     */
     public int update(Home home) {
         return jdbcTemplate.update(UPDATE_SQL, home.getFloorSpace(), home.getNumFloors(), home.getNumBedrooms(),
                 home.getFullBaths(), home.getHalfBaths(), home.getLandSize(), home.getYearBuilt(), home.getHomeType(),
@@ -319,6 +323,7 @@ public class HomeDao {
             home.setYearBuilt(rs.getShort("year_built"));
             home.setHomeType(rs.getString("home_type"));
             home.setIsForSale(rs.getBoolean("is_for_sale"));
+            home.setOwnerId(rs.getObject("owner_id"));
             additionalFieldMapper.accept(home, rs);
             return home;
         }
@@ -328,6 +333,6 @@ public class HomeDao {
 	{
 		return jdbcTemplate.queryForObject(INSERT_SQL, Integer.class, home.getFloorSpace(),
                 home.getNumFloors(), home.getNumBedrooms(), home.getFullBaths(), home.getHalfBaths(),
-                home.getLandSize(), home.getYearBuilt(), home.getHomeType(), home.getIsForSale());
-	}
+                home.getLandSize(), home.getYearBuilt(), home.getHomeType(), home.getIsForSale(), home.getOwnerId());
+    }
 }

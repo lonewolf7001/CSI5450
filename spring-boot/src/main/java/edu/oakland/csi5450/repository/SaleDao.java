@@ -75,4 +75,17 @@ public class SaleDao {
 	public List<Sale> getAllSales() {
 		return null;
 	}
+
+	public List<Sale> getSalesByHomeId(int homeId) {
+		final String query = "SELECT home_id, sale_date, owner_id, agent_id, company_id, price FROM SALE WHERE home_id=?";
+		try {
+			Object[] params = { homeId };
+			int[] types = { Types.INTEGER };
+			return jdbcTemplate.query(query, params, types, getRowMapper());
+
+		} catch (DataAccessException e) {
+			throw new DaoFailedException(e);
+		}
+	}
+
 }
