@@ -18,9 +18,12 @@ class OwnerService {
   update(owner) {
     return axios.put(SERVER_URL + "owner/update", owner);
   }
-
   getHomeownerbyID(id) {
     return axios.get(SERVER_URL + "owner/id/" + id);
+  }
+
+  getOwnerbyhometype(type) {
+    return axios.post(SERVER_URL + "owner/homeType", type);
   }
 }
 

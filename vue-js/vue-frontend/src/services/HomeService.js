@@ -23,6 +23,11 @@ class HomeService {
     return axios.post(SERVER_URL + "homes/criteria", criteria);
   }
 
+  getHomesbysinglebrand(brand)
+  {
+    return axios.get(SERVER_URL + "homes/singlebrand/"+brand);
+  }
+
   getHomesbycityandprice(price_min, price_max, city) {
     return axios.get(
       SERVER_URL +

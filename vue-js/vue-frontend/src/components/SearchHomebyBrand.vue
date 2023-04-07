@@ -12,19 +12,20 @@
         <div class="col col-sm-4">
           <Button
             class="btn1"
-            text="Appliances Manufacture"
+            text="Appliances Manufacturer"
             color="lightblue"
             disabled
             role="link"
           ></Button>
         </div>
         <div class="col col-sm-4">
-          <select v-model="home_Appliance">
+          <select v-model="manufacturer">
             <option disabled value="makernames">Please select one</option>
             <option>MAYTAG</option>
             <option>SAMSUNG</option>
-            <option>MAYTAG</option>
-            <option>MAYTAG</option>
+            <option>LG</option>
+            <option>INSIGNIA</option>
+            <option>THERMADOR</option>
           </select>
         </div>
       </div>
@@ -38,7 +39,7 @@
             class="btn1"
             text="SEARCH"
             color="lightgreen"
-            v-on:click="this.getHomesbycriteriaResponse()"
+            v-on:click="this.getHomesbysinglebrandResponse()"
           ></Button>
         </div>
       </div>
@@ -51,19 +52,34 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>HomeID</th>
-            <th>Appliance</th>
-            <th>Manufacture</th>
+            <th>homeId</th>
+            <th>floorSpace</th>
+            <th>landSize</th>
+            <th>yearBuilt</th>
+            <th>homeType</th>
+            <th>isForSale</th>
+            <th>ownerId</th>
+            <th>Manufacturer</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(home, index3) in homes_b" v-bind:key="home.homeId">
+          <tr v-for="(home, index3) in homes" v-bind:key="home.homeId">
             <td>{{ home.homeId }}</td>
-            <td>{{ home.appliance }}</td>
+            <td>{{ home.floorSpace }}</td>
+            <td>{{ home.landSize }}</td>
+            <td>{{ home.yearBuilt }}</td>
+            <td>{{ home.homeType }}</td>
+            <td>{{ home.isForSale }}</td>
+            <td>{{ home.ownerId }}</td>
             <td>{{ home.manufacturer }}</td>
             <td>
               <button @click="expandRow(index3)">
                 {{ isRowExpanded(index3) ? "Collapse" : "GetHomeDetails" }}
+              </button>
+            </td>
+            <td>
+              <button @click="expandRow2(index)">
+                {{ isRow2Expanded(index) ? "Collapse" : "GetOwnerDetails" }}
               </button>
             </td>
           </tr>
@@ -71,6 +87,13 @@
             <td colspan="3">
               <div v-if="isExpandedRow">
                 <expandHome :data="getExpandedRowData" />
+              </div>
+            </td>
+          </tr>
+          <tr v-if="isAnyRow2Expanded">
+            <td colspan="3">
+              <div v-if="isExpandedRow2">
+                <expandOwner :data="getExpandedRow2Data" />
               </div>
             </td>
           </tr>
@@ -83,52 +106,43 @@
 <script>
 import Button from "../components/Button";
 import HomeService from "@/services/HomeService";
-// import expandHome from "../components/expandHome.vue";
-// import expandOwner from "../components/expandOwner.vue";
+import expandHome from "../components/expandHome.vue";
+import expandOwner from "../components/expandOwner.vue";
 
 export default {
   name: "SearchHomebyBrand",
   components: {
     Button,
-    // expandHome,
-    // expandOwner,
+    expandHome,
+    expandOwner,
   },
   data() {
     return {
-      selected_city: "",
-      criteria: {
-        floorSpace: "",
-        numFloors: "",
-        numBedrooms: "",
-        fullBaths: "",
-        halfBaths: "",
-        landSize: "",
-        yearBuilt: "",
-        homeType: "",
-        isForSale: "",
-      },
-      criteria1: {
-        floorSpace: 1790,
-        numFloors: 2,
-        numBedrooms: 3,
-        fullBaths: 3,
-        halfBaths: 1,
-        landSize: 0.7,
-        yearBuilt: 1972,
-        homeType: "N",
-        isForSale: true,
-      },
+      manufacturer: "",
+      // selected_city: "",
+      // criteria: {
+      //   floorSpace: "",
+      //   numFloors: "",
+      //   numBedrooms: "",
+      //   fullBaths: "",
+      //   halfBaths: "",
+      //   landSize: "",
+      //   yearBuilt: "",
+      //   homeType: "",
+      //   isForSale: "",
+      // },
+      // criteria1: {
+      //   floorSpace: 1790,
+      //   numFloors: 2,
+      //   numBedrooms: 3,
+      //   fullBaths: 3,
+      //   halfBaths: 1,
+      //   landSize: 0.7,
+      //   yearBuilt: 1972,
+      //   homeType: "N",
+      //   isForSale: true,
+      // },
       homes: [],
-      homes_c: [],
-      homes_b: [],
-      homes_price: [],
-      homes_soldcount: [],
-      soldcount_min: "",
-      soldcount_max: "",
-      cities: [],
-      price_min: [],
-      price_max: [],
-      home_Appliance: [],
       expandedRowIndex: -1,
       expandedRow2Index: -1,
     };
@@ -140,16 +154,18 @@ export default {
     });
   },
   methods: {
-      getHomesbysamebrandResponse(){
-          HomeService.getHomesbysamebrand().then((response) => {
-            this.homes_soldcount = response.data;
-          })
-          .catch(error => {
-            this.homes = []
-            console.error(error);
-          });
-          console.log(this.homes)
-      },
+    getHomesbysinglebrandResponse() {
+      console.log(this.manufacturer);
+      HomeService.getHomesbysinglebrand(this.manufacturer)
+        .then((response) => {
+          this.homes = response.data;
+        })
+        .catch((error) => {
+          this.homes = [];
+          console.error(error);
+        });
+      // console.log(this.homes)
+    },
 
     expandRow(index) {
       this.expandedRowIndex = this.expandedRowIndex === index ? -1 : index;

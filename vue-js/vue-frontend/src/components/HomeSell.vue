@@ -30,7 +30,9 @@
           ></Button>
         </div>
         <div class="col2">
-          <input v-model="home_sale.saleDate" placeholder="YYYY-MM-DD" />
+          <input v-model="home_sale.saleDate" type="date" />
+        </div>
+        <div>
         </div>
       </div>
       <div class="row3">
@@ -134,6 +136,7 @@ import AgentService from "@/services/AgentService";
 import OwnerService from "../services/OwnerService";
 export default {
   name: "HomeSell",
+  // vuetify: new Vuetify(),
   components: {
     Button,
   },
@@ -164,6 +167,7 @@ export default {
 
   methods: {
     UpdateHomeSellResponse() {
+      console.log(this.home_sale.saleDate);
       console.log(this.home_sale);
       HomeService.sell(this.home_sale)
         .then((response) => {

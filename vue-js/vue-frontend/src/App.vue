@@ -45,12 +45,24 @@
       <router-view></router-view>
       <!-- The springboot msg is : {{ string }} -->
     </div>
+    <div class="photo-gallery">
+    <div class="photo-container">
+      <!-- Add your photos here -->
+      <img src="../src/photos/house-1836070__480.jpg" alt="My photo" class="custom-padding">
+      <!-- <img src="../src/photos/pexels-david-mcbee-1546168.jpg" alt="My photo" class="custom-padding"> -->
+      <!-- <img src="../src/photos/real-estate-agent-offer-house-represented-model-wide-banner-composition-bokeh-background-63596018.jpg" alt="My photo" class="custom-padding"> -->
+      <!-- <div v-for="photo in photos" :key="photo.id" class="photo"> -->
+        <!-- <img :src="../src/photos/20150622231001-for-sale-real-estate-home-house.jpeg"  class="photo"> -->
+      <!-- </div> -->
+    </div>
+  </div>
   </div>
 </template>
 
 <script>
 import Header from "./components/Header";
 import Button from "./components/Button";
+// import photoData from '@/data/photos.json'
 
 export default {
   name: "App",
@@ -61,24 +73,35 @@ export default {
   data() {
     return {
       string: [],
+      // photos: photoData
     };
   },
   methods: {
-    // getExampleResponse(){
-    //   ExampleService.getExampleService().then((response) => {
-    //     this.string = response.data;
-    //   });
-    // }
   },
 };
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+
+.photo-gallery {
+  width: 100%;
+  overflow-x: scroll;
+  margin: 0;
+  padding: 10;
+}
+
+.photo-container {
+  display: flex;
+}
+.custom-padding {
+  padding: 50px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
-  padding: 0;
+  padding: 10;
 }
 body {
   font-family: "Poppins", sans-serif;
