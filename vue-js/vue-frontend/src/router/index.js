@@ -111,7 +111,7 @@ const routes = [
     component: HomeSell,
   },
   {
-    path: "/",
+    path: "/homepage",
     name: "HomePage",
     component: App,
   },

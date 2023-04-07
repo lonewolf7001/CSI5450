@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <Header title="REAL ESTATE MANAGEMENT SYSTEM" />
-      <router-link to="/homepage" v-slot="{ navigate }"
+      <router-link to="/" v-slot="{ navigate }"
         ><Button
           text="HOME PAGE"
           color="orange"
@@ -48,7 +48,7 @@
     <div class="photo-gallery">
     <div class="photo-container">
       <!-- Add your photos here -->
-      <img src="../src/photos/house-1836070__480.jpg" alt="My photo" class="custom-padding">
+      <!-- <img src="../src/photos/house-1836070__480.jpg" alt="My photo" class="custom-padding"> -->
       <!-- <img src="../src/photos/pexels-david-mcbee-1546168.jpg" alt="My photo" class="custom-padding"> -->
       <!-- <img src="../src/photos/real-estate-agent-offer-house-represented-model-wide-banner-composition-bokeh-background-63596018.jpg" alt="My photo" class="custom-padding"> -->
       <!-- <div v-for="photo in photos" :key="photo.id" class="photo"> -->
@@ -62,7 +62,6 @@
 <script>
 import Header from "./components/Header";
 import Button from "./components/Button";
-// import photoData from '@/data/photos.json'
 
 export default {
   name: "App",
@@ -73,7 +72,6 @@ export default {
   data() {
     return {
       string: [],
-      // photos: photoData
     };
   },
   methods: {
