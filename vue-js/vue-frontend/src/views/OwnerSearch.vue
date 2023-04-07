@@ -190,7 +190,6 @@ export default {
         { id: "N", name: "Other" },
       ],
       selectedHomeTypes: [],
-      photos: photoData
     };
   },
   methods: {
