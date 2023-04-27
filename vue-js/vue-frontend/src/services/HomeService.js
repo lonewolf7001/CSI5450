@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// const SERVER_URL =
-  // "http://csi5450finalprojectbackend-env.eba-vdqznnev.us-east-2.elasticbeanstalk.com/";
-const SERVER_URL ='http://localhost:8081/'
+const SERVER_URL =
+  "http://csi5450finalprojectbackend-env.eba-vdqznnev.us-east-2.elasticbeanstalk.com/";
 class HomeService {
   getAllhomes() {
     return axios.get(SERVER_URL + "homes/");
