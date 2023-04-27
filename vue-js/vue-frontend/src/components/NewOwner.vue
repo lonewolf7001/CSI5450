@@ -143,6 +143,12 @@
           ></Button>
         </div>
       </div>
+      <div class="row3">
+        <div class="col1"></div>
+        <div class="col2">
+          {{ success_message }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -168,6 +174,7 @@ export default {
         phone: "",
         email: "",
       },
+      success_message: "",
     };
   },
   methods: {
@@ -184,9 +191,11 @@ export default {
           this.new_owner.profession = "";
           this.new_owner.phone = "";
           this.new_owner.email = "";
+          this.success_message = "CREATED NEW OWNER SUCCESSFULLY";
         })
         .catch((error) => {
           console.error(error);
+          this.success_message = "ERROR : "+error ;
         });
     },
   },

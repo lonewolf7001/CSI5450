@@ -149,6 +149,12 @@
           ></Button>
         </div>
       </div>
+      <div class="row3">
+        <div class="col1"></div>
+        <div class="col2">
+          {{ success_message }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -165,6 +171,7 @@ export default {
       owners: [],
       selected_owner_ssn: "",
       updateOwner: [],
+      success_message: "",
     };
   },
   created() {
@@ -185,9 +192,11 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.updateOwner = [];
+          this.success_message = "UPDATED OWNER SUCCESSFULLY";
         })
         .catch((error) => {
           console.error(error);
+          this.success_message = "ERROR : "+error;
         });
     },
   },

@@ -58,7 +58,7 @@
             <th>yearBuilt</th>
             <th>homeType</th>
             <th>isForSale</th>
-            <th>ownerId</th>
+            <!-- <th>ownerId</th> -->
             <th>Manufacturer</th>
           </tr>
         </thead>
@@ -70,7 +70,7 @@
             <td>{{ home.yearBuilt }}</td>
             <td>{{ home.homeType }}</td>
             <td>{{ home.isForSale }}</td>
-            <td>{{ home.ownerId }}</td>
+            <!-- <td>{{ home.ownerId }}</td> -->
             <td>{{ home.manufacturer }}</td>
             <td>
               <button @click="expandRow(index3)">

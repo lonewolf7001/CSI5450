@@ -227,64 +227,6 @@
           <input v-model="home_price" placeholder="" disabled />
         </div>
       </div>
-
-      <!-- <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="House Number" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_address.houseNum" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Street" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_address.street" placeholder="" disabled /></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Apartment No." color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_address.aptNum" placeholder="" disabled /></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="City" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_address.city" placeholder="" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="County" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_address.county" placeholder="" disabled /></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="ZIP" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_address.zip" placeholder="" disabled/></div>
-            </div> -->
-
-      <!-- <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="First Name" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.firstName" placeholder="" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Last Name" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.lastName" placeholder="" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Number of dependents" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.numDependents" placeholder="" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Annual Income" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.annualIncome" placeholder="" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Date of birth" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.dateOfBirth" placeholder="" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Profession" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.profession" placeholder="" disabled/></div>
-            </div>
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Phone" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.phone" placeholder="" disabled/></div>
-            </div>         
-            <div class= "row3"> 
-                <div class="col1"><Button class="btn1" text="Email" color="lightblue" disabled role="link"></Button></div>
-                <div class= "col2"> <input v-model="home_owner_details.email" placeholder="" disabled/></div>
-            </div>             -->
       <div class="row3">
         <div class="col1"></div>
         <div class="col2">
@@ -294,6 +236,12 @@
             color="lightgreen"
             v-on:click="this.UpdateHome()"
           ></Button>
+        </div>
+      </div>
+      <div class="row3">
+        <div class="col1"></div>
+        <div class="col2">
+          {{ success_message }}
         </div>
       </div>
     </div>
@@ -321,6 +269,7 @@ export default {
       updateHome: [],
       cities: [],
       home_address: [],
+      success_message: "",
     };
   },
   created() {
@@ -349,9 +298,11 @@ export default {
           console.log(response.data);
           this.updateHome = [];
           (this.home_address = []), (this.home_owner_details = []);
+          this.success_message = "UPDATED HOME INFO. SUCCESSFULLY";
         })
         .catch((error) => {
           console.error(error);
+          this.success_message = "ERROR : " + error;
         });
     },
     getAddressofhomeResponse() {

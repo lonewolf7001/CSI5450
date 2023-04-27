@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <h3 style="text-align: left">&nbsp;</h3>
-      <h3 style="text-align: left">Search your Owner&nbsp;</h3>
+      <h3 style="text-align: left">Search home by present owner&nbsp;</h3>
     </div>
     <div class="container2">
       <div class="row2">
@@ -16,7 +16,16 @@
           ></Button>
         </div>
         <div class="col2">
-          <input v-model="ssn" placeholder="XXX XX XXXX" />
+          <select v-model="selected_owner_ssn">
+            <option value="">Select An Owner</option>
+            <option
+              v-for="owner_created in owners_created"
+              :key="owner_created.ssn"
+              :value="owner_created.ssn"
+            >
+              {{ owner_created.firstName }} {{ owner_created.lastName }}
+            </option>
+          </select>
         </div>
       </div>
       <div class="row2">
@@ -29,7 +38,14 @@
             role="link"
           ></Button>
         </div>
-        <div class="col2"><input v-model="city" placeholder="City name" /></div>
+        <div class="col-sm-6">
+          <select v-model="selected_city">
+            <option value="">Select an city</option>
+            <option v-for="city in cities" :key="city.name" :value="city.name">
+              {{ city.name }}
+            </option>
+          </select>
+        </div>
       </div>
       <div class="row2">
         <div class="col1"></div>
@@ -48,24 +64,21 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>homeId</th>
-            <th>floorSpace</th>
-            <th>numFloors</th>
-            <th>numBedrooms</th>
-            <th>fullBaths</th>
-            <th>halfBaths</th>
+            <th>Home ID</th>
+            <th>Floorspace</th>
+            <th>Floors</th>
+            <th>Bedrooms</th>
+            <th>Baths</th>
+            <th>Half Baths</th>
             <th>landSize</th>
-            <th>yearBuilt</th>
-            <th>homeType</th>
-            <th>isForSale</th>
-            <th>addressInfo</th>
-            <th>street</th>
-            <th>city</th>
-            <th>zip</th>
-            <th>homeId</th>
-            <th>Id</th>
+            <th>Year Built</th>
+            <th>Home Type</th>
+            <th>Is For Sale</th>
+            <th>House no.</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>Zip</th>
             <th>latestPrice</th>
-            <th>currentOwner</th>
           </tr>
         </thead>
         <tbody>
@@ -80,14 +93,11 @@
             <td>{{ owner.yearBuilt }}</td>
             <td>{{ owner.homeType }}</td>
             <td>{{ owner.isForSale }}</td>
-            <td>{{ owner.addressInfo }}</td>
-            <td>{{ owner.street }}</td>
-            <td>{{ owner.city }}</td>
-            <td>{{ owner.zip }}</td>
-            <td>{{ owner.homeId }}</td>
-            <td>{{ owner.ID }}</td>
+            <td>{{ owner.addressInfo.houseNum }}</td>
+            <td>{{ owner.addressInfo.street }}</td>
+            <td>{{ owner.addressInfo.city }}</td>
+            <td>{{ owner.addressInfo.zip }}</td>
             <td>{{ owner.latestPrice }}</td>
-            <td>{{ owner.currentOwner }}</td>
           </tr>
         </tbody>
       </table>
@@ -123,10 +133,13 @@
         <!-- </div> -->
         <div class="col2">
           <label v-for="homeType in homeTypes" :key="homeType.id">
-            <input type="checkbox" :value="homeType.id" v-model="selectedHomeTypes" />
+            <input
+              type="checkbox"
+              :value="homeType.id"
+              v-model="selectedHomeTypes"
+            />
             {{ homeType.name }}
           </label>
-          <p>Selected Items: {{ selectedHomeTypes }}</p>
         </div>
       </div>
 
@@ -170,6 +183,7 @@
 <script>
 import Button from "../components/Button";
 import OwnerService from "../services/OwnerService";
+import HomeService from "@/services/HomeService";
 export default {
   name: "OwnerSearch",
   components: {
@@ -178,6 +192,7 @@ export default {
   data() {
     return {
       owners: [],
+      owners_created: [],
       owners_h: [],
       hometype: [],
       city: "",
@@ -190,7 +205,19 @@ export default {
         { id: "N", name: "Other" },
       ],
       selectedHomeTypes: [],
+      selected_owner_ssn : "",
+      selected_city : ""
     };
+  },
+  created() {
+    HomeService.getAllcities().then((response) => {
+      this.cities = response.data;
+      console.log(this.cities);
+    }),
+      OwnerService.getAllowners().then((response) => {
+        this.owners_created = response.data;
+        console.log(this.owners_created);
+      });
   },
   methods: {
     getAllownersResponse() {
@@ -199,9 +226,10 @@ export default {
       });
     },
     getHomesbyownercityResponse() {
-      OwnerService.getHomesbyownercity(this.ssn, this.city)
+      OwnerService.getHomesbyownercity(this.selected_owner_ssn, this.selected_city)
         .then((response) => {
           this.owners = response.data;
+          console.log(this.owners)
         })
         .catch((error) => {
           this.owners = [];
@@ -213,7 +241,7 @@ export default {
       OwnerService.getOwnerbyhometype(this.selectedHomeTypes)
         .then((response) => {
           this.owners_h = response.data;
-          this.owners.h
+          this.owners.h;
         })
         .catch((error) => {
           this.owners_h = [];

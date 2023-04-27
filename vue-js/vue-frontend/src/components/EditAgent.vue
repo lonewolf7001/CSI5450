@@ -80,6 +80,12 @@
           ></Button>
         </div>
       </div>
+      <div class="row3">
+        <div class="col1"></div>
+        <div class="col2">
+          {{ success_message }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -94,14 +100,10 @@ export default {
   },
   data() {
     return {
-      // agent: {firstName: '',
-      //             lastName:'',
-      //             phone : null ,
-      //             email :''
-      // },
       agents: [],
       selected_agent_id: "",
       updateAgent: [],
+      success_message: "",
     };
   },
   created() {
@@ -122,29 +124,13 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.updateAgent = [];
-          // this.updateAgent.lastName = '';
-          // this.updateAgent.phone = '';
-          // this.updateAgent.email = '';
+          this.success_message = "UPDATED AGENT SUCCESSFULLY";
         })
         .catch((error) => {
           console.error(error);
+          this.success_message = "ERROR : "+error;
         });
     },
   },
 };
-//   methods: {
-//     CreateAgent(){
-//       AgentService.create(this.new_agent).then(response => {
-//         console.log(response.data);
-//         this.new_agent.firstName = '';
-//         this.new_agent.lastName = '';
-//         this.new_agent.phone = '';
-//         this.new_agent.email = '';
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//     }
-//   }
-// }
 </script>

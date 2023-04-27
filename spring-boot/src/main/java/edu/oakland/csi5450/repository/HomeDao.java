@@ -333,6 +333,6 @@ public class HomeDao {
 	{
 		return jdbcTemplate.queryForObject(INSERT_SQL, Integer.class, home.getFloorSpace(),
                 home.getNumFloors(), home.getNumBedrooms(), home.getFullBaths(), home.getHalfBaths(),
-                home.getLandSize(), home.getYearBuilt(), home.getHomeType(), home.getIsForSale(), home.getOwnerId());
+                home.getLandSize(), home.getYearBuilt(), home.getHomeType(), home.getIsForSale());
     }
 }

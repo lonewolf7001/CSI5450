@@ -17,9 +17,15 @@ import NewOwner from "../components/NewOwner";
 import EditOwner from "../components/EditOwner";
 // import DeleteOwner from '../components/DeleteOwner'
 import HomeSell from "../components/HomeSell";
-import App from "../App";
+import HomePage from "../views/HomePage.vue"
+// import App from "../App";
 
 const routes = [
+  {
+    path: "/",
+    name: "HomePage",
+    component: HomePage,
+  },
   {
     path: "/homesearch",
     name: "HomesearcH",
@@ -110,11 +116,11 @@ const routes = [
     name: "HomeSell",
     component: HomeSell,
   },
-  {
-    path: "/",
-    name: "HomePage",
-    component: App,
-  },
+  // {
+  //   path: "/",
+  //   name: "HomePage",
+  //   component: App,
+  // },
 ];
 
 const router = createRouter({

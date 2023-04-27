@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <Header title="REAL ESTATE MANAGEMENT SYSTEM" />
-      <router-link to="/homepage" v-slot="{ navigate }"
+      <router-link to="/" v-slot="{ navigate }"
         ><Button
           text="HOME PAGE"
           color="orange"
@@ -43,19 +43,20 @@
         ></Button
       ></router-link>
       <router-view></router-view>
-      <!-- The springboot msg is : {{ string }} -->
     </div>
-    <div class="photo-gallery">
-    <div class="photo-container">
-      <!-- Add your photos here -->
-      <img src="../src/photos/house-1836070__480.jpg" alt="My photo" class="custom-padding">
-      <!-- <img src="../src/photos/pexels-david-mcbee-1546168.jpg" alt="My photo" class="custom-padding"> -->
-      <!-- <img src="../src/photos/real-estate-agent-offer-house-represented-model-wide-banner-composition-bokeh-background-63596018.jpg" alt="My photo" class="custom-padding"> -->
-      <!-- <div v-for="photo in photos" :key="photo.id" class="photo"> -->
+    <!-- <div class="photo-gallery">
+      <div class="photo-container">
+        <img
+          src="../src/photos/house-1836070__480.jpg"
+          alt="My photo"
+          class="custom-padding"
+        />
+         <img src="../src/photos/pexels-david-mcbee-1546168.jpg" alt="My photo" class="custom-padding"> -->
+        <!-- <img src="../src/photos/real-estate-agent-offer-house-represented-model-wide-banner-composition-bokeh-background-63596018.jpg" alt="My photo" class="custom-padding"> -->
+        <!-- <div v-for="photo in photos" :key="photo.id" class="photo"> -->
         <!-- <img :src="../src/photos/20150622231001-for-sale-real-estate-home-house.jpeg"  class="photo"> -->
       <!-- </div> -->
-    </div>
-  </div>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -76,8 +77,7 @@ export default {
       // photos: photoData
     };
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 

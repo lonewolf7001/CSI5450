@@ -60,7 +60,8 @@ public class HomeController {
             @RequestParam(required = false) Integer max,
             @RequestParam(required = false) @Size(max=30) String city) {
         if (min == null && max == null) {
-            return new ResponseEntity<>(new ErrorResponse("Either minimum price or maximum price must be specified"),
+            return new ResponseEntity<>(new ErrorResponse(
+                "Either minimum price or maximum price must be specified"),
                     HttpStatus.BAD_REQUEST);
         }
         List<HomeWithPrice> resp = homeService.getByPriceRange(min, max, city);

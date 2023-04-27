@@ -26,6 +26,12 @@
         <div class="col1"></div>
         <div class="col2"><Button class="btn1" text="Add Agent" color="lightgreen" v-on:click="agents = this.CreateAgent()"></Button></div>
         </div>
+        <div class="row3">
+        <div class="col1"></div>
+        <div class="col2">
+          {{ success_message }}
+        </div>
+      </div>
     </div>
 </div>
 </template>
@@ -44,7 +50,8 @@ export default {
                     lastName:'',
                     phone : null ,
                     email :''
-        }
+        },
+        success_message: "",
       }
     },
   methods: {
@@ -55,9 +62,11 @@ export default {
         this.new_agent.lastName = '';
         this.new_agent.phone = '';
         this.new_agent.email = '';
+        this.success_message = "CREATED NEW AGENT SUCCESSFULLY";
       })
       .catch(error => {
         console.error(error);
+        this.success_message = "ERROR :"+error;
       });
     }
   }

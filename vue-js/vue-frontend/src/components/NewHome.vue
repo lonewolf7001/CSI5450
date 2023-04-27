@@ -283,10 +283,10 @@ export default {
           city: "",
           county: null,
           zip: null,
-        },
-        success_message: "",
+        }
       },
       cities: [],
+      success_message: "",
     };
   },
   created() {
@@ -319,6 +319,7 @@ export default {
         })
         .catch((error) => {
           console.error(error);
+          this.success_message = "ERROR : "+error;
         });
     },
   },

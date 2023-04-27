@@ -126,6 +126,12 @@
           ></Button>
         </div>
       </div>
+      <div class="row3">
+        <div class="col1"></div>
+        <div class="col2">
+          {{ success_message }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -153,6 +159,7 @@ export default {
       agents: [],
       companies: [],
       owners: [],
+      success_message: "",
     };
   },
   created() {
@@ -173,9 +180,11 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.home_sale = [];
+          this.success_message = "HOME SALE UPDATED SUCCESSFULLY";
         })
         .catch((error) => {
           console.error(error);
+          this.success_message = "ERROR : "+error;
         });
     },
     getagentofcompanyResponse() {

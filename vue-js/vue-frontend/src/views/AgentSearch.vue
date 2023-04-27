@@ -10,7 +10,7 @@
         <div class="col1">
           <Button
             class="btn1"
-            text="Company ID"
+            text="Company Name"
             color="lightblue"
             disabled
             role="link"
